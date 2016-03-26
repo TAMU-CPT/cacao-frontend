@@ -18,11 +18,21 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider',
                 templateUrl: 'partials/team-detail.html',
                 controller: 'TeamDetailCtrl'
             }).
+            when('/users', {
+                templateUrl: 'partials/user-list.html',
+                controller: 'UserListCtrl'
+            }).
+            when('/users/:userID', {
+                templateUrl: 'partials/user-detail.html',
+                controller: 'UserDetailCtrl'
+            }).
+            when('/', {
+                templateUrl: 'partials/home.html'
+            }).
             otherwise({
-                redirectTo: '/teams'
+                redirectTo: '/'
             });
         RestangularProvider.setBaseUrl('http://localhost:8000/');
-        RestangularProvider.setRequestSuffix('/');
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
             // .. to look for getList operations
@@ -43,20 +53,28 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider',
 
 cacaoApp.controller('TeamListCtrl', ['$scope', 'Restangular',
     function($scope, Restangular) {
-        var promise = Restangular.all('groups').getList();
-        var resolveGroup = function(data) {
+        Restangular.all('groups').getList().then(function(data) {
             $scope.teams = data;
-        }
-        promise.then(resolveGroup);
+        });
 }]);
 
 cacaoApp.controller('TeamDetailCtrl', ['$scope', '$routeParams', 'Restangular',
     function($scope, $routeParams, Restangular) {
-        var promise = Restangular.one('groups', $routeParams.teamID).get();
-
-        var resolveGroup = function(data) {
+        Restangular.one('groups', $routeParams.teamID).get().then(function(data) {
             $scope.team = data;
-        }
+        });
+}]);
 
-        promise.then(resolveGroup);
+cacaoApp.controller('UserListCtrl', ['$scope', 'Restangular',
+    function($scope, Restangular) {
+        Restangular.all('users').getList().then(function(data) {
+            $scope.users = data;
+        });
+}]);
+
+cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
+    function($scope, $routeParams, Restangular) {
+        Restangular.one('users', $routeParams.userID).get().then(function(data) {
+            $scope.user = data;
+        });
 }]);
