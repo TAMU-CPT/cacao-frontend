@@ -4,11 +4,12 @@
 
 var cacaoApp = angular.module('cacaoApp', [
     'ngRoute',
-    'restangular'
+    'restangular',
+    'ngStorage' // is this right? https://github.com/gsklee/ngStorage
 ]);
 
-cacaoApp.config(['$routeProvider', 'RestangularProvider',
-    function($routeProvider, RestangularProvider) {
+cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider',
+    function($routeProvider, RestangularProvider, $httpProvider) {
         $routeProvider.
             when('/teams', {
                 templateUrl: 'partials/team-list.html',
@@ -49,6 +50,24 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider',
             }
             return extractedData;
         });
+        $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
+           return {
+               'request': function (config) {
+                   config.headers = config.headers || {};
+                   if ($localStorage.jwtToken) {
+                       config.headers.Authorization = 'JWT ' + $localStorage.jwtToken;
+                   }
+                   return config;
+               },
+               'responseError': function (response) {
+                   console.log('Failed with', response.status, 'status');
+                   if (response.status == 401 || response.status == 403) {
+                       $location.path('/login');
+                   }
+                   return $q.reject(response);
+               }
+           };
+        }]);
 }]);
 
 cacaoApp.controller('TeamListCtrl', ['$scope', 'Restangular',
@@ -77,4 +96,12 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
         Restangular.one('users', $routeParams.userID).get().then(function(data) {
             $scope.user = data;
         });
+}]);
+
+cacaoApp.controller('LogIn', ['$scope',
+    function($scope, username, password) {
+        return $http.post(API + '/api-token-auth/', {
+            username: username,
+            password: password
+        })
 }]);
