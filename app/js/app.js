@@ -27,6 +27,10 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider',
                 templateUrl: 'partials/user-detail.html',
                 controller: 'UserDetailCtrl'
             }).
+            when('/login', {
+                templateUrl: 'partials/login.html',
+                controller: 'LoginCtrl'
+            }).
             when('/', {
                 templateUrl: 'partials/home.html'
             }).
@@ -61,7 +65,7 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider',
                },
                'responseError': function (response) {
                    console.log('Failed with', response.status, 'status');
-                   if (response.status == 401 || response.status == 403) {
+                   if (response.status == 401 || response.status == 403 || response.status == 400) {
                        $location.path('/login');
                    }
                    return $q.reject(response);
@@ -98,10 +102,19 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
         });
 }]);
 
-cacaoApp.controller('LogIn', ['$scope',
-    function($scope, username, password) {
-        return $http.post(API + '/api-token-auth/', {
-            username: username,
-            password: password
-        })
+cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage',
+    function($scope, $http, $localStorage) {
+        $scope.loginForm = {};
+        $scope.saveData = function() {
+            if ($scope.loginForm.$valid) {
+                console.log($scope.loginForm);
+                $http.post('http://localhost:8000/api-token-auth/', $scope.loginForm)
+                    .success(function(data) {
+                        $localStorage.jwtToken = data.token;
+                    })
+                    .error(function() {
+                        $scope.loginForm = {};
+                    });
+            }
+        };
 }]);

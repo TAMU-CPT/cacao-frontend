@@ -1,0 +1,19 @@
+<div class="col-sm-6">
+    <!-- FORM ============ -->
+    <form name="userForm" ng-submit="saveData()" novalidate>
+
+        <!-- USERNAME -->
+        <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" ng-model="loginForm.username" required>
+            <p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">Your username is required.</p>
+        </div>
+        <!-- PASSWORD  -->
+        <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" ng-model="loginForm.password" required>
+            <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Your password is required</p>
+        </div>
+        <button type="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Sign in</button>
+    </form>
+</div>
