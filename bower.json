@@ -23,6 +23,7 @@
     "restangular": "^1.5.2",
     "angular-resource": "^1.5.5",
     "angular-material-icons": "^0.7.0",
-    "angular-aria": "^1.5.5"
+    "angular-aria": "^1.5.5",
+    "jwt-decode": "^2.0.1"
   }
 }
