@@ -1,16 +1,28 @@
 {
-  "name": "Cacao-lite",
+  "name": "cacao-frontend",
+  "homepage": "https://github.com/elenimijalis/cacao-frontend",
+  "authors": [
+    "Eleni Mijalis <elenimijalis@gmail.com>"
+  ],
   "description": "Cacao",
-  "version": "0.0.0",
+  "license": "MIT",
   "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
   "dependencies": {
-    "angular": "1.4.x",
-    "angular-mocks": "1.4.x",
-    "jquery": "~2.1.1",
-    "bootstrap": "~3.1.1",
-    "angular-route": "1.4.x",
-    "angular-resource": "1.4.x",
-    "angular-animate": "1.4.x",
-    "restangular": "^1.5.2"
+    "angular": "^1.5.5",
+    "angular-material": "^1.0.7",
+    "jquery": "^2.2.3",
+    "angular-route": "^1.5.5",
+    "restangular": "^1.5.2",
+    "angular-resource": "^1.5.5",
+    "angular-material-icons": "^0.7.0",
+    "angular-aria": "^1.5.5"
   }
 }
