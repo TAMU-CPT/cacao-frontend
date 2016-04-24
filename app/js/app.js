@@ -7,6 +7,7 @@ var cacaoApp = angular.module('cacaoApp', [
     'restangular',
     'ngMdIcons',
     'ngMaterial',
+    'ui.gravatar',
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
 
