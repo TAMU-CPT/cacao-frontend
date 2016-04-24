@@ -6,6 +6,7 @@
 - [ ] user list should use angular cards?
 - [ ] user detail page could use an md-card probably
 - [ ] Use gravatar images
+- [ ] page jumps upon sidenav toggle
 
 # Django
 
