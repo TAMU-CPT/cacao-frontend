@@ -109,6 +109,17 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
         });
 }]);
 
+// nav
+cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav',
+    function ($scope, $mdSidenav) {
+        $scope.toggleRight = buildToggler('right');
+        function buildToggler(navID) {
+          return function() {
+            $mdSidenav(navID).toggle()
+          }
+    }
+}]);
+
 // log in
 cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location',
     function($scope, $http, $localStorage, $location) {

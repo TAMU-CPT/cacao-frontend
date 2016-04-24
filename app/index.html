@@ -22,18 +22,40 @@
     <script src="js/app.js"></script>
 </head>
 <body>
+    <div ng-controller="NavCtrl" layout="column" style="height:500px;" ng-cloak="" class="sidenavdemoBasicUsage">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span class="md-title">CACAO</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="toggleRight()">
+                    <ng-md-icon icon="menu" style="fill: white" ></ng-md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
 
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>
-            <span class="md-title">CACAO</span>
-        </h2>
-      </div>
-    </md-toolbar>
-
-    <div class="view-container">
-        <div ng-view class="view-frame"></div>
+        <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+            <md-card md-colors="::{backgroundColor: '{{theme}}-primary-700'}">
+              <md-card-title>
+                <md-card-title-media>
+                  <div class="md-media-sm card-media" layout layout-align="center center"
+                       md-colors="::{background: '{{theme}}-accent'}">
+                    <md-icon md-svg-icon="person"></md-icon>
+                  </div>
+                </md-card-title-media>
+                <md-card-title-text>
+                  <span class="md-headline">{{name}}</span>
+                  <span class="md-subhead description">This card is colored according the {{theme}} theme</span>
+                </md-card-title-text>
+              </md-card-title>
+            </md-card>
+        </md-sidenav>
+        <div class="view-container">
+            <div ng-view class="view-frame"></div>
+        </div>
     </div>
+
 
 </body>
 </html>
