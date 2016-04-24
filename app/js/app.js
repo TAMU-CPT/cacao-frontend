@@ -112,27 +112,11 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
 // log in
 cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location',
     function($scope, $http, $localStorage, $location) {
-        $scope.username = "";
-        $scope.password = "";
-
-        $scope.reset = function(form) {
-            if(form) {
-                form.$setPristine();
-                form.$setUntouched();
-            }
-            // reset fields
-            $scope.username = "";
-            $scope.password = "";
-        }
+        $scope.userData = {}
 
         $scope.saveData = function() {
             if ($scope.loginForm.$valid) {
-                var userData = {
-                    username: $scope.username,
-                    password: $scope.password
-                };
-
-                $http.post('http://localhost:8000/api-token-auth/', userData)
+                $http.post('http://localhost:8000/api-token-auth/', $scope.userData)
                     .success(function(data) {
                         $localStorage.jwtToken = data.token;
                         $location.path('/');

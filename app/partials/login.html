@@ -5,7 +5,7 @@
                 <div layout="row">
                     <md-input-container class="md-block">
                         <label>Username</label>
-                            <input required name="name" ng-model="username" />
+                            <input required name="name" ng-model="userData.username" />
                             <div ng-messages="username.$error">
                                 <div ng-message="required">This is required.</div>
                             </div>
@@ -15,7 +15,7 @@
                 <div layout="row">
                     <md-input-container class="md-block">
                         <label>Password</label>
-                            <input type="password" required name="name" ng-model="password" />
+                            <input type="password" required name="name" ng-model="userData.password" />
                             <div ng-messages="password.$error">
                                 <div ng-message="required">This is required.</div>
                             </div>
