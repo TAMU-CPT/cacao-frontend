@@ -1,19 +1,31 @@
 <div class="col-sm-6">
-    <!-- FORM ============ -->
-    <form name="loginForm" ng-submit="saveData()" novalidate>
-
-        <!-- USERNAME -->
-        <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
-            <label>Username</label>
-            <input type="text" name="username" class="form-control" ng-model="loginForm.username" required>
-            <p ng-show="loginForm.username.$invalid && !loginForm.username.$pristine" class="help-block">Your username is required.</p>
-        </div>
-        <!-- PASSWORD  -->
-        <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control" ng-model="loginForm.password" required>
-            <p ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="help-block">Your password is required</p>
-        </div>
-        <button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid">Sign in</button>
-    </form>
+    <md-content layout-padding>
+        <form name="loginForm" ng-submit="saveData()" novalidate>
+            <div layout="col" flex="50">
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Username</label>
+                            <input required name="name" ng-model="username" />
+                            <div ng-messages="username.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Password</label>
+                            <input type="password" required name="name" ng-model="password" />
+                            <div ng-messages="password.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-button ng-disabled="loginForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Log in</md-button>
+                </div>
+            </div>
+        </form>
+    </md-content>
 </div>
