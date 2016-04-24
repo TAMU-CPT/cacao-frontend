@@ -5,11 +5,17 @@
 var cacaoApp = angular.module('cacaoApp', [
     'ngRoute',
     'restangular',
-    'ngStorage' // is this right? https://github.com/gsklee/ngStorage
+    'ngMdIcons',
+    'ngMaterial',
+    'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
 
-cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider',
-    function($routeProvider, RestangularProvider, $httpProvider) {
+cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdThemingProvider',
+    function($routeProvider, RestangularProvider, $httpProvider, $mdThemingProvider) {
+
+        $mdThemingProvider.theme('default')
+            .primaryPalette('blue')
+            .accentPalette('pink');
         $routeProvider.
             when('/teams', {
                 templateUrl: 'partials/team-list.html',
@@ -38,6 +44,7 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider',
                 redirectTo: '/'
             });
         RestangularProvider.setBaseUrl('http://localhost:8000/');
+        RestangularProvider.setRequestSuffix('/');
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
             // .. to look for getList operations
@@ -102,19 +109,23 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
         });
 }]);
 
-cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage',
-    function($scope, $http, $localStorage) {
+// log in
+cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location',
+    function($scope, $http, $localStorage, $location) {
         $scope.loginForm = {};
         $scope.saveData = function() {
             if ($scope.loginForm.$valid) {
-                console.log($scope.loginForm);
                 $http.post('http://localhost:8000/api-token-auth/', $scope.loginForm)
                     .success(function(data) {
                         $localStorage.jwtToken = data.token;
+                        $location.path('/');
                     })
                     .error(function() {
                         $scope.loginForm = {};
                     });
+            }
+            if ($scope.loginForm.$invalid) {
+                 console.log("invalid");
             }
         };
 }]);
