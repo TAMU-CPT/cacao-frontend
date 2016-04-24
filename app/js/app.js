@@ -135,6 +135,8 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
                 $http.post('http://localhost:8000/api-token-auth/', userData)
                     .success(function(data) {
                         $localStorage.jwtToken = data.token;
+                        // $localStorage.jwtData = {username: "admin", user_id: 1, email: "user@host", exp: 1462137950}
+                        $localStorage.jwtData = jwt_decode(data.token);
                         $location.path('/');
                     })
                     .error(function() {
