@@ -11,9 +11,14 @@ var cacaoApp = angular.module('cacaoApp', [
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
 
-cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdThemingProvider',
-    function($routeProvider, RestangularProvider, $httpProvider, $mdThemingProvider) {
-
+cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdThemingProvider', 'gravatarServiceProvider',
+    function($routeProvider, RestangularProvider, $httpProvider, $mdThemingProvider, gravatarServiceProvider) {
+        gravatarServiceProvider.defaults = {
+          size     : 100,
+          "default": 'mm'  // Mystery man as default for missing avatars
+        };
+        gravatarServiceProvider.secure = true;
+        gravatarServiceProvider.protocol = 'my-protocol';
         $mdThemingProvider.theme('default')
             .primaryPalette('blue')
             .accentPalette('pink');
