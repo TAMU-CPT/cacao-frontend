@@ -42,12 +42,12 @@
                 <md-card-title>
                     <md-card-title-media>
                         <div class="md-media-sm card-media" layout layout-align="center center">
-                            <img gravatar-src="'elenimijalis@gmail.com'" gravatar-size="100">
+                            <img gravatar-src="'{{ userEmail }}'" gravatar-size="100" style="border-radius: 50%">
                         </div>
                     </md-card-title-media>
-                    <md-card-title-text>
-                        <span class="md-headline">Eleni</span>
-                        <span class="md-subhead description">This card is colored according the {{theme}} theme</span>
+                    <md-card-title-text style="padding-left: 1em">
+                        <span class="md-headline">{{ username }}</span>
+                        <span class="md-subhead description">{{ userEmail }}</span>
                     </md-card-title-text>
                 </md-card-title>
             </md-card>

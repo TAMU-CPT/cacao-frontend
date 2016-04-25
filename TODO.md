@@ -5,8 +5,8 @@
 - [ ] app name should redirect to home page
 - [ ] user list should use angular cards?
 - [ ] user detail page could use an md-card probably
-- [ ] Use gravatar images
-- [ ] page jumps upon sidenav toggle
+- [ ] write .css instead of styling inside html (?)
+- [ ] if no user logged in, card should link to login
 
 # Django
 
