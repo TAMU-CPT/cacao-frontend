@@ -38,16 +38,16 @@
         </md-toolbar>
 
         <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
-            <md-card md-colors="::{backgroundColor: '{{theme}}-primary-700'}">
+            <md-card ng-controller="LoginCtrl">
                 <md-card-title>
                     <md-card-title-media>
                         <div class="md-media-sm card-media" layout layout-align="center center">
-                            <img gravatar-src="'{{ userEmail }}'" gravatar-size="100" style="border-radius: 50%">
+                            <img gravatar-src="'{{ userData.email }}'" style="border-radius: 50%">
                         </div>
                     </md-card-title-media>
                     <md-card-title-text style="padding-left: 1em">
-                        <span class="md-headline">{{ username }}</span>
-                        <span class="md-subhead description">{{ userEmail }}</span>
+                        <span class="md-headline">{{ userData.username }}</span>
+                        <span class="md-subhead description">{{ userData.email }}</span>
                     </md-card-title-text>
                 </md-card-title>
             </md-card>
