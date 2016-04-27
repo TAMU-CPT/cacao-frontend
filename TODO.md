@@ -1,6 +1,6 @@
 # Angular
 
-- [ ] login form prefilled with junk
+- [x] login form prefilled with junk
 - [ ] redirect to login for some reason
 - [ ] app name should redirect to home page
 - [ ] user list should use angular cards?

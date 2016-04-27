@@ -121,6 +121,7 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage',
         $scope.toggleRight = buildToggler('right');
         function buildToggler(navID) {
             return function() {
+                $scope.userData = $localStorage.jwtData;
                 $mdSidenav(navID).toggle();
             }
         }
@@ -129,15 +130,13 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage',
 // log in
 cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location',
     function($scope, $http, $localStorage, $location) {
-        $scope.userData = {'email':'elenimijalis@gmail.com'}
+        $scope.userData = {};
         $scope.saveData = function() {
             if ($scope.loginForm.$valid) {
                 $http.post('http://localhost:8000/api-token-auth/', $scope.userData)
                     .success(function(data) {
                         $localStorage.jwtToken = data.token;
-                        // $localStorage.jwtData = {username: "admin", user_id: 1, email: "user@host", exp: 1462137950}
                         $localStorage.jwtData = jwt_decode(data.token);
-                        $scope.userData = $localStorage.jwtData;
                         $location.path('/');
                     })
                     .error(function() {
