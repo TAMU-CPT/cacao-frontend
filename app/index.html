@@ -52,9 +52,19 @@
                 </md-card-title>
             </md-card>
             <md-content>
-                <md-button ng-click="goGaf()" class="md-primary">
-                    Submit an Annotation
-                </md-button>
+                <div ng-if="!userData.email">
+                    <md-button ng-click="go('/login')" class="md-primary md-raised">
+                        Login
+                    </md-button>
+                </div>
+                <div ng-if="userData.email">
+                    <md-button ng-click="go('/gaf')" class="md-raised md-primary">
+                        Submit an Annotation
+                    </md-button>
+                    <md-button ng-click="go('/logout')" class="md-raised md-secondary">
+                        Log Out
+                    </md-button>
+                </div>
             </md-content>
         </md-sidenav>
         <div class="view-container">

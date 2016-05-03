@@ -44,8 +44,12 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdT
                 controller: 'LoginCtrl'
             }).
             when('/gaf', {
-                templateUrl: 'partials/gaf.html',
+                templateUrl: 'partials/gaf-form.html',
                 controller: 'GAFCtrl'
+            }).
+            when('/logout', {
+                templateUrl: 'partials/login.html',
+                controller: 'LogOutCtrl'
             }).
             when('/', {
                 templateUrl: 'partials/home.html'
@@ -125,20 +129,34 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$locat
     function ($scope, $mdSidenav, $localStorage, $location) {
         $scope.userData = {};
         $scope.toggleRight = buildToggler('right');
-        $scope.goGaf = go_to_gaaf();
+        $scope.go = function(route){
+            $location.path(route);
+            $mdSidenav('right').toggle();
+        }
+        //$scope.team_click = go_to_team();
         function buildToggler(navID) {
             return function() {
                 $scope.userData = $localStorage.jwtData;
                 $mdSidenav(navID).toggle();
             }
         }
-        function go_to_gaaf() {
-            return function() {
-                $location.path('/gaf');
-                $mdSidenav('right').toggle();
-            }
-        }
+        //function go_to_team() {
+            //return function() {
+                //$location.path('/gaf');
+                //$mdSidenav('right').toggle();
+            //}
+        //}
 }]);
+
+cacaoApp.controller('LogOutCtrl', ['$scope', '$http', '$localStorage', '$location',
+    function($scope, $http, $localStorage, $location) {
+        console.log("Logging Out");
+        $localStorage.jwtToken = null;
+        $localStorage.jwtData = {};
+        console.log($localStorage.jwtData);
+        $location.path('/');
+    }
+]);
 
 // log in
 cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location',
