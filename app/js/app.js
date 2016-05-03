@@ -43,6 +43,10 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdT
                 templateUrl: 'partials/login.html',
                 controller: 'LoginCtrl'
             }).
+            when('/gaf', {
+                templateUrl: 'partials/gaf.html',
+                controller: 'GAFCtrl'
+            }).
             when('/', {
                 templateUrl: 'partials/home.html'
             }).
@@ -78,7 +82,7 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdT
                },
                'responseError': function (response) {
                    console.log('Failed with', response.status, 'status');
-                   if (response.status == 401 || response.status == 403 || response.status == 400) {
+                   if (response.status == 401 || response.status == 403 || response.status == 400 || response.status == 500) {
                        $location.path('/login');
                    }
                    return $q.reject(response);
@@ -116,15 +120,29 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
 }]);
 
 // nav
-cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage',
-    function ($scope, $mdSidenav, $localStorage) {
+cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location',
+    function ($scope, $mdSidenav, $localStorage, $location) {
         $scope.toggleRight = buildToggler('right');
+        $scope.go = go_to_gaf();
+        //$scope.team_click = go_to_team();
         function buildToggler(navID) {
             return function() {
                 $scope.userData = $localStorage.jwtData;
                 $mdSidenav(navID).toggle();
             }
         }
+        function go_to_gaf() {
+            return function() {
+                $location.path('/gaf');
+                $mdSidenav('right').toggle();
+            }
+        }
+        //function go_to_team() {
+            //return function() {
+                //$location.path('/gaf');
+                //$mdSidenav('right').toggle();
+            //}
+        //}
 }]);
 
 // log in
@@ -146,4 +164,18 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
                  console.log("invalid");
             }
         };
+}]);
+
+// GAF
+cacaoApp.controller('GAFCtrl', ['$scope', 'Restangular', '$localStorage',
+    function($scope, Restangular, $localStorage) {
+        $scope.gafData = {};
+        $scope.user = {};
+        if ($scope.jwtData) {
+            $scope.user = $localStorage.jwtData.username;
+        }
+        $scope.saveData = function() {
+            $scope.gafData["owner"] = $scope.user;
+            Restangular.all('gafs').post($scope.gafData);
+        }
 }]);

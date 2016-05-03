@@ -31,7 +31,7 @@
                     <span class="md-title">CACAO</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="toggleRight()">
+                <md-button aria-label="show menu" class="md-icon-button" ng-click="toggleRight()">
                     <ng-md-icon icon="menu" style="fill: white" ></ng-md-icon>
                 </md-button>
             </div>
@@ -51,6 +51,11 @@
                     </md-card-title-text>
                 </md-card-title>
             </md-card>
+            <md-content>
+                <md-button ng-click="go()" class="md-primary">
+                    Submit an Annotation
+                </md-button>
+            </md-content>
         </md-sidenav>
         <div class="view-container">
             <div ng-view class="view-frame"></div>
