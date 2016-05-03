@@ -1,0 +1,161 @@
+<div class="col-sm-6">
+    <md-content layout-padding>
+        <form name="GAFForm" ng-submit="saveData()" novalidate>
+            <div layout="col">
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>DB</label>
+                            <input required name="db" ng-model="gafData.db" />
+                            <div ng-messages="db.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>UniProtKB ID</label>
+                            <input required name="db_object_id" ng-model="gafData.db_object_id" />
+                            <div ng-messages="db_object_id.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>GO ID</label>
+                            <input required name="go_id" ng-model="gafData.go_id" />
+                            <div ng-messages="go_id.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>PMID (DB Reference)</label>
+                            <input required name="db_reference" ng-model="gafData.db_reference" />
+                            <div ng-messages="db_reference.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Evidence Code</label>
+                            <input required name="evidence_code" ng-model="gafData.evidence_code" />
+                            <div ng-messages="evidence_code.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>With (or) From</label>
+                            <input required name="with_or_from" ng-model="gafData.with_or_from" />
+                            <div ng-messages="with_or_from.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Aspect</label>
+                            <input required name="aspect" ng-model="gafData.aspect" />
+                            <div ng-messages="aspect.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>DB Object Name</label>
+                            <input required name="db_object_name" ng-model="gafData.db_object_name" />
+                            <div ng-messages="db_object_name.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>DB Object Synonym</label>
+                            <input required name="db_object_synonym" ng-model="gafData.db_object_synonym" />
+                            <div ng-messages="db_object_synonym.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>DB Object Type</label>
+                            <input required name="db_object_type" ng-model="gafData.db_object_type" />
+                            <div ng-messages="db_object_type.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Taxon</label>
+                            <input required name="taxon" ng-model="gafData.taxon" />
+                            <div ng-messages="taxon.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Date</label>
+                            <input required name="date" ng-model="gafData.date" />
+                            <div ng-messages="date.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Assigned By</label>
+                            <input required name="assigned_by" ng-model="gafData.assigned_by" />
+                            <div ng-messages="assigned_by.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Annotation Extension</label>
+                            <input required name="annotation_extension" ng-model="gafData.annotation_extension" />
+                            <div ng-messages="annotation_extension.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Gene Product ID</label>
+                            <input required name="gene_product_id" ng-model="gafData.gene_product_id" />
+                            <div ng-messages="gene_product_id.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>
+                </div>
+            </div>
+        </form>
+    </md-content>
+</div>

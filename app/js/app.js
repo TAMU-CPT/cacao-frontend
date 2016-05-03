@@ -110,6 +110,7 @@ cacaoApp.controller('UserListCtrl', ['$scope', 'Restangular',
         Restangular.all('users').getList().then(function(data) {
             $scope.users = data;
         });
+
 }]);
 
 cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
@@ -122,27 +123,21 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
 // nav
 cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location',
     function ($scope, $mdSidenav, $localStorage, $location) {
+        $scope.userData = {};
         $scope.toggleRight = buildToggler('right');
-        $scope.go = go_to_gaf();
-        //$scope.team_click = go_to_team();
+        $scope.goGaf = go_to_gaaf();
         function buildToggler(navID) {
             return function() {
                 $scope.userData = $localStorage.jwtData;
                 $mdSidenav(navID).toggle();
             }
         }
-        function go_to_gaf() {
+        function go_to_gaaf() {
             return function() {
                 $location.path('/gaf');
                 $mdSidenav('right').toggle();
             }
         }
-        //function go_to_team() {
-            //return function() {
-                //$location.path('/gaf');
-                //$mdSidenav('right').toggle();
-            //}
-        //}
 }]);
 
 // log in
@@ -169,7 +164,15 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 // GAF
 cacaoApp.controller('GAFCtrl', ['$scope', 'Restangular', '$localStorage',
     function($scope, Restangular, $localStorage) {
-        $scope.gafData = {};
+        var currentDate = new Date();
+        var day = currentDate.getDate();
+        var month = currentDate.getMonth() + 1;
+        var year = currentDate.getFullYear();
+
+        $scope.gafData = {
+            db: 'UniProtKB',
+            date: year + '-' + month + '-' + day,
+        };
         $scope.user = {};
         if ($scope.jwtData) {
             $scope.user = $localStorage.jwtData.username;
