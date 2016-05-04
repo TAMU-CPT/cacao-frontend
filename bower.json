@@ -25,6 +25,7 @@
     "angular-material-icons": "^0.7.0",
     "angular-aria": "^1.5.5",
     "jwt-decode": "^2.0.1",
-    "angular-gravatar": "^0.4.2"
+    "angular-gravatar": "^0.4.2",
+    "angular-material-data-table": "^0.10.9"
   }
 }

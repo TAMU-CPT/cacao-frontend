@@ -44,7 +44,7 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdT
                 controller: 'LoginCtrl'
             }).
             when('/gaf', {
-                templateUrl: 'partials/gaf-form.html',
+                templateUrl: 'partials/gaf.html',
                 controller: 'GAFCtrl'
             }).
             when('/logout', {
@@ -186,10 +186,34 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'Restangular', '$localStorage',
         var day = currentDate.getDate();
         var month = currentDate.getMonth() + 1;
         var year = currentDate.getFullYear();
+        $scope.eco_codes = [
+            'IDA: Inferred from Direct Assay',
+            'IMP: Inferred from Mutant Phenotype',
+            'IGI: Inferred from Genetic Interaction',
+            'ISS: Inferred from Sequence Similarity',
+            'ISO: Inferred from Sequence Orthology',
+            'ISA: Inferred from Sequence Alignment',
+            'ISM: Inferred from Sequence Model',
+            'IGC: Inferred from Genomic Context',
+        ];
+
+        $scope.goTermData = {
+            id: 'GO:0009765',
+            name: 'photosynthesis, light harvesting',
+            namespace: 'biological_process',
+            def: "Absorption and transfer of the energy absorbed from light photons between photosystem reaction centers. [GOC:sm]",
+            synonym: '"energy dissipation" RELATED []',
+            is_a: 'GO:0006091 ! generation of precursor metabolites and energy',
+            relationship: 'part_of: GO:0019684 ! photosynthesis, light reaction',
+        }
 
         $scope.gafData = {
+            go_id: 'GO:0009765',
             db: 'UniProtKB',
             date: year + '-' + month + '-' + day,
+            db_reference: 'PMID:7592491',
+            evidence_code: "IMP: Inferred from Mutant Phenotype",
+            notes: "Figures 5 and 6 show that mutation in senC results in reduced levels of light-harvesting bacteriochlorophyll complexes. ",
         };
         $scope.user = {};
         if ($scope.jwtData) {
