@@ -125,27 +125,27 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
 }]);
 
 // nav
-cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location',
-    function ($scope, $mdSidenav, $localStorage, $location) {
+cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'Restangular',
+    function ($scope, $mdSidenav, $localStorage, $location, Restangular) {
         $scope.userData = {};
         $scope.toggleRight = buildToggler('right');
+
         $scope.go = function(route){
-            $location.path(route);
+            if (route == '/teams/') {
+                Restangular.one('users', $scope.userData.user_id).get().then(function(data) {
+                    $location.path(route + data.group[0].id);
+                });
+            }
+            else { $location.path(route); }
             $mdSidenav('right').toggle();
         }
-        //$scope.team_click = go_to_team();
+
         function buildToggler(navID) {
             return function() {
                 $scope.userData = $localStorage.jwtData;
                 $mdSidenav(navID).toggle();
             }
         }
-        //function go_to_team() {
-            //return function() {
-                //$location.path('/gaf');
-                //$mdSidenav('right').toggle();
-            //}
-        //}
 }]);
 
 cacaoApp.controller('LogOutCtrl', ['$scope', '$http', '$localStorage', '$location',
