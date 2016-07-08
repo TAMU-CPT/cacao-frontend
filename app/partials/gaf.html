@@ -25,14 +25,14 @@
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>GO ID</label>
-                                <input required name="go_id" ng-model="gafData.go_id" ng-blur="try_go_id()"  />
+                                <input required name="go_id" ng-model="gafData.go_id" ng-blur="try_go_id()"/>
                                 <div ng-messages="go_id.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>PMID (DB Reference)</label>
-                                <input required name="db_reference" ng-model="gafData.db_reference" />
+                                <input required name="db_reference" ng-model="gafData.db_reference" ng-blur="try_db_ref()"/>
                                 <div ng-messages="db_reference.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
@@ -135,30 +135,17 @@
                 </md-card>
             </div>
             <div class="col" flex="60">
-                <md-card>
+                <md-card data-ng-show="pubmedData || bad_pmid">
                     <md-card-title>
                         <md-card-title-text>
-                            <span class="md-headline">PMID:7592491</span>
-                            <span class="md-subhead" style="color:#666">Buggy, J and Bauer, CE (1995) Cloning and characterization of senC, a gene involved in both aerobic respiration and photosynthesis gene expression in Rhodobacter capsulatus. J. Bacteriol. 177:6958-65</span>
+                            <span data-ng-show="bad_pmid" class="md-headline">{{bad_pmid}} not found</span>
+                            <span data-ng-show="pubmedData.pmid" class="md-headline">{{pubmedData.pmid}}</span>
+                            <!--<span class="md-subhead" style="color:#666">Buggy, J and Bauer, CE (1995) Cloning and characterization of senC, a gene involved in both aerobic respiration and photosynthesis gene expression in Rhodobacter capsulatus. J. Bacteriol. 177:6958-65</span>-->
                         </md-card-title-text>
                     </md-card-title>
-                    <md-card-content>
-                        <p>
-                            Abstract: The purple nonsulfur photosynthetic
-                            eubacterium Rhodobacter capsulatus is a versatile
-                            organism that can obtain cellular energy by several
-                            means, including the capture of light energy for
-                            photosynthesis as well as the use of light-independent
-                            respiration, in which molecular oxygen serves as a
-                            terminal electron acceptor. ...
-                            <md-button class="md-raised">See More</md-button>
-                        </p>
-                        <p>
-                            <div layout="row" layout-sm="column" layout-align="space-around">
-                            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-                            </div>
-                            Loading Annotated GO Terms...
-                        </p>
+                    <md-card-content data-ng-show="pubmedData">
+                        <p>{{pubmedData}}</p>
+                        <!--<md-button class="md-raised">See More</md-button>-->
                     </md-card-content>
                 </md-card>
 
