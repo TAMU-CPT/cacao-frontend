@@ -18,14 +18,14 @@
                         <form name="GAFForm" ng-submit="saveData()" novalidate>
                             <md-input-container class="md-block" flex="100">
                                 <label>DB</label>
-                                <input required name="db" ng-model="gafData.db" />
+                                <input required name="db" ng-model="gafData.db" ng-disabled="true"/>
                                 <div ng-messages="db.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>GO ID</label>
-                                <input required name="go_id" ng-model="gafData.go_id" />
+                                <input required name="go_id" ng-model="gafData.go_id" ng-blur="try_go_id()"  />
                                 <div ng-messages="go_id.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
@@ -161,38 +161,23 @@
                         </p>
                     </md-card-content>
                 </md-card>
-                <md-card>
+
+                <md-card data-ng-show="goTermData || bad_go_id">
                     <md-card-title>
                         <md-card-title-text>
-                            <span class="md-headline">GO:0009765 </span>
-                            <span class="md-subhead" style="color:#666">photosynthesis, light harvesting</span>
+                            <span data-ng-show="bad_go_id" class="md-headline">{{bad_go_id}} not found</span>
+                            <span data-ng-show="goTermData.id" class="md-headline">{{goTermData.id}}</span>
+                            <span data-ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
                         </md-card-title-text>
                     </md-card-title>
-                    <md-card-content>
-                    <div layout="row">
-                        <div class="col" flex="60">
-                            <md-table-container>
-                              <table md-table ng-model="gafData">
-                                <thead md-head>
-                                  <tr md-row>
-                                    <th md-column>Attribute</th>
-                                    <th md-column>Value</th>
-                                  </tr>
-                                </thead>
-                                <tbody md-body>
-                                  <tr md-row ng-repeat="(key, value) in gafData">
-                                    <td md-cell><code>{{key}}</code></td>
-                                    <td md-cell>{{value}}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </md-table-container>
-                        </div>
-                        <div class="col" flex="40">
-                                <img src="http://gowiki.tamu.edu/resize_offsite_image.php?go_id=GO:0009765" />
-                        </div>
-                    </div>
+                    <md-card-content data-ng-show="goTermData.def">
+                        <p>definition: {{goTermData.def}}</p>
                     </md-card-content>
+                    <md-card-title-media data-ng-show="goTermData.def">
+                        <div>
+                            <img src="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" />
+                        </div>
+                    </md-card-title-media>
                 </md-card>
             </div>
 

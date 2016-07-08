@@ -11,8 +11,8 @@ var cacaoApp = angular.module('cacaoApp', [
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
 
-cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdThemingProvider', 'gravatarServiceProvider',
-    function($routeProvider, RestangularProvider, $httpProvider, $mdThemingProvider, gravatarServiceProvider) {
+cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'gravatarServiceProvider',
+    function($routeProvider, $httpProvider, $mdThemingProvider, gravatarServiceProvider) {
         gravatarServiceProvider.defaults = {
           size     : 100,
           "default": 'mm'  // Mystery man as default for missing avatars
@@ -57,27 +57,15 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdT
             otherwise({
                 redirectTo: '/'
             });
-        RestangularProvider.setBaseUrl('http://localhost:8000/');
-        RestangularProvider.setRequestSuffix('/');
-        RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
-            var extractedData;
-            // .. to look for getList operations
-            if (operation === "getList") {
-            // .. and handle the data and meta data
-                extractedData = data.results;
-                extractedData.meta = {
-                    'count': data.count,
-                    'next': data.next,
-                    'previous': data.previous
-                }
-            } else {
-                extractedData = data;
-            }
-            return extractedData;
-        });
+
         $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
-           return {
+            return {
                'request': function (config) {
+                   // ignore if request is to GO backend
+                   if (config.url.startsWith('http://localhost:9000')) {
+                       return config;
+                   }
+
                    config.headers = config.headers || {};
                    if ($localStorage.jwtToken) {
                        config.headers.Authorization = 'JWT ' + $localStorage.jwtToken;
@@ -95,44 +83,67 @@ cacaoApp.config(['$routeProvider', 'RestangularProvider', '$httpProvider', '$mdT
         }]);
 }]);
 
-cacaoApp.controller('TeamListCtrl', ['$scope', 'Restangular',
-    function($scope, Restangular) {
-        Restangular.all('groups').getList().then(function(data) {
+cacaoApp.factory('CacaoBackend', function(Restangular) {
+    return Restangular.withConfig(function(RestangularConfigurer) {
+        RestangularConfigurer.setBaseUrl('http://localhost:8000/');
+        RestangularConfigurer.setRequestSuffix('/');
+        RestangularConfigurer.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+            var extractedData;
+            // .. to look for getList operations
+            if (operation === "getList") {
+            // .. and handle the data and meta data
+                extractedData = data.results;
+                extractedData.meta = {
+                    'count': data.count,
+                    'next': data.next,
+                    'previous': data.previous
+                }
+            } else {
+                extractedData = data;
+            }
+            return extractedData;
+        });
+    });
+});
+
+cacaoApp.controller('TeamListCtrl', ['$scope', 'CacaoBackend',
+    function($scope, CacaoBackend) {
+        CacaoBackend.all('groups').getList().then(function(data) {
             $scope.teams = data;
         });
 }]);
 
-cacaoApp.controller('TeamDetailCtrl', ['$scope', '$routeParams', 'Restangular',
-    function($scope, $routeParams, Restangular) {
-        Restangular.one('groups', $routeParams.teamID).get().then(function(data) {
+cacaoApp.controller('TeamDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
+    function($scope, $routeParams, CacaoBackend) {
+        CacaoBackend.one('groups', $routeParams.teamID).get().then(function(data) {
             $scope.team = data;
         });
 }]);
 
-cacaoApp.controller('UserListCtrl', ['$scope', 'Restangular',
-    function($scope, Restangular) {
-        Restangular.all('users').getList().then(function(data) {
+cacaoApp.controller('UserListCtrl', ['$scope', 'CacaoBackend',
+    function($scope, CacaoBackend) {
+        CacaoBackend.all('users').getList().then(function(data) {
             $scope.users = data;
         });
 
 }]);
 
-cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'Restangular',
-    function($scope, $routeParams, Restangular) {
-        Restangular.one('users', $routeParams.userID).get().then(function(data) {
+cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
+    function($scope, $routeParams, CacaoBackend) {
+        CacaoBackend.one('users', $routeParams.userID).get().then(function(data) {
             $scope.user = data;
         });
 }]);
 
 // nav
-cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'Restangular',
-    function ($scope, $mdSidenav, $localStorage, $location, Restangular) {
+cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'CacaoBackend',
+    function ($scope, $mdSidenav, $localStorage, $location, CacaoBackend) {
         $scope.userData = {};
         $scope.toggleRight = buildToggler('right');
 
         $scope.go = function(route){
             if (route == '/teams/') {
-                Restangular.one('users', $scope.userData.user_id).get().then(function(data) {
+                CacaoBackend.one('users', $scope.userData.user_id).get().then(function(data) {
                     $location.path(route + data.group[0].id);
                 });
             }
@@ -180,8 +191,9 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 }]);
 
 // GAF
-cacaoApp.controller('GAFCtrl', ['$scope', 'Restangular', '$localStorage',
-    function($scope, Restangular, $localStorage) {
+cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
+    function($scope, CacaoBackend, $localStorage) {
+
         var currentDate = new Date();
         var day = currentDate.getDate();
         var month = currentDate.getMonth() + 1;
@@ -197,30 +209,37 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'Restangular', '$localStorage',
             'IGC: Inferred from Genomic Context',
         ];
 
-        $scope.goTermData = {
-            id: 'GO:0009765',
-            name: 'photosynthesis, light harvesting',
-            namespace: 'biological_process',
-            def: "Absorption and transfer of the energy absorbed from light photons between photosystem reaction centers. [GOC:sm]",
-            synonym: '"energy dissipation" RELATED []',
-            is_a: 'GO:0006091 ! generation of precursor metabolites and energy',
-            relationship: 'part_of: GO:0019684 ! photosynthesis, light reaction',
+        // gets go_id on blur and updates goTermData
+        $scope.try_go_id = function() {
+            var go_id = $scope.gafData.go_id;
+            if (go_id) {
+                var go_id_url = 'http://localhost:9000/' + go_id + '.json'
+                CacaoBackend.oneUrl(' ', go_id_url).get().then(
+                    function(success) {
+                        $scope.bad_go_id = null;
+                        $scope.goTermData = success;
+                    },
+                    function(fail) {
+                        $scope.bad_go_id = go_id;
+                        $scope.goTermData = null;
+                    }
+                );
+            }
+            else {
+                $scope.bad_go_id = null;
+            }
         }
 
         $scope.gafData = {
-            go_id: 'GO:0009765',
             db: 'UniProtKB',
-            date: year + '-' + month + '-' + day,
-            db_reference: 'PMID:7592491',
-            evidence_code: "IMP: Inferred from Mutant Phenotype",
-            notes: "Figures 5 and 6 show that mutation in senC results in reduced levels of light-harvesting bacteriochlorophyll complexes. ",
         };
+
         $scope.user = {};
         if ($scope.jwtData) {
             $scope.user = $localStorage.jwtData.username;
         }
         $scope.saveData = function() {
             $scope.gafData["owner"] = $scope.user;
-            Restangular.all('gafs').post($scope.gafData);
+            //Restangular.all('gafs').post($scope.gafData);
         }
 }]);
