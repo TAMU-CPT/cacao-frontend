@@ -233,14 +233,29 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
             }
         };
 
+        // shortens abstract
+        function trim_abstract(a) {
+            a = a.replace(/^(.{250}[^\s]*).*/, "$1");
+            if (a.endsWith('.')) {
+                a = a.concat('..');
+            }
+            else {
+                a = a.concat('...');
+            }
+            return a
+        };
+
         // gets pmid on blur and updates pubmedData
-        $scope.try_db_ref= function() {
+        $scope.try_db_ref = function() {
             var pmid = $scope.gafData.db_reference;
             if (pmid) {
                 CacaoBackend.one('papers', pmid).get().then(
                     function(success) {
                         $scope.bad_pmid = null;
                         $scope.pubmedData = success;
+                        if ($scope.pubmedData.abstract) {
+                            $scope.pubmedData.abstract = trim_abstract($scope.pubmedData.abstract);
+                        }
                     },
                     function(fail) {
                         $scope.bad_pmid = pmid;

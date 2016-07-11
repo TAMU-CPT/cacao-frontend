@@ -27,6 +27,7 @@
     "jwt-decode": "^2.0.1",
     "angular-gravatar": "^0.4.2",
     "angular-material-data-table": "^0.10.9",
-    "angular-messages": "1.5.5"
+    "angular-messages": "1.5.5",
+    "lightbox2": "^2.8.2"
   }
 }

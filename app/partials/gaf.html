@@ -138,17 +138,26 @@
                 </md-card>
             </div>
             <div class="col" flex="60">
-                <md-card data-ng-show="pubmedData || bad_pmid">
+                <md-card ng-model="pubmedData" data-ng-show="pubmedData || bad_pmid">
                     <md-card-title>
                         <md-card-title-text>
                             <span data-ng-show="bad_pmid" class="md-headline">{{bad_pmid}} not found</span>
-                            <span data-ng-show="pubmedData.pmid" class="md-headline">{{pubmedData.pmid}}</span>
-                            <!--<span class="md-subhead" style="color:#666">Buggy, J and Bauer, CE (1995) Cloning and characterization of senC, a gene involved in both aerobic respiration and photosynthesis gene expression in Rhodobacter capsulatus. J. Bacteriol. 177:6958-65</span>-->
+                            <span data-ng-show="pubmedData.pmid" class="md-headline">PMID: {{pubmedData.pmid}}</span>
+                            <span class="md-subhead">
+                                <span data=ng-show="pubmedData.author"><b>{{pubmedData.author}}.</b></span>
+                                <span data-ng-show="pubmedData.pub_year">{{pubmedData.pub_year}}.</span>
+                                <span data-ng-show="pubmedData.title">{{pubmedData.title}}.</span>
+                                <span data-ng-show="pubmedData.journal">{{pubmedData.journal}}</span>
+                                <span data-ng-show="pubmedData.volume && !pubmedData.pages"><b>{{pubmedData.volume}}.</b></span>
+                                <span data-ng-show="pubmedData.pages"><b>{{pubmedData.volume}}:</b></span><!--
+                                --><span data-ng-show="pubmedData.pages">{{pubmedData.pages}}.</span>
+                            </span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content data-ng-show="pubmedData">
-                        <p>{{pubmedData | json}}</p>
-                        <!--<md-button class="md-raised">See More</md-button>-->
+                        <p data-ng-show="pubmedData.abstract">{{pubmedData.abstract}}</p>
+                        <md-button class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pubmedData.pmid}}" TARGET="_blank">PubMed</md-button>
+                        <md-button data-ng-show="pubmedData.pmc" class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{pubmedData.pmc}}" TARGET="_blank">PMC</md-button>
                     </md-card-content>
                 </md-card>
 
@@ -158,19 +167,25 @@
                             <span data-ng-show="bad_go_id" class="md-headline">{{bad_go_id}} not found</span>
                             <span data-ng-show="goTermData.id" class="md-headline">{{goTermData.id}}</span>
                             <span data-ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
+                            <span data-ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
+                            <span data-ng-show="goTermData.db_xref.PMID" class="md-subhead" style="color:#666">
+                                <span  ng-repeat="pmid in goTermData.db_xref.PMID">
+                                    <md-button class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pmid}}" TARGET="_blank">PMID:{{pmid}}</md-button>
+                                </span>
+                            </span>
                         </md-card-title-text>
+                        <md-card-title-media data-ng-show="goTermData.def" style="overflow:hidden">
+                            <div class="md-media-lg">
+                                <a href="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" data-lightbox="image-1" data-title="My caption">
+                                    <img src="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" />
+                                </a>
+                            </div>
+                        </md-card-title-media>
                     </md-card-title>
-                    <md-card-content data-ng-show="goTermData.def">
-                        <p>definition: {{goTermData.def}}</p>
-                    </md-card-content>
-                    <md-card-title-media data-ng-show="goTermData.def">
-                        <div>
-                            <img src="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" />
-                        </div>
-                    </md-card-title-media>
                 </md-card>
             </div>
 
         </div>
     </md-content>
 </div>
+<script src="bower_components/lightbox2/src/js/lightbox.js">
