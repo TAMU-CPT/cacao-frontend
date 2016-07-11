@@ -8,6 +8,7 @@ var cacaoApp = angular.module('cacaoApp', [
     'ngMdIcons',
     'ngMaterial',
     'ui.gravatar',
+    'ngMessages',
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
 
@@ -229,7 +230,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
                 $scope.bad_go_id = null;
             }
         };
-
 
         // gets pmid on blur and updates pubmedData
         $scope.try_db_ref= function() {

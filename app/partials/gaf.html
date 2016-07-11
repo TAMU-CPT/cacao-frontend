@@ -19,33 +19,37 @@
                             <md-input-container class="md-block" flex="100">
                                 <label>DB</label>
                                 <input required name="db" ng-model="gafData.db" ng-disabled="true"/>
-                                <div ng-messages="db.$error">
+                                <div ng-messages="GAFForm.db.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>GO ID</label>
                                 <input required name="go_id" ng-model="gafData.go_id" ng-blur="try_go_id()"/>
-                                <div ng-messages="go_id.$error">
+                                <div ng-messages="GAFForm.go_id.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>PMID (DB Reference)</label>
-                                <input required name="db_reference" ng-model="gafData.db_reference" ng-blur="try_db_ref()"/>
-                                <div ng-messages="db_reference.$error">
+                                <input required name="db_reference" type="number" ng-model="gafData.db_reference" ng-blur="try_db_ref()"/>
+                                <div ng-messages="GAFForm.db_reference.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block">
-                                <label>Evidence Code</label>
-                                <md-select ng-model="gafData.evidence_code" required>
-                                    <md-option ng-repeat="eco_code in eco_codes" value="{{eco_code}}">{{eco_code}}</md-option>
+                                <md-select name="evidence_code" ng-model="gafData.evidence_code" placeholder="Select Evidence Code" ng-required="true">
+                                    <md-option ng-repeat="eco_code in eco_codes">{{eco_code}}</md-option>
                                 </md-select>
-                                <div ng-messages="GAFForm.evidence_code.$error">
-                                    <div ng-message="required">This is required.</div>
+                                <div ng-messages="GAFForm.evidence_code.$error" ng-show="GAFForm.evidence_code.$invalid">
+                                    <div ng-message="required" ng-show="GAFForm.evidence_code.$touched">This is required.</div>
                                 </div>
                             </md-input-container>
+                        <!--<md-input-container>-->
+                          <!--<md-select ng-model="someModel" placeholder="Select a state">-->
+                            <!--<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>-->
+                          <!--</md-select>-->
+                        <!--</md-input-container>-->
                             <!-- Need to conditionally display/hide these. not sure of rules -->
                             <!--
                             <md-input-container class="md-block">
@@ -121,14 +125,13 @@
                                 </div>
                             </md-input-container>
                             -->
-                                <md-input-container class="md-block">
-                                    <label>Notes</label>
-                                    <textarea required name="notes" ng-model="gafData.notes" rows="5"></textarea>
-
-                                    <div ng-messages="notes.$error">
-                                        <div ng-message="required">This is required.</div>
-                                    </div>
-                                </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Notes</label>
+                                <textarea required name="notes" ng-model="gafData.notes" rows="5"></textarea>
+                                <div ng-messages="GAFForm.notes.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
                             <md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>
                         </form>
                     </md-card-content>
@@ -144,7 +147,7 @@
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content data-ng-show="pubmedData">
-                        <p>{{pubmedData}}</p>
+                        <p>{{pubmedData | json}}</p>
                         <!--<md-button class="md-raised">See More</md-button>-->
                     </md-card-content>
                 </md-card>
