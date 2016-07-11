@@ -25,9 +25,9 @@
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>GO ID</label>
-                                <input required name="go_id" ng-model="gafData.go_id" ng-blur="try_go_id()"/>
+                                <input required name="go_id" ng-minlength="4" ng-model="gafData.go_id" ng-blur="try_go_id()"/>
                                 <div ng-messages="GAFForm.go_id.$error">
-                                    <div ng-message="required">This is required.</div>
+                                    <div ng-message="minlength">This is required.</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block">

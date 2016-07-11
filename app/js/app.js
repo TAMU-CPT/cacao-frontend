@@ -194,7 +194,9 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 // GAF
 cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
     function($scope, CacaoBackend, $localStorage) {
-
+        function init() {
+            $scope.gafData.go_id = "GO:";
+        }
         var currentDate = new Date();
         var day = currentDate.getDate();
         var month = currentDate.getMonth() + 1;
@@ -252,6 +254,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
         };
 
         $scope.gafData = { db: 'UniProtKB', };
+        init();
 
         $scope.user = {};
         if ($scope.jwtData) {
