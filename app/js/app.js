@@ -192,15 +192,28 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 }]);
 
 // GAF
-cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
-    function($scope, CacaoBackend, $localStorage) {
+cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location',
+    function($scope, CacaoBackend, $localStorage, $location) {
         function init() {
             $scope.gafData.go_id = "GO:";
+
+            $scope.urlParams = $location.search();
+            if ($scope.urlParams.taxon) {
+                $scope.gafData.taxon = $scope.urlParams.taxon;
+            }
+            else {
+                $scope.gafData.taxon = '';
+            }
+            if ($scope.urlParams.gene) {
+                $scope.gafData.db_object_id = $scope.urlParams.gene;
+                $scope.gafData.db_object_symbol = $scope.urlParams.gene;
+            }
+            else {
+                 $scope.gafData.db_object_id = '';
+                 $scope.gafData.db_object_symbol = '';
+            }
         }
-        var currentDate = new Date();
-        var day = currentDate.getDate();
-        var month = currentDate.getMonth() + 1;
-        var year = currentDate.getFullYear();
+
         $scope.eco_codes = [
             'IDA: Inferred from Direct Assay',
             'IMP: Inferred from Mutant Phenotype',
@@ -216,10 +229,10 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
             'NOT',
             'Contributes to',
             'Colocalizes with',
-            'Incorrect (CACAO)',
+            //'Incorrect (CACAO)',
         ]
 
-        $scope.with = [
+        $scope.with_from_db = [
              'UniProtKB',
              'PMID',
              'InterPro',
@@ -242,6 +255,12 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
                     function(success) {
                         $scope.bad_go_id = null;
                         $scope.goTermData = success;
+                        var aspect = {
+                            'biological_process': 'P',
+                            'molecular_function': 'F',
+                            'cellular_component': 'C',
+                        }
+                        $scope.gafData.aspect = aspect[$scope.goTermData.namespace];
                     },
                     function(fail) {
                         $scope.bad_go_id = go_id;
@@ -289,15 +308,48 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
             }
         };
 
-        $scope.gafData = { db: 'UniProtKB', };
+        $scope.gafData = {
+            db: 'UniProtKB',
+            db_object_type: 'protein',
+            assigned_by: 'CPT',
+        };
         init();
 
         $scope.user = {};
         if ($scope.jwtData) {
             $scope.user = $localStorage.jwtData.username;
         }
+
         $scope.saveData = function() {
-            $scope.gafData["owner"] = $scope.user;
-            //Restangular.all('gafs').post($scope.gafData);
+            // qualifier
+            var quals = {
+                'NOT': 'NOT',
+                'Contributes to': 'contributes_to',
+                'Colocalizes with': 'colocalizes_with',
+            };
+
+            function with_or_from() {
+                if ($scope.gafData.with_from_dab && $scopelgafData.with_from_id) {
+                    return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
+                }
+                else {
+                    return '';
+                }
+            };
+
+            CacaoBackend.all('gafs').post({
+                db: $scope.gafData.db,
+                db_object_id: $scope.gafData.db_object_id,
+                db_object_symbol: $scope.gafData.db_object_symbol,
+                qualifier: quals[$scope.gafData.qualifier],
+                go_id: $scope.gafData.go_id,
+                db_reference: 'PMID:' + $scope.gafData.db_reference,
+                evidence_code: $scope.gafData.evidence_code.slice(0,3),
+                with_or_from: with_or_from(),
+                aspect: $scope.gafData.aspect,
+                db_object_type: $scope.gafData.db_object_type,
+                taxon: $scope.gafData.taxon,
+                assigned_by: $scope.gafData.assigned_by,
+            });
         };
 }]);
