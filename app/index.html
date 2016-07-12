@@ -25,6 +25,11 @@
     <link href="bower_components/lightbox2/src/css/lightbox.css" rel="stylesheet">
     <script type="text/javascript" src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
     <script src="js/app.js"></script>
+    <style>
+        md-input-container .md-errors-spacer {
+            min-height: 0;
+        }
+    </style>
 </head>
 <body>
     <div ng-controller="NavCtrl" layout="column" style="height:500px;" ng-cloak="" class="sidenavdemoBasicUsage">
@@ -77,5 +82,7 @@
             <div ng-view class="view-frame"></div>
         </div>
     </div>
+
+    <script src="bower_components/lightbox2/src/js/lightbox.js">
 </body>
 </html>
