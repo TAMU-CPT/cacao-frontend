@@ -7,7 +7,7 @@
     <md-content class="md-padding">
     <div class="md-display-1">Create CACAO Annotation</div>
         <div layout="row">
-            <div class="col" flex="40">
+            <div class="col" flex="50">
                 <md-card>
                     <md-card-title>
                         <md-card-title-text>
@@ -16,40 +16,74 @@
                     </md-card-title>
                     <md-card-content>
                         <form name="GAFForm" ng-submit="saveData()" novalidate>
-                            <md-input-container class="md-block" flex="100">
-                                <label>DB</label>
-                                <input required name="db" ng-model="gafData.db" ng-disabled="true"/>
-                                <div ng-messages="GAFForm.db.$error">
-                                    <div ng-message="required">This is required.</div>
+                            <div layout="row" layout-sm="column">
+                                <md-input-container flex>
+                                    <label>Gene ID</label>
+                                    <input required name="gene_id" ng-model="gafData.gene_id"/>
+                                    <div ng-messages="GAFForm.gene_id.$error">
+                                        <div ng-message="required">This is required.</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex>
+                                    <md-select name="qualifier" ng-model="gafData.qualifier" placeholder="Qualifier" ng-required="true">
+                                        <md-option ng-repeat="qualifier in qualifiers">{{qualifier}}</md-option>
+                                    </md-select>
+                                    <div ng-messages="GAFForm.qualifier.$error" ng-show="GAFForm.qualifier.$invalid">
+                                        <div ng-message="required" ng-show="GAFForm.qualifier.$touched">This is required.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                                <!--<label>DB</label>-->
+                                <!--<input required name="db" ng-model="gafData.db" ng-disabled="true"/>-->
+                                <!--<div ng-messages="GAFForm.db.$error">-->
+                                    <!--<div ng-message="required">This is required.</div>-->
+                                <!--</div>-->
+                            <!--</md-input-container>-->
+                            <div layout="row" layout-sm="column">
+                                <md-input-container class="md-block" flex>
+                                    <label>GO ID</label>
+                                    <input required name="go_id" ng-minlength="4" ng-model="gafData.go_id" ng-blur="try_go_id()"/>
+                                    <div ng-messages="GAFForm.go_id.$error">
+                                        <div ng-message="minlength">This is required.</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="md-block" flex>
+                                    <label>PMID (DB Reference)</label>
+                                    <input required name="db_reference" type="number" ng-model="gafData.db_reference" ng-blur="try_db_ref()"/>
+                                    <div ng-messages="GAFForm.db_reference.$error">
+                                        <div ng-message="required">This is required.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-sm="column">
+                                <md-input-container flex>
+                                    <md-select name="evidence_code" ng-model="gafData.evidence_code" placeholder="Evidence Code" ng-required="true">
+                                        <md-option ng-repeat="eco_code in eco_codes">{{eco_code}}</md-option>
+                                    </md-select>
+                                    <div ng-messages="GAFForm.evidence_code.$error" ng-show="GAFForm.evidence_code.$invalid">
+                                        <div ng-message="required" ng-show="GAFForm.evidence_code.$touched">This is required.</div>
+                                    </div>
+                                    </md-input-container>
+                                <div layout="row" layout-sm="column" ng-hide="!GAFForm.evidence_code.$modelValue
+                                            || GAFForm.evidence_code.$modelValue == 'IDA: Inferred from Direct Assay'
+                                            || GAFForm.evidence_code.$modelValue == 'IMP: Inferred from Mutant Phenotype'" flex="40">
+                                    <md-input-container flex>
+                                        <md-select name="with" ng-model="gafData.with" placeholder="With" ng-required="true">
+                                            <md-option ng-repeat="with_reason in with">{{with_reason}}</md-option>
+                                        </md-select>
+                                        <div ng-messages="GAFForm.with.$error" ng-show="GAFForm.with.$invalid">
+                                            <div ng-message="required" ng-show="GAFForm.with.$touched">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>From</label>
+                                        <input required name="from" ng-model="gafData.from"/>
+                                        <div ng-messages="GAFForm.from.$error">
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
                                 </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>GO ID</label>
-                                <input required name="go_id" ng-minlength="4" ng-model="gafData.go_id" ng-blur="try_go_id()"/>
-                                <div ng-messages="GAFForm.go_id.$error">
-                                    <div ng-message="minlength">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>PMID (DB Reference)</label>
-                                <input required name="db_reference" type="number" ng-model="gafData.db_reference" ng-blur="try_db_ref()"/>
-                                <div ng-messages="GAFForm.db_reference.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <md-select name="evidence_code" ng-model="gafData.evidence_code" placeholder="Select Evidence Code" ng-required="true">
-                                    <md-option ng-repeat="eco_code in eco_codes">{{eco_code}}</md-option>
-                                </md-select>
-                                <div ng-messages="GAFForm.evidence_code.$error" ng-show="GAFForm.evidence_code.$invalid">
-                                    <div ng-message="required" ng-show="GAFForm.evidence_code.$touched">This is required.</div>
-                                </div>
-                            </md-input-container>
-                        <!--<md-input-container>-->
-                          <!--<md-select ng-model="someModel" placeholder="Select a state">-->
-                            <!--<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>-->
-                          <!--</md-select>-->
-                        <!--</md-input-container>-->
+                            </div>
                             <!-- Need to conditionally display/hide these. not sure of rules -->
                             <!--
                             <md-input-container class="md-block">
@@ -125,13 +159,15 @@
                                 </div>
                             </md-input-container>
                             -->
-                            <md-input-container class="md-block">
-                                <label>Notes</label>
-                                <textarea required name="notes" ng-model="gafData.notes" rows="5"></textarea>
-                                <div ng-messages="GAFForm.notes.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
+                            <div layout="row" layout-sm="column">
+                                <md-input-container class="md-block" flex>
+                                    <label>Notes</label>
+                                    <textarea required name="notes" ng-model="gafData.notes" rows="5"></textarea>
+                                    <div ng-messages="GAFForm.notes.$error">
+                                        <div ng-message="required">This is required.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
                             <md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>
                         </form>
                     </md-card-content>
@@ -188,4 +224,3 @@
         </div>
     </md-content>
 </div>
-<script src="bower_components/lightbox2/src/js/lightbox.js">

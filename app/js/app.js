@@ -212,6 +212,27 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage',
             'IGC: Inferred from Genomic Context',
         ];
 
+        $scope.qualifiers = [
+            'NOT',
+            'Contributes to',
+            'Colocalizes with',
+            'Incorrect (CACAO)',
+        ]
+
+        $scope.with = [
+             'UniProtKB',
+             'PMID',
+             'InterPro',
+             'EcoCyc',
+             'DictyBase',
+             'FB',
+             'MGI',
+             'SGD',
+             'TAIR',
+             'WB',
+             'Zfin',
+        ]
+
         // gets go_id on blur and updates goTermData
         $scope.try_go_id = function() {
             var go_id = $scope.gafData.go_id;
