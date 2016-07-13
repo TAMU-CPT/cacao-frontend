@@ -63,7 +63,7 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             return {
                'request': function (config) {
                    // ignore if request is to GO backend
-                   if (config.url.startsWith('http://localhost:9000')) {
+                   if (config.url.startsWith('https://cpt.tamu.edu/onto_api/')) {
                        return config;
                    }
 
@@ -83,6 +83,57 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
            };
         }]);
 }]);
+
+cacaoApp.directive('goidCustomdir', function(CacaoBackend) {
+    return {
+        require: 'ngModel',
+        link: function($scope, element, attribute, ctrl) {
+            function customValidator(ngModelValue) {
+                if (ngModelValue.length < 4) {
+                    ctrl.$setValidity('customMinlength', false);
+                }
+                else {
+                    ctrl.$setValidity('customMinlength', true);
+                }
+
+                if (ngModelValue) {
+                    var go_id = ngModelValue;
+                    if (go_id) {
+                        var go_id_url = 'https://cpt.tamu.edu/onto_api/' + go_id + '.json'
+                        CacaoBackend.oneUrl(' ', go_id_url).get().then(
+                            function(success) {
+                                $scope.bad_go_id = null;
+                                $scope.goTermData = success;
+                                var aspect = {
+                                    'biological_process': 'P',
+                                    'molecular_function': 'F',
+                                    'cellular_component': 'C',
+                                }
+                                $scope.gafData.aspect = aspect[$scope.goTermData.namespace];
+
+                                ctrl.$setValidity('customRequired', true);
+                            },
+
+                            function(fail) {
+                                $scope.bad_go_id = go_id;
+                                $scope.goTermData = null;
+
+                                ctrl.$setValidity('customRequired', false);
+                            }
+                        );
+                    }
+                    else {
+                        $scope.bad_go_id = null;
+                    }
+
+                }
+
+                return ngModelValue;
+            }
+            ctrl.$parsers.push(customValidator);
+        }
+    };
+});
 
 cacaoApp.factory('CacaoBackend', function(Restangular) {
     return Restangular.withConfig(function(RestangularConfigurer) {
@@ -245,33 +296,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
              'WB',
              'Zfin',
         ]
-
-        // gets go_id on blur and updates goTermData
-        $scope.try_go_id = function() {
-            var go_id = $scope.gafData.go_id;
-            if (go_id) {
-                var go_id_url = 'http://localhost:9000/' + go_id + '.json'
-                CacaoBackend.oneUrl(' ', go_id_url).get().then(
-                    function(success) {
-                        $scope.bad_go_id = null;
-                        $scope.goTermData = success;
-                        var aspect = {
-                            'biological_process': 'P',
-                            'molecular_function': 'F',
-                            'cellular_component': 'C',
-                        }
-                        $scope.gafData.aspect = aspect[$scope.goTermData.namespace];
-                    },
-                    function(fail) {
-                        $scope.bad_go_id = go_id;
-                        $scope.goTermData = null;
-                    }
-                );
-            }
-            else {
-                $scope.bad_go_id = null;
-            }
-        };
 
         // shortens abstract
         function trim_abstract(a) {

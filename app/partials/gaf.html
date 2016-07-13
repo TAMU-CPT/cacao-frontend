@@ -42,9 +42,10 @@
                             <div layout="row" layout-sm="column">
                                 <md-input-container class="md-block" flex>
                                     <label>GO ID</label>
-                                    <input required name="go_id" ng-minlength="4" ng-model="gafData.go_id" ng-blur="try_go_id()"/>
-                                    <div ng-messages="GAFForm.go_id.$error">
+                                    <input name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
+                                    <div ng-messages="GAFForm.go_id.$error" md-auto-hide="false" ng-show="GAFForm.go_id.$touched">
                                         <div ng-message="minlength">This is required.</div>
+                                        <div ng-message="customRequired">Invalid GO ID</div>
                                     </div>
                                 </md-input-container>
                                 <md-input-container class="md-block" flex>
@@ -196,7 +197,6 @@
                         <md-button data-ng-show="pubmedData.pmc" class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{pubmedData.pmc}}" TARGET="_blank">PMC</md-button>
                     </md-card-content>
                 </md-card>
-
                 <md-card data-ng-show="goTermData || bad_go_id">
                     <md-card-title>
                         <md-card-title-text>
