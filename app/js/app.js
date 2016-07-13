@@ -89,14 +89,17 @@ cacaoApp.directive('goidCustomdir', function(CacaoBackend) {
         require: 'ngModel',
         link: function($scope, element, attribute, ctrl) {
             function customValidator(ngModelValue) {
-                if (ngModelValue.length < 4) {
-                    ctrl.$setValidity('customMinlength', false);
-                }
-                else {
-                    ctrl.$setValidity('customMinlength', true);
-                }
+                //if (ngModelValue.length < 4) {
+                    //console.log('false');
+                    //ctrl.$setValidity('customMinlength', false);
+                    //return;
+                //}
+                //else {
+                    //ctrl.$setValidity('customMinlength', true);
+                    //return;
+                //}
 
-                if (ngModelValue) {
+                if (ngModelValue.length > 3) {
                     var go_id = ngModelValue;
                     if (go_id) {
                         var go_id_url = 'https://cpt.tamu.edu/onto_api/' + go_id + '.json'
@@ -126,6 +129,43 @@ cacaoApp.directive('goidCustomdir', function(CacaoBackend) {
                         $scope.bad_go_id = null;
                     }
 
+                }
+
+                return ngModelValue;
+            }
+            ctrl.$parsers.push(customValidator);
+        }
+    };
+});
+
+cacaoApp.directive('pmidCustomdir', function(CacaoBackend) {
+    return {
+        require: 'ngModel',
+        link: function($scope, element, attribute, ctrl) {
+            function customValidator(ngModelValue) {
+                var pmid = ngModelValue;
+                if (pmid && pmid > -1) {
+                    CacaoBackend.one('papers', pmid).get().then(
+                        function(success) {
+                            $scope.bad_pmid = null;
+                            $scope.pubmedData = success;
+
+                            ctrl.$setValidity('pmidValid', true);
+                            if ($scope.pubmedData.abstract) {
+                                $scope.pubmedData.abstract = trim_abstract($scope.pubmedData.abstract);
+                            }
+                        },
+                        function(fail) {
+                            $scope.bad_pmid = 'PMID:' + String(pmid);
+                            $scope.pubmedData = null;
+                            ctrl.$setValidity('pmidValid', false);
+                        }
+                    );
+                }
+                else {
+                    $scope.bad_pmid= null;
+                    ctrl.$setValidity('pmidValid', false);
+                    $scope.pubmedData = null;
                 }
 
                 return ngModelValue;
@@ -213,10 +253,8 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$locat
 
 cacaoApp.controller('LogOutCtrl', ['$scope', '$http', '$localStorage', '$location',
     function($scope, $http, $localStorage, $location) {
-        console.log("Logging Out");
         $localStorage.jwtToken = null;
         $localStorage.jwtData = {};
-        console.log($localStorage.jwtData);
         $location.path('/');
     }
 ]);
@@ -310,27 +348,27 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         };
 
         // gets pmid on blur and updates pubmedData
-        $scope.try_db_ref = function() {
-            var pmid = $scope.gafData.db_reference;
-            if (pmid) {
-                CacaoBackend.one('papers', pmid).get().then(
-                    function(success) {
-                        $scope.bad_pmid = null;
-                        $scope.pubmedData = success;
-                        if ($scope.pubmedData.abstract) {
-                            $scope.pubmedData.abstract = trim_abstract($scope.pubmedData.abstract);
-                        }
-                    },
-                    function(fail) {
-                        $scope.bad_pmid = pmid;
-                        $scope.pubmedData = null;
-                    }
-                );
-            }
-            else {
-                $scope.bad_pmid= null;
-            }
-        };
+        //$scope.try_db_ref = function() {
+            //var pmid = $scope.gafData.db_reference;
+            //if (pmid > -1) {
+                //CacaoBackend.one('papers', pmid).get().then(
+                    //function(success) {
+                        //$scope.bad_pmid = null;
+                        //$scope.pubmedData = success;
+                        //if ($scope.pubmedData.abstract) {
+                            //$scope.pubmedData.abstract = trim_abstract($scope.pubmedData.abstract);
+                        //}
+                    //},
+                    //function(fail) {
+                        //$scope.bad_pmid = 'PMID:' + String(pmid);
+                        //$scope.pubmedData = null;
+                    //}
+                //);
+            //}
+            //else {
+                //$scope.bad_pmid= null;
+            //}
+        //};
 
         $scope.gafData = {
             db: 'UniProtKB',

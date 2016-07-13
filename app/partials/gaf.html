@@ -33,6 +33,7 @@
                                     </div>
                                 </md-input-container>
                             </div>
+                            <!--</md-input-container>-->
                                 <!--<label>DB</label>-->
                                 <!--<input required name="db" ng-model="gafData.db" ng-disabled="true"/>-->
                                 <!--<div ng-messages="GAFForm.db.$error">-->
@@ -42,17 +43,19 @@
                             <div layout="row" layout-sm="column">
                                 <md-input-container class="md-block" flex>
                                     <label>GO ID</label>
-                                    <input name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
+                                    <input required name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
                                     <div ng-messages="GAFForm.go_id.$error" md-auto-hide="false" ng-show="GAFForm.go_id.$touched">
+                                        <div ng-message="required">This is required.</div>
                                         <div ng-message="minlength">This is required.</div>
                                         <div ng-message="customRequired">Invalid GO ID</div>
                                     </div>
                                 </md-input-container>
                                 <md-input-container class="md-block" flex>
                                     <label>PMID (DB Reference)</label>
-                                    <input required name="db_reference" type="number" ng-model="gafData.db_reference" ng-blur="try_db_ref()"/>
-                                    <div ng-messages="GAFForm.db_reference.$error">
+                                    <input required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>
+                                    <div ng-messages="GAFForm.db_reference.$error" md-auto-hide="false" ng-show="GAFForm.db_reference.$touched">
                                         <div ng-message="required">This is required.</div>
+                                        <div ng-message="pmidValid">Invalid PMID</div>
                                     </div>
                                 </md-input-container>
                             </div>
@@ -85,81 +88,6 @@
                                     </md-input-container>
                                 </div>
                             </div>
-                            <!-- Need to conditionally display/hide these. not sure of rules -->
-                            <!--
-                            <md-input-container class="md-block">
-                                <label>With (or) From</label>
-                                <input required name="with_or_from" ng-model="gafData.with_or_from" />
-                                <div ng-messages="with_or_from.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>Aspect</label>
-                                <input required name="aspect" ng-model="gafData.aspect" />
-                                <div ng-messages="aspect.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            -->
-                            <!--
-                            <md-input-container class="md-block">
-                                <label>DB Object Name</label>
-                                <input required name="db_object_name" ng-model="gafData.db_object_name" />
-                                <div ng-messages="db_object_name.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>DB Object Synonym</label>
-                                <input required name="db_object_synonym" ng-model="gafData.db_object_synonym" />
-                                <div ng-messages="db_object_synonym.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>DB Object Type</label>
-                                <input required name="db_object_type" ng-model="gafData.db_object_type" />
-                                <div ng-messages="db_object_type.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>Taxon</label>
-                                <input required name="taxon" ng-model="gafData.taxon" />
-                                <div ng-messages="taxon.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>Date</label>
-                                <input required name="date" ng-model="gafData.date" />
-                                <div ng-messages="date.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>Assigned By</label>
-                                <input required name="assigned_by" ng-model="gafData.assigned_by" />
-                                <div ng-messages="assigned_by.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>Annotation Extension</label>
-                                <input required name="annotation_extension" ng-model="gafData.annotation_extension" />
-                                <div ng-messages="annotation_extension.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>Gene Product ID</label>
-                                <input required name="gene_product_id" ng-model="gafData.gene_product_id" />
-                                <div ng-messages="gene_product_id.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                            -->
                             <div layout="row" layout-sm="column">
                                 <md-input-container class="md-block" flex>
                                     <label>Notes</label>
@@ -175,13 +103,15 @@
                 </md-card>
             </div>
             <div class="col" flex="60">
+                <div>{{bad_pmid}}</div>
+                <div>{{pubmedData}}</div>
                 <md-card ng-model="pubmedData" data-ng-show="pubmedData || bad_pmid">
                     <md-card-title>
                         <md-card-title-text>
                             <span data-ng-show="bad_pmid" class="md-headline">{{bad_pmid}} not found</span>
                             <span data-ng-show="pubmedData.pmid" class="md-headline">PMID: {{pubmedData.pmid}}</span>
                             <span class="md-subhead">
-                                <span data=ng-show="pubmedData.author"><b>{{pubmedData.author}}.</b></span>
+                                <span data-ng-show="pubmedData.author"><b>{{pubmedData.author}}.</b></span>
                                 <span data-ng-show="pubmedData.pub_year">{{pubmedData.pub_year}}.</span>
                                 <span data-ng-show="pubmedData.title">{{pubmedData.title}}.</span>
                                 <span data-ng-show="pubmedData.journal">{{pubmedData.journal}}</span>
