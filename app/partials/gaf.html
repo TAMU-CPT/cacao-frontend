@@ -25,12 +25,9 @@
                                     </div>
                                 </md-input-container>
                                 <md-input-container flex>
-                                    <md-select name="qualifier" ng-model="gafData.qualifier" placeholder="Qualifier" ng-required="true">
+                                    <md-select name="qualifier" ng-model="gafData.qualifier" placeholder="Qualifier">
                                         <md-option ng-repeat="qualifier in qualifiers">{{qualifier}}</md-option>
                                     </md-select>
-                                    <div ng-messages="GAFForm.qualifier.$error" ng-show="GAFForm.qualifier.$invalid">
-                                        <div ng-message="required" ng-show="GAFForm.qualifier.$touched">This is required.</div>
-                                    </div>
                                 </md-input-container>
                             </div>
                             <!--</md-input-container>-->
@@ -103,8 +100,6 @@
                 </md-card>
             </div>
             <div class="col" flex="60">
-                <div>{{bad_pmid}}</div>
-                <div>{{pubmedData}}</div>
                 <md-card ng-model="pubmedData" data-ng-show="pubmedData || bad_pmid">
                     <md-card-title>
                         <md-card-title-text>
