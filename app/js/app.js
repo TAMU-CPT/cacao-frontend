@@ -9,6 +9,8 @@ var cacaoApp = angular.module('cacaoApp', [
     'ngMaterial',
     'ui.gravatar',
     'ngMessages',
+    //'data-table',
+    'md.data.table',
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
 
@@ -281,8 +283,8 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 }]);
 
 // GAF
-cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location',
-    function($scope, CacaoBackend, $localStorage, $location) {
+cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter',
+    function($scope, CacaoBackend, $localStorage, $location, $filter) {
         function init() {
             $scope.gafData.go_id = "GO:";
 
@@ -302,6 +304,12 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                  $scope.gafData.db_object_symbol = '';
             }
         }
+
+        $scope.gaf_update = function(g) {
+            CacaoBackend.all('users').getList().then(function(data) {
+                $scope.idk = $filter('filter')(data, {username: g});
+            });
+        };
 
         $scope.eco_codes = [
             'IDA: Inferred from Direct Assay',
@@ -346,29 +354,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             }
             return a
         };
-
-        // gets pmid on blur and updates pubmedData
-        //$scope.try_db_ref = function() {
-            //var pmid = $scope.gafData.db_reference;
-            //if (pmid > -1) {
-                //CacaoBackend.one('papers', pmid).get().then(
-                    //function(success) {
-                        //$scope.bad_pmid = null;
-                        //$scope.pubmedData = success;
-                        //if ($scope.pubmedData.abstract) {
-                            //$scope.pubmedData.abstract = trim_abstract($scope.pubmedData.abstract);
-                        //}
-                    //},
-                    //function(fail) {
-                        //$scope.bad_pmid = 'PMID:' + String(pmid);
-                        //$scope.pubmedData = null;
-                    //}
-                //);
-            //}
-            //else {
-                //$scope.bad_pmid= null;
-            //}
-        //};
 
         $scope.gafData = {
             db: 'UniProtKB',

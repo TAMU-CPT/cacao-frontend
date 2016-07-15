@@ -1,13 +1,8 @@
 <div class="col-sm-6">
-    <style>
-        table > tbody > tr:nth-child(odd) > td {
-            background-color: #eee;
-        }
-    </style>
     <md-content class="md-padding">
     <div class="md-display-1">Create CACAO Annotation</div>
         <div layout="row">
-            <div class="col" flex="50">
+            <div class="col" flex="45">
                 <md-card>
                     <md-card-title>
                         <md-card-title-text>
@@ -19,7 +14,7 @@
                             <div layout="row" layout-sm="column">
                                 <md-input-container flex>
                                     <label>Gene ID</label>
-                                    <input required name="db_object_id" ng-model="gafData.db_object_id"/>
+                                    <input required name="db_object_id" ng-model="gafData.db_object_id" ng-model-options="{ updateOn: blur }" ng-blur="gaf_update(gafData.db_object_id)"/>
                                     <div ng-messages="GAFForm.db_object_id.$error">
                                         <div ng-message="required">This is required.</div>
                                     </div>
@@ -99,7 +94,42 @@
                     </md-card-content>
                 </md-card>
             </div>
-            <div class="col" flex="60">
+            <div class="col" flex="55">
+                <md-card>
+                    <md-card-title>
+                        <md-card-title-text>
+                            GO Annotations
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+
+                        <md-toolbar class="md-table-toolbar md-default">
+                          <div class="md-toolbar-tools">
+                              <span>GO Annotations</span>
+                          </div>
+                        </md-toolbar>
+
+                        <md-table-container>
+                          <table md-table ng-model="idk">
+                            <thead md-head>
+                              <tr md-row>
+                                <th md-column><span>Dessert (100g serving)</th>
+                                <th md-column><span>Calories</span></th>
+                                <th md-column>Fat (g)</th>
+                              </tr>
+                            </thead>
+                            <tbody md-body>
+                              <tr md-row md-select-id="name" md-auto-select ng-repeat="dessert in idk">
+                                <td md-cell>{{dessert.id}}</td>
+                                <td md-cell>{{dessert.email}}</td>
+                                <td md-cell>{{dessert.username}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </md-table-container>
+                        <!--<md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{desserts.count}}" md-on-paginate="getDesserts" md-page-select></md-table-pagination>-->
+                    </md-card-content>
+                </md-card>
                 <md-card ng-model="pubmedData" data-ng-show="pubmedData || bad_pmid">
                     <md-card-title>
                         <md-card-title-text>
