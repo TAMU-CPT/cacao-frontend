@@ -115,7 +115,6 @@ cacaoApp.directive('goidCustomdir', function(CacaoBackend) {
                             function(fail) {
                                 $scope.bad_go_id = go_id;
                                 $scope.goTermData = null;
-
                                 ctrl.$setValidity('customRequired', false);
                             }
                         );
@@ -294,8 +293,8 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 }]);
 
 // GAF
-cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter',
-    function($scope, CacaoBackend, $localStorage, $location, $filter) {
+cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter', 'Restangular',
+    function($scope, CacaoBackend, $localStorage, $location, $filter, Restangular) {
         function init() {
             $scope.gafData.go_id = "GO:";
 
@@ -318,14 +317,26 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
 
         // previous annotations with same gene id
         $scope.gaf_update = function(g) {
-            console.log(g);
-            if(!g) {
-                 $scope.idk = null;
+            $scope.options = {
+                limitSelect: true,
+                pageSelect: true
+            };
+
+            $scope.query = {
+                limit: 2,
+                page: 1
+            };
+
+            if (g) {
+                CacaoBackend.all('gafs').getList().then(function(data) {
+                    $scope.prev_annotations = $filter('filter')(data, {db_object_id: g}, true);
+                    if ($scope.prev_annotations.length < 1){
+                        $scope.prev_annotations = null;
+                    }
+                });
             }
             else {
-                CacaoBackend.all('users').getList().then(function(data) {
-                    $scope.idk = $filter('filter')(data, {username: g});
-                });
+                 $scope.prev_annotations = null;
             }
         };
 

@@ -96,32 +96,34 @@
                 </md-card>
             </div>
             <div class="col" flex="55">
-                <md-card ng-model="idk" ng-show="idk">
+                <md-card ng-show="prev_annotations">
                     <md-card-title>
                         <md-card-title-text>
-                            <span class="md-headline">GO Annotations</span>
+                            <span class="md-headline">{{gafData.db_object_id}} Annotations</span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content>
                         <md-table-container>
-                          <table md-table>
-                            <thead md-head>
-                              <tr md-row>
-                                <th md-column><span>Dessert (100g serving)</th>
-                                <th md-column><span>Calories</span></th>
-                                <th md-column>Fat (g)</th>
-                              </tr>
-                            </thead>
-                            <tbody md-body>
-                              <tr md-row md-select-id="name" md-auto-select ng-repeat="dessert in idk">
-                                <td md-cell>{{dessert.id}}</td>
-                                <td md-cell>{{dessert.email}}</td>
-                                <td md-cell>{{dessert.username}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                            <table md-table>
+                                <thead md-head>
+                                    <tr md-row>
+                                        <th md-column><span>GO ID</th>
+                                        <th md-column><span>Name</span></th>
+                                        <th md-column><span>Reference</span></th>
+                                        <th md-column><span>Evidence Code</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody md-body>
+                                    <tr md-row md-select-id="name" md-auto-select ng-repeat="d in prev_annotations | limitTo: query.limit : (query.page -1) * query.limit">
+                                        <td md-cell>{{d.go_id}}</td>
+                                        <td md-cell>{{d.db_object_name}}</td>
+                                        <td md-cell>{{d.db_reference}}</td>
+                                        <td md-cell>{{d.evidence_code}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </md-table-container>
-                        <!--<md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{desserts.count}}" md-on-paginate="getDesserts" md-page-select></md-table-pagination>-->
+                        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.length}}" md-page-select="options.pageSelect" md-on-paginate="logPagination"></md-table-pagination>
                     </md-card-content>
                 </md-card>
                 <md-card ng-model="pubmedData" ng-show="pubmedData || bad_pmid">
