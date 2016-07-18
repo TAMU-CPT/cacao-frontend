@@ -330,13 +330,18 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 var gaf_url = 'gafs/?db_object_id=' + g;
                 CacaoBackend.all(gaf_url).getList().then(function(data) {
                     $scope.prev_annotations = data.plain();
+                    $scope.current_db_object_id = g;
+                    $scope.bad_db_object_id = null;
                     if ($scope.prev_annotations.length < 1){
-                        $scope.prev_annotations = null;
+                        $scope.current_db_object_id = null;
+                        $scope.bad_db_object_id = g;
+                        console.log($scope.bad_db_object_id);
                     }
                 });
             }
             else {
-                 $scope.prev_annotations = null;
+                 $scope.current_db_object_id = null;
+                 $scope.bad_db_object_id = null;
             }
         };
 

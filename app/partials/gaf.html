@@ -96,13 +96,14 @@
                 </md-card>
             </div>
             <div class="col" flex="55">
-                <md-card ng-show="prev_annotations">
+                <md-card ng-show="current_db_object_id || bad_db_object_id">
                     <md-card-title>
                         <md-card-title-text>
-                            <span class="md-headline">{{gafData.db_object_id}} Annotations</span>
+                            <span ng-show="current_db_object_id" class="md-headline">{{current_db_object_id}} Annotations</span>
+                            <span ng-show="bad_db_object_id" class="md-headline">{{bad_db_object_id}} has had no Annotations</span>
                         </md-card-title-text>
                     </md-card-title>
-                    <md-card-content>
+                    <md-card-content ng-show="current_db_object_id">
                         <md-table-container>
                             <table md-table>
                                 <thead md-head>
@@ -126,7 +127,7 @@
                         <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.length}}" md-page-select="options.pageSelect" md-on-paginate="logPagination"></md-table-pagination>
                     </md-card-content>
                 </md-card>
-                <md-card ng-model="pubmedData" ng-show="pubmedData || bad_pmid">
+                <md-card ng-show="pubmedData || bad_pmid">
                     <md-card-title>
                         <md-card-title-text>
                             <span ng-show="bad_pmid" class="md-headline">{{bad_pmid}} not found</span>
