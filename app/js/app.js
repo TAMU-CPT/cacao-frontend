@@ -327,8 +327,9 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             };
 
             if (g) {
-                CacaoBackend.all('gafs/').getList().then(function(data) {
-                    $scope.prev_annotations = $filter('filter')(data, {db_object_id: g}, true);
+                var gaf_url = 'gafs/?db_object_id=' + g;
+                CacaoBackend.all(gaf_url).getList().then(function(data) {
+                    $scope.prev_annotations = data.plain();
                     if ($scope.prev_annotations.length < 1){
                         $scope.prev_annotations = null;
                     }
