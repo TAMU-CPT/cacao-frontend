@@ -38,6 +38,7 @@
                                     <input required name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
                                     <div ng-messages="GAFForm.go_id.$error" md-auto-hide="false" ng-show="GAFForm.go_id.$touched">
                                         <div ng-message="required">This is required.</div>
+                                        <div ng-message="startwithGo">Must start with 'GO:'</div>
                                         <div ng-message="minlength">This is required.</div>
                                         <div ng-message="customRequired">Invalid GO ID</div>
                                     </div>
@@ -95,22 +96,15 @@
                 </md-card>
             </div>
             <div class="col" flex="55">
-                <md-card>
+                <md-card ng-model="idk" ng-show="idk">
                     <md-card-title>
                         <md-card-title-text>
-                            GO Annotations
+                            <span class="md-headline">GO Annotations</span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content>
-
-                        <md-toolbar class="md-table-toolbar md-default">
-                          <div class="md-toolbar-tools">
-                              <span>GO Annotations</span>
-                          </div>
-                        </md-toolbar>
-
                         <md-table-container>
-                          <table md-table ng-model="idk">
+                          <table md-table>
                             <thead md-head>
                               <tr md-row>
                                 <th md-column><span>Dessert (100g serving)</th>
@@ -130,42 +124,42 @@
                         <!--<md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{desserts.count}}" md-on-paginate="getDesserts" md-page-select></md-table-pagination>-->
                     </md-card-content>
                 </md-card>
-                <md-card ng-model="pubmedData" data-ng-show="pubmedData || bad_pmid">
+                <md-card ng-model="pubmedData" ng-show="pubmedData || bad_pmid">
                     <md-card-title>
                         <md-card-title-text>
-                            <span data-ng-show="bad_pmid" class="md-headline">{{bad_pmid}} not found</span>
-                            <span data-ng-show="pubmedData.pmid" class="md-headline">PMID: {{pubmedData.pmid}}</span>
+                            <span ng-show="bad_pmid" class="md-headline">{{bad_pmid}} not found</span>
+                            <span ng-show="pubmedData.pmid" class="md-headline">PMID: {{pubmedData.pmid}}</span>
                             <span class="md-subhead">
-                                <span data-ng-show="pubmedData.author"><b>{{pubmedData.author}}.</b></span>
-                                <span data-ng-show="pubmedData.pub_year">{{pubmedData.pub_year}}.</span>
-                                <span data-ng-show="pubmedData.title">{{pubmedData.title}}.</span>
-                                <span data-ng-show="pubmedData.journal">{{pubmedData.journal}}</span>
-                                <span data-ng-show="pubmedData.volume && !pubmedData.pages"><b>{{pubmedData.volume}}.</b></span>
-                                <span data-ng-show="pubmedData.pages"><b>{{pubmedData.volume}}:</b></span><!--
-                                --><span data-ng-show="pubmedData.pages">{{pubmedData.pages}}.</span>
+                                <span ng-show="pubmedData.author"><b>{{pubmedData.author}}.</b></span>
+                                <span ng-show="pubmedData.pub_year">{{pubmedData.pub_year}}.</span>
+                                <span ng-show="pubmedData.title">{{pubmedData.title}}.</span>
+                                <span ng-show="pubmedData.journal">{{pubmedData.journal}}</span>
+                                <span ng-show="pubmedData.volume && !pubmedData.pages"><b>{{pubmedData.volume}}.</b></span>
+                                <span ng-show="pubmedData.pages"><b>{{pubmedData.volume}}:</b></span><!--
+                                --><span ng-show="pubmedData.pages">{{pubmedData.pages}}.</span>
                             </span>
                         </md-card-title-text>
                     </md-card-title>
-                    <md-card-content data-ng-show="pubmedData">
-                        <p data-ng-show="pubmedData.abstract">{{pubmedData.abstract}}</p>
+                    <md-card-content ng-show="pubmedData">
+                        <p ng-show="pubmedData.abstract">{{pubmedData.abstract}}</p>
                         <md-button class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pubmedData.pmid}}" TARGET="_blank">PubMed</md-button>
-                        <md-button data-ng-show="pubmedData.pmc" class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{pubmedData.pmc}}" TARGET="_blank">PMC</md-button>
+                        <md-button ng-show="pubmedData.pmc" class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{pubmedData.pmc}}" TARGET="_blank">PMC</md-button>
                     </md-card-content>
                 </md-card>
-                <md-card data-ng-show="goTermData || bad_go_id">
+                <md-card ng-show="goTermData || bad_go_id">
                     <md-card-title>
                         <md-card-title-text>
-                            <span data-ng-show="bad_go_id" class="md-headline">{{bad_go_id}} not found</span>
-                            <span data-ng-show="goTermData.id" class="md-headline">{{goTermData.id}}</span>
-                            <span data-ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
-                            <span data-ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
-                            <span data-ng-show="goTermData.db_xref.PMID" class="md-subhead" style="color:#666">
+                            <span ng-show="bad_go_id" class="md-headline">{{bad_go_id}} not found</span>
+                            <span ng-show="goTermData.id" class="md-headline">{{goTermData.id}}</span>
+                            <span ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
+                            <span ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
+                            <span ng-show="goTermData.db_xref.PMID" class="md-subhead" style="color:#666">
                                 <span  ng-repeat="pmid in goTermData.db_xref.PMID">
                                     <md-button class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pmid}}" TARGET="_blank">PMID:{{pmid}}</md-button>
                                 </span>
                             </span>
                         </md-card-title-text>
-                        <md-card-title-media data-ng-show="goTermData.def" style="overflow:hidden">
+                        <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
                             <div class="md-media-lg">
                                 <a href="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" data-lightbox="image-1" data-title="My caption">
                                     <img src="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" />

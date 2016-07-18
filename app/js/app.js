@@ -9,7 +9,6 @@ var cacaoApp = angular.module('cacaoApp', [
     'ngMaterial',
     'ui.gravatar',
     'ngMessages',
-    //'data-table',
     'md.data.table',
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
@@ -91,32 +90,26 @@ cacaoApp.directive('goidCustomdir', function(CacaoBackend) {
         require: 'ngModel',
         link: function($scope, element, attribute, ctrl) {
             function customValidator(ngModelValue) {
-                //if (ngModelValue.length < 4) {
-                    //console.log('false');
-                    //ctrl.$setValidity('customMinlength', false);
-                    //return;
-                //}
-                //else {
-                    //ctrl.$setValidity('customMinlength', true);
-                    //return;
-                //}
-
-                if (ngModelValue.length > 3) {
-                    var go_id = ngModelValue;
-                    if (go_id) {
+                var go_id = ngModelValue;
+                if (go_id.startsWith('GO:')) {
+                    ctrl.$setValidity('startwithGo', true);
+                    if (go_id.length == 3) {
+                        $scope.bad_go_id = null;
+                        $scope.goTermData = null;
+                    }
+                    else {
                         var go_id_url = 'https://cpt.tamu.edu/onto_api/' + go_id + '.json'
                         CacaoBackend.oneUrl(' ', go_id_url).get().then(
                             function(success) {
                                 $scope.bad_go_id = null;
                                 $scope.goTermData = success;
+                                ctrl.$setValidity('customRequired', true);
                                 var aspect = {
                                     'biological_process': 'P',
                                     'molecular_function': 'F',
                                     'cellular_component': 'C',
                                 }
                                 $scope.gafData.aspect = aspect[$scope.goTermData.namespace];
-
-                                ctrl.$setValidity('customRequired', true);
                             },
 
                             function(fail) {
@@ -127,10 +120,16 @@ cacaoApp.directive('goidCustomdir', function(CacaoBackend) {
                             }
                         );
                     }
-                    else {
-                        $scope.bad_go_id = null;
-                    }
-
+                }
+                else if (go_id){
+                    $scope.bad_go_id = null;
+                    $scope.goTermData = null;
+                    ctrl.$setValidity('startwithGo', false);
+                }
+                else {
+                    $scope.bad_go_id = null;
+                    $scope.goTermData = null;
+                    ctrl.$setValidity('customRequired', false);
                 }
 
                 return ngModelValue;
@@ -151,6 +150,18 @@ cacaoApp.directive('pmidCustomdir', function(CacaoBackend) {
                         function(success) {
                             $scope.bad_pmid = null;
                             $scope.pubmedData = success;
+
+                            // shortens abstract
+                            function trim_abstract(a) {
+                                a = a.replace(/^(.{250}[^\s]*).*/, "$1");
+                                if (a.endsWith('.')) {
+                                    a = a.concat('..');
+                                }
+                                else {
+                                    a = a.concat('...');
+                                }
+                                return a
+                            };
 
                             ctrl.$setValidity('pmidValid', true);
                             if ($scope.pubmedData.abstract) {
@@ -305,10 +316,17 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             }
         }
 
+        // previous annotations with same gene id
         $scope.gaf_update = function(g) {
-            CacaoBackend.all('users').getList().then(function(data) {
-                $scope.idk = $filter('filter')(data, {username: g});
-            });
+            console.log(g);
+            if(!g) {
+                 $scope.idk = null;
+            }
+            else {
+                CacaoBackend.all('users').getList().then(function(data) {
+                    $scope.idk = $filter('filter')(data, {username: g});
+                });
+            }
         };
 
         $scope.eco_codes = [
@@ -342,18 +360,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
              'WB',
              'Zfin',
         ]
-
-        // shortens abstract
-        function trim_abstract(a) {
-            a = a.replace(/^(.{250}[^\s]*).*/, "$1");
-            if (a.endsWith('.')) {
-                a = a.concat('..');
-            }
-            else {
-                a = a.concat('...');
-            }
-            return a
-        };
 
         $scope.gafData = {
             db: 'UniProtKB',
