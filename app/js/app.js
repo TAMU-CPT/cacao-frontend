@@ -54,6 +54,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 templateUrl: 'partials/pmid.html',
                 controller: 'PMIDDetailCtrl'
             }).
+            when('/goid/:GOID', {
+                templateUrl: 'partials/goid.html',
+                controller: 'GOIDDetailCtrl'
+            }).
             when('/test', {
                 templateUrl: 'partials/test.html',
                 controller: 'GAFCtrl'
@@ -237,7 +241,6 @@ cacaoApp.controller('UserListCtrl', ['$scope', 'CacaoBackend',
         CacaoBackend.all('users/').getList().then(function(data) {
             $scope.users = data;
         });
-
 }]);
 
 cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
@@ -249,9 +252,27 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
 
 cacaoApp.controller('PMIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
     function($scope, $routeParams, CacaoBackend) {
-        CacaoBackend.one('papers/', String($routeParams.PMID) + '/').get().then(function(data) {
-            $scope.pubmedData = data;
-        });
+        CacaoBackend.one('papers/', String($routeParams.PMID) + '/').get().then(
+            function(success) {
+                $scope.pubmedData = success;
+            },
+            function(fail) {
+                $scope.bad_pmid = $routeParams.PMID;
+            }
+        );
+}]);
+
+cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
+    function($scope, $routeParams, CacaoBackend) {
+        var go_id_url = 'https://cpt.tamu.edu/onto_api/' + $routeParams.GOID + '.json'
+        CacaoBackend.oneUrl(' ', go_id_url).get().then(
+            function(success) {
+                $scope.goTermData = success;
+            },
+            function(fail) {
+                $scope.bad_go_id = $routeParams.GOID;
+            }
+        );
 }]);
 
 // nav
@@ -308,8 +329,8 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 }]);
 
 // GAF
-cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter', 'Restangular',
-    function($scope, CacaoBackend, $localStorage, $location, $filter, Restangular) {
+cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter', 'Restangular', '$timeout',
+    function($scope, CacaoBackend, $localStorage, $location, $filter, Restangular, $timeout) {
         function init() {
             $scope.gafData.go_id = "GO:";
 
@@ -333,19 +354,28 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         // previous annotations with same gene id
         $scope.gaf_update = function(g) {
             $scope.options = {
+                //onPaginate: onPaginate,
                 limitSelect: true,
                 pageSelect: true
             };
 
             $scope.query = {
-                limit: 2,
+                limit: 1,
                 page: 1
+            };
+
+            $scope.updateData = function() {
+                //var gaf_url = 'gafs/?db_object_id=' + g + '&page=' + String(page);
+                var gaf_url = 'gafs/?db_object_id=HNE_0001&page=2';
+                CacaoBackend.all(gaf_url).getList().then(function(data) {
+                    $scope.prev_annotations = data;
+                });
             };
 
             if (g) {
                 var gaf_url = 'gafs/?db_object_id=' + g;
                 CacaoBackend.all(gaf_url).getList().then(function(data) {
-                    $scope.prev_annotations = data.plain();
+                    $scope.prev_annotations = data;
                     $scope.current_db_object_id = g;
                     $scope.bad_db_object_id = null;
                     if ($scope.prev_annotations.length < 1){

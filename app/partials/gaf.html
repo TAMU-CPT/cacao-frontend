@@ -1,3 +1,4 @@
+<!--<script src="bower_components/lightbox2/src/js/lightbox.js"></script>-->
 <div class="col-sm-6">
     <md-content class="md-padding">
     <div class="md-display-1">Create CACAO Annotation</div>
@@ -115,7 +116,7 @@
                                     </tr>
                                 </thead>
                                 <tbody md-body>
-                                    <tr md-row md-select-id="name" md-auto-select ng-repeat="d in prev_annotations | limitTo: query.limit : (query.page -1) * query.limit">
+                                    <tr md-row md-select-id="name" ng-repeat="d in prev_annotations | limitTo: query.limit : (query.page -1) * query.limit">
                                         <td md-cell>{{d.go_id}}</td>
                                         <td md-cell>{{d.db_object_name}}</td>
                                         <td md-cell>{{d.db_reference}}</td>
@@ -124,7 +125,8 @@
                                 </tbody>
                             </table>
                         </md-table-container>
-                        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.length}}" md-page-select="options.pageSelect" md-on-paginate="logPagination"></md-table-pagination>
+                        <!--<md-button class="md-raised md-accent" ng-click="updatedata()">See More</md-button>-->
+                        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.meta.count}}" md-page-select="options.pageSelect" md-on-paginate="updateData"></md-table-pagination>
                     </md-card-content>
                 </md-card>
                 <md-card ng-show="pubmedData || bad_pmid">
@@ -145,7 +147,7 @@
                     </md-card-title>
                     <md-card-content ng-show="pubmedData">
                         <p ng-show="pubmedData.abstract">{{pubmedData.short_abstract}}</p>
-                        <md-button class="md-raised md-accent" href="#/pmid/{{pubmedData.pmid}}">See More</md-button>
+                        <md-button class="md-raised md-accent" href="#/pmid/{{pubmedData.pmid}}" TARGET="_blank">See More</md-button>
                     </md-card-content>
                 </md-card>
                 <md-card ng-show="goTermData || bad_go_id">
@@ -155,20 +157,18 @@
                             <span ng-show="goTermData.id" class="md-headline">{{goTermData.id}}</span>
                             <span ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
                             <span ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
-                            <span ng-show="goTermData.db_xref.PMID" class="md-subhead" style="color:#666">
-                                <span  ng-repeat="pmid in goTermData.db_xref.PMID">
-                                    <md-button class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pmid}}" TARGET="_blank">PMID:{{pmid}}</md-button>
-                                </span>
-                            </span>
                         </md-card-title-text>
                         <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
                             <div class="md-media-lg">
-                                <a href="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" data-lightbox="image-1" data-title="My caption">
+                                <a href="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" data-lightbox="image-1" data-title="{{goTermData.id}}">
                                     <img src="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" />
                                 </a>
                             </div>
                         </md-card-title-media>
                     </md-card-title>
+                    <md-card-content ng-show="goTermData">
+                        <md-button class="md-raised md-accent" href="#/goid/{{goTermData.id}}" TARGET="_blank">See More</md-button>
+                    </md-card-content>
                 </md-card>
             </div>
 
