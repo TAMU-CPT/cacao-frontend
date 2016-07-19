@@ -9,6 +9,7 @@ var cacaoApp = angular.module('cacaoApp', [
     'ngMaterial',
     'ui.gravatar',
     'ngMessages',
+    'ngAnimate',
     'md.data.table',
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
@@ -47,6 +48,14 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             }).
             when('/gaf', {
                 templateUrl: 'partials/gaf.html',
+                controller: 'GAFCtrl'
+            }).
+            when('/pmid/:PMID', {
+                templateUrl: 'partials/pmid.html',
+                controller: 'PMIDDetailCtrl'
+            }).
+            when('/test', {
+                templateUrl: 'partials/test.html',
                 controller: 'GAFCtrl'
             }).
             when('/logout', {
@@ -164,7 +173,7 @@ cacaoApp.directive('pmidCustomdir', function(CacaoBackend) {
 
                             ctrl.$setValidity('pmidValid', true);
                             if ($scope.pubmedData.abstract) {
-                                $scope.pubmedData.abstract = trim_abstract($scope.pubmedData.abstract);
+                                $scope.pubmedData.short_abstract = trim_abstract($scope.pubmedData.abstract);
                             }
                         },
                         function(fail) {
@@ -235,6 +244,13 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
     function($scope, $routeParams, CacaoBackend) {
         CacaoBackend.one('users/', $routeParams.userID).get().then(function(data) {
             $scope.user = data;
+        });
+}]);
+
+cacaoApp.controller('PMIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
+    function($scope, $routeParams, CacaoBackend) {
+        CacaoBackend.one('papers/', String($routeParams.PMID) + '/').get().then(function(data) {
+            $scope.pubmedData = data;
         });
 }]);
 

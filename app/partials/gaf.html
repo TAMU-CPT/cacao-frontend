@@ -144,9 +144,8 @@
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content ng-show="pubmedData">
-                        <p ng-show="pubmedData.abstract">{{pubmedData.abstract}}</p>
-                        <md-button class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pubmedData.pmid}}" TARGET="_blank">PubMed</md-button>
-                        <md-button ng-show="pubmedData.pmc" class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{pubmedData.pmc}}" TARGET="_blank">PMC</md-button>
+                        <p ng-show="pubmedData.abstract">{{pubmedData.short_abstract}}</p>
+                        <md-button class="md-raised md-accent" href="#/pmid/{{pubmedData.pmid}}">See More</md-button>
                     </md-card-content>
                 </md-card>
                 <md-card ng-show="goTermData || bad_go_id">

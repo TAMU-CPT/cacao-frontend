@@ -1,0 +1,21 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">PMID: {{pubmedData.pmid}}</span>
+            <span class="md-subhead">
+                <span ng-show="pubmedData.author"><b>{{pubmedData.author}}.</b></span>
+                <span ng-show="pubmedData.pub_year">{{pubmedData.pub_year}}.</span>
+                <span ng-show="pubmedData.title">{{pubmedData.title}}.</span>
+                <span ng-show="pubmedData.journal">{{pubmedData.journal}}</span>
+                <span ng-show="pubmedData.volume && !pubmedData.pages"><b>{{pubmedData.volume}}.</b></span>
+                <span ng-show="pubmedData.pages"><b>{{pubmedData.volume}}:</b></span><!--
+                --><span ng-show="pubmedData.pages">{{pubmedData.pages}}.</span>
+            </span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <p ng-show="pubmedData.abstract">{{pubmedData.abstract}}</p>
+        <md-button class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pubmedData.pmid}}" TARGET="_blank">PubMed</md-button>
+        <md-button ng-show="pubmedData.pmc" class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{pubmedData.pmc}}" TARGET="_blank">PMC</md-button>
+    </md-card-content>
+</md-card>
