@@ -365,8 +365,8 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 page: 1
             };
 
-            $scope.updateData = function() {
-                CacaoBackend.all('gafs').getList({db_object_id: 'HNE_0001', page: 2}).then(function(data) {
+            $scope.updateData = function(page) {
+                CacaoBackend.all('gafs').getList({db_object_id: $scope.current_db_object_id, page: page}).then(function(data) {
                     $scope.prev_annotations = data;
                 });
             };
