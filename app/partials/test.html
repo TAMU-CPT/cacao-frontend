@@ -1,0 +1,78 @@
+<style>
+    .ng-hide-add, .ng-hide-remove {
+        /* ensure visibility during the transition */
+        display: block !important; /* yes, important */
+    }
+    .cssSlideUp {
+        transition: .5s linear all;
+        max-height: 200px;
+        overflow: hidden;
+    }
+    .cssSlideUp.ng-hide {
+        max-height:0;
+    }
+</style>
+<div>This one works</div>
+<md-button ng-click="toggle_show()" ng-hide="show" aria-label="expand" class="md-icon-button">
+    <ng-md-icon icon="expand_less" style="fill: black" ></ng-md-icon>
+</md-button>
+<md-button ng-click="toggle_show()" ng-show="show" aria-label="expand" class="md-icon-button">
+    <ng-md-icon icon="expand_more" style="fill: black" ></ng-md-icon>
+</md-button>
+<md-card flex="30">
+    <md-toolbar >
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>This one doesn't</span>
+            </h2>
+            <span flex></span>
+            <md-button ng-click="toggle_show()" ng-hide="show" aria-label="expand" class="md-icon-button">
+                <ng-md-icon icon="expand_less" style="fill: white" ></ng-md-icon>
+            </md-button>
+            <md-button ng-click="toggle_show()" ng-show="show" aria-label="expand" class="md-icon-button">
+                <ng-md-icon icon="expand_more" style="fill: white" ></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <div class="cssSlideUp" ng-hide="show">
+        <md-card-title>
+            <md-card-title-text>
+                GO Annotations
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div>Eleni Mijalis</div>
+            <div>Marie Mijalis</div>
+        </md-card-content>
+    </div>
+</md-card>
+
+<md-card flex="30">
+    <md-toolbar ng-click="nchecked = !nchecked">
+    </md-toolbar>
+    <div class="cssSlideUp" ng-hide="nchecked">
+        <md-card-title>
+            <md-card-title-text>
+                GO Annotations
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div>Eleni Mijalis</div>
+            <div>Marie Mijalis</div>
+        </md-card-content>
+    </div>
+</md-card>
+
+<!--<md-card flex="30">-->
+    <!--<div class="md-toolbar-tools">-->
+        <!--<md-card-title>-->
+            <!--<md-card-title-text>-->
+                <!--GO Annotations-->
+            <!--</md-card-title-text>-->
+        <!--</md-card-title>-->
+    <!--</div>-->
+    <!--<md-card-content>-->
+        <!--<div>Eleni Mijalis</div>-->
+        <!--<div>Marie Mijalis</div>-->
+    <!--</md-card-content>-->
+<!--</md-card>-->

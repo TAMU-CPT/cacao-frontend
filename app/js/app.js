@@ -332,6 +332,12 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 // GAF
 cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter', 'Restangular', '$timeout',
     function($scope, CacaoBackend, $localStorage, $location, $filter, Restangular, $timeout) {
+
+        $scope.show= false;
+        $scope.toggle_show = function(){
+            $scope.show = !$scope.show;
+        };
+
         function init() {
             $scope.gafData.go_id = "GO:";
 
