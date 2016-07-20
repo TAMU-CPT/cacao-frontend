@@ -253,7 +253,7 @@ cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
 
 cacaoApp.controller('PMIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
     function($scope, $routeParams, CacaoBackend) {
-        CacaoBackend.one('papers/', String($routeParams.PMID) + '/').get().then(
+        CacaoBackend.one('papers').one($routeParams.PMID).get().then(
             function(success) {
                 $scope.pubmedData = success;
             },
