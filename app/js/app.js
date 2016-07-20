@@ -352,6 +352,18 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             }
         }
 
+        $scope.query = {
+            limit: 1,
+            page: 1
+        };
+
+        $scope.updateData = function(page) {
+            CacaoBackend.all('gafs').getList({db_object_id: $scope.current_db_object_id, page: page}).then(function(data) {
+                $scope.prev_annotations = data;
+                console.log($scope.prev_annotations);
+            });
+        };
+
         // previous annotations with same gene id
         $scope.gaf_update = function(g) {
             $scope.options = {
@@ -360,20 +372,10 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 pageSelect: true
             };
 
-            $scope.query = {
-                limit: 1,
-                page: 1
-            };
-
-            $scope.updateData = function(page) {
-                CacaoBackend.all('gafs').getList({db_object_id: $scope.current_db_object_id, page: page}).then(function(data) {
-                    $scope.prev_annotations = data;
-                });
-            };
-
             if (g) {
                 CacaoBackend.all('gafs').getList({db_object_id: g}).then(function(data) {
                     $scope.prev_annotations = data;
+                    console.log($scope.prev_annotations);
                     $scope.current_db_object_id = g;
                     $scope.bad_db_object_id = null;
                     if ($scope.prev_annotations.length < 1){
