@@ -116,7 +116,7 @@
                                     </tr>
                                 </thead>
                                 <tbody md-body>
-                                    <tr md-row md-select-id="name" ng-repeat="d in prev_annotations | limitTo: query.limit : (query.page -1) * query.limit">
+                                    <tr md-row md-select-id="name" ng-repeat="d in prev_annotations">
                                         <td md-cell>{{d.go_id}}</td>
                                         <td md-cell>{{d.db_object_name}}</td>
                                         <td md-cell>{{d.db_reference}}</td>

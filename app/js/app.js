@@ -353,7 +353,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         }
 
         $scope.query = {
-            limit: 1,
             page: 1
         };
 
