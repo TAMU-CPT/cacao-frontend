@@ -28,6 +28,7 @@
     "angular-gravatar": "^0.4.2",
     "angular-material-data-table": "^0.10.9",
     "angular-messages": "1.5.5",
-    "lightbox2": "^2.8.2"
+    "lightbox2": "^2.8.2",
+    "angular-animate": "1.5.5"
   }
 }
