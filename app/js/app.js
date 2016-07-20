@@ -158,7 +158,7 @@ cacaoApp.directive('pmidCustomdir', function(CacaoBackend) {
             function customValidator(ngModelValue) {
                 var pmid = ngModelValue;
                 if (pmid && pmid > -1) {
-                    CacaoBackend.one('papers', String(pmid) + '/').get().then(
+                    CacaoBackend.one('papers', pmid).get().then(
                         function(success) {
                             $scope.bad_pmid = null;
                             $scope.pubmedData = success;
@@ -203,6 +203,7 @@ cacaoApp.directive('pmidCustomdir', function(CacaoBackend) {
 cacaoApp.factory('CacaoBackend', function(Restangular) {
     return Restangular.withConfig(function(RestangularConfigurer) {
         RestangularConfigurer.setBaseUrl('http://localhost:8000/');
+        RestangularConfigurer.setRequestSuffix('/');
         RestangularConfigurer.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
             var extractedData;
             // .. to look for getList operations
@@ -224,28 +225,28 @@ cacaoApp.factory('CacaoBackend', function(Restangular) {
 
 cacaoApp.controller('TeamListCtrl', ['$scope', 'CacaoBackend',
     function($scope, CacaoBackend) {
-        CacaoBackend.all('groups/').getList().then(function(data) {
+        CacaoBackend.all('groups').getList().then(function(data) {
             $scope.teams = data;
         });
 }]);
 
 cacaoApp.controller('TeamDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
     function($scope, $routeParams, CacaoBackend) {
-        CacaoBackend.one('groups/', $routeParams.teamID).get().then(function(data) {
+        CacaoBackend.one('groups', $routeParams.teamID).get().then(function(data) {
             $scope.team = data;
         });
 }]);
 
 cacaoApp.controller('UserListCtrl', ['$scope', 'CacaoBackend',
     function($scope, CacaoBackend) {
-        CacaoBackend.all('users/').getList().then(function(data) {
+        CacaoBackend.all('users').getList().then(function(data) {
             $scope.users = data;
         });
 }]);
 
 cacaoApp.controller('UserDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
     function($scope, $routeParams, CacaoBackend) {
-        CacaoBackend.one('users/', $routeParams.userID).get().then(function(data) {
+        CacaoBackend.one('users', $routeParams.userID).get().then(function(data) {
             $scope.user = data;
         });
 }]);
@@ -283,7 +284,7 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$locat
 
         $scope.go = function(route){
             if (route == '/teams/') {
-                CacaoBackend.one('users/', $scope.userData.user_id).get().then(function(data) {
+                CacaoBackend.one('users', $scope.userData.user_id).get().then(function(data) {
                     $location.path(route + data.group[0].id);
                 });
             }
@@ -452,7 +453,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 }
             };
 
-            CacaoBackend.all('gafs/').post({
+            CacaoBackend.all('gafs').post({
                 db: $scope.gafData.db,
                 db_object_id: $scope.gafData.db_object_id,
                 db_object_symbol: $scope.gafData.db_object_symbol,
