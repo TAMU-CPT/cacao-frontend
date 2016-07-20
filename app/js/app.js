@@ -364,7 +364,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 page: 1
             };
 
-            $scope.updateData = function() {
+            $scope.updatedata = function() {
                 //var gaf_url = 'gafs/?db_object_id=' + g + '&page=' + String(page);
                 var gaf_url = 'gafs/?db_object_id=HNE_0001&page=2';
                 CacaoBackend.all(gaf_url).getList().then(function(data) {

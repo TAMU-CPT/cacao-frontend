@@ -1,0 +1,22 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span ng-show="bad_go_id" class="md-headline">{{bad_go_id}} not found</span>
+            <span ng-show="goTermData.id" class="md-headline">{{goTermData.id}}</span>
+            <span ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
+            <span ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
+            <span ng-show="goTermData.db_xref.PMID" class="md-subhead" style="color:#666">
+                <span  ng-repeat="pmid in goTermData.db_xref.PMID">
+                    <md-button class="md-raised md-accent" href="#/pmid/{{pmid}}" TARGET="_blank">PMID:{{pmid}}</md-button>
+                </span>
+            </span>
+        </md-card-title-text>
+        <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
+            <div class="md-media-lg">
+                <a href="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" data-lightbox="image-1" data-title="My caption">
+                    <img src="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" />
+                </a>
+            </div>
+        </md-card-title-media>
+    </md-card-title>
+</md-card>
