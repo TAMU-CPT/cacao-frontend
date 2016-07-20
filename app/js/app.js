@@ -333,11 +333,6 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter', 'Restangular', '$timeout',
     function($scope, CacaoBackend, $localStorage, $location, $filter, Restangular, $timeout) {
 
-        $scope.show= false;
-        $scope.toggle_show = function(){
-            $scope.show = !$scope.show;
-        };
-
         function init() {
             $scope.gafData.go_id = "GO:";
 
@@ -382,13 +377,11 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             if (g) {
                 CacaoBackend.all('gafs').getList({db_object_id: g}).then(function(data) {
                     $scope.prev_annotations = data;
-                    console.log($scope.prev_annotations);
                     $scope.current_db_object_id = g;
                     $scope.bad_db_object_id = null;
                     if ($scope.prev_annotations.length < 1){
                         $scope.current_db_object_id = null;
                         $scope.bad_db_object_id = g;
-                        console.log($scope.bad_db_object_id);
                     }
                 });
             }
