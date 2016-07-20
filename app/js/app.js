@@ -274,6 +274,29 @@ cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
                 $scope.bad_go_id = $routeParams.GOID;
             }
         );
+
+        $scope.query = {
+            limit: 5,
+            page: 1
+        };
+
+        $scope.updateData = function(page) {
+            CacaoBackend.all('gafs').getList({go_id: $routeParams.GOID, page: page}).then(function(data) {
+                $scope.prev_annotations = data;
+            });
+        };
+
+        // previous annotations with same go id
+        $scope.options = {
+            limitSelect: true,
+            pageSelect: true
+        };
+
+        $scope.query.page = 1;
+
+        CacaoBackend.all('gafs').getList({go_id: $routeParams.GOID}).then(function(data) {
+            $scope.prev_annotations = data;
+        });
 }]);
 
 // nav
@@ -393,14 +416,14 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         }
 
         $scope.query = {
-            limit: 1,
+            limit: 5,
             page: 1
         };
 
         $scope.updateData = function(page) {
+            console.log(page);
             CacaoBackend.all('gafs').getList({db_object_id: $scope.prevAnnotData, page: page}).then(function(data) {
                 $scope.prev_annotations = data;
-                console.log($scope.prev_annotations);
             });
         };
 
@@ -416,6 +439,9 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             if (g) {
                 CacaoBackend.all('gafs').getList({db_object_id: g}).then(function(data) {
                     $scope.prev_annotations = data;
+                    if (!$scope.prev_annotations.length) {
+                        console.log('none');
+                    }
                     $scope.prevAnnotData = g;
                     $scope.bad_db_object_id = null;
                     if ($scope.prev_annotations.length < 1){
