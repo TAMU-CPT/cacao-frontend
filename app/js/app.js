@@ -353,6 +353,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         }
 
         $scope.query = {
+            limit: 1,
             page: 1
         };
 
@@ -366,10 +367,11 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         // previous annotations with same gene id
         $scope.gaf_update = function(g) {
             $scope.options = {
-                //onPaginate: onPaginate,
                 limitSelect: true,
                 pageSelect: true
             };
+
+            $scope.query.page = 1;
 
             if (g) {
                 CacaoBackend.all('gafs').getList({db_object_id: g}).then(function(data) {
