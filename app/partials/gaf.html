@@ -174,19 +174,19 @@
                         </md-card-title>
                     </div>
                 </md-card>
-                <md-card ng-show="current_db_object_id || bad_db_object_id" class="pop_up_card">
+                <md-card ng-show="prevAnnotData || bad_db_object_id" class="pop_up_card">
                     <md-toolbar>
                         <div class="md-toolbar-tools">
-                            <span ng-show="current_db_object_id" class="md-headline">{{current_db_object_id}} Annotations</span>
+                            <span ng-show="prevAnnotData" class="md-headline">{{prevAnnotData}} Annotations</span>
                             <span ng-show="bad_db_object_id" class="md-headline">{{bad_db_object_id}} has had no Annotations</span>
                             <span flex></span>
-                            <md-button ng-show="current_db_object_id" ng-click="show_gafs = !show_gafs" aria-label="expand" class="md-icon-button">
+                            <md-button ng-show="prevAnnotData" ng-click="show_gafs = !show_gafs" aria-label="expand" class="md-icon-button">
                                 <ng-md-icon icon="{{show_gafs ? 'expand_more' : 'expand_less'}}" "fill: white" ></ng-md-icon>
                             </md-button>
                         </div>
                     </md-toolbar>
-                    <div class="cssSlideUp" ng-show="current_db_object_id" ng-hide="show_gafs">
-                        <md-card-content ng-show="current_db_object_id">
+                    <div class="cssSlideUp" ng-show="prevAnnotData" ng-hide="show_gafs">
+                        <md-card-content ng-show="prevAnnotData">
                             <md-table-container>
                                 <table md-table>
                                     <thead md-head>

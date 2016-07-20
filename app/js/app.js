@@ -333,6 +333,45 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter', 'Restangular', '$timeout',
     function($scope, CacaoBackend, $localStorage, $location, $filter, Restangular, $timeout) {
 
+        // collapses other cards if new gene id entered
+        $scope.$watch('prevAnnotData', function(newValue, oldValue) {
+            if (newValue != oldValue && !$scope.bad_db_object_id) {
+                $scope.show_gafs = false;
+                if ($scope.show_go != null) {
+                    $scope.show_go =true;
+                }
+                if ($scope.show_paper != null) {
+                    $scope.show_paper = true;
+                }
+            }
+        });
+
+        // collapses other cards if new go term entered
+        $scope.$watch('goTermData', function(newValue, oldValue) {
+            if (newValue != oldValue && !$scope.bad_go_id) {
+                $scope.show_go = false;
+                if ($scope.show_gafs != null) {
+                    $scope.show_gafs = true;
+                }
+                if ($scope.show_paper != null) {
+                    $scope.show_paper = true;
+                }
+            }
+        });
+
+        // collapses other cards if new paper entered
+        $scope.$watch('pubmedData', function(newValue, oldValue) {
+            if (newValue != oldValue && !$scope.bad_pmid) {
+                $scope.show_paper = false;
+                if ($scope.show_gafs != null) {
+                    $scope.show_gafs = true;
+                }
+                if ($scope.show_go != null) {
+                    $scope.show_go = true;
+                }
+            }
+        });
+
         function init() {
             $scope.gafData.go_id = "GO:";
 
@@ -359,7 +398,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         };
 
         $scope.updateData = function(page) {
-            CacaoBackend.all('gafs').getList({db_object_id: $scope.current_db_object_id, page: page}).then(function(data) {
+            CacaoBackend.all('gafs').getList({db_object_id: $scope.prevAnnotData, page: page}).then(function(data) {
                 $scope.prev_annotations = data;
                 console.log($scope.prev_annotations);
             });
@@ -377,16 +416,16 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             if (g) {
                 CacaoBackend.all('gafs').getList({db_object_id: g}).then(function(data) {
                     $scope.prev_annotations = data;
-                    $scope.current_db_object_id = g;
+                    $scope.prevAnnotData = g;
                     $scope.bad_db_object_id = null;
                     if ($scope.prev_annotations.length < 1){
-                        $scope.current_db_object_id = null;
+                        $scope.prevAnnotData = null;
                         $scope.bad_db_object_id = g;
                     }
                 });
             }
             else {
-                 $scope.current_db_object_id = null;
+                 $scope.prevAnnotData = null;
                  $scope.bad_db_object_id = null;
             }
         };
