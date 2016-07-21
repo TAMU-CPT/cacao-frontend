@@ -29,13 +29,14 @@
         </md-card-title-text>
             <span ng-show="for_review.length" class="md-headline">You have {{for_review.length}} annotations left to review!</span>
             <span ng-show="!for_review.length" class="md-headline">There are no Annotations to review at this time.</span>
+            <md-button ng-disabled="!num_left" class="md-raised md-accent" ng-click="next_gaf()">Next</md-button>
         </md-card-title-text>
     </md-card-title>
     <md-card-content ng-show="for_review.length">
     </md-card-content>
 </md-card>
 
-<md-card>
+<md-card flex="50">
     <md-card-title>
         <md-card-title-text>
             <span class="md-headline">GAF Form</span>
@@ -46,49 +47,43 @@
             <div layout="row" layout-sm="column">
                 <md-input-container flex>
                     <label>Gene ID</label>
-                    <input disabled name="db_object_id" ng-model="gafData.db_object_id"/>
+                    <input disabled name="db_object_id" ng-model="current_gaf.db_object_id"/>
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex ng-show="current_gaf.qualifier">
                     <label>Qualifier</label>
-                    <md-select disabled name="qualifier" ng-model="gafData.qualifier">
-                        <!--<md-option ng-repeat="qualifier in qualifiers">{{qualifier}}</md-option>-->
-                    </md-select>
+                    <input disabled name="qualifier" ng-model="current_gaf.qualifier"/>
+                </md-input-container>
+                <md-input-container flex ng-show="!current_gaf.qualifier">
+                    <label>Qualifier</label>
+                    <input disabled name="qualifier" value="None"/>
                 </md-input-container>
             </div>
             <div layout="row" layout-sm="column">
                 <md-input-container class="md-block" flex>
                     <label>GO ID</label>
-                    <input disabled ng-model="gafData.go_id"/>
+                    <input disabled ng-model="current_gaf.go_id"/>
                 </md-input-container>
                 <md-input-container class="md-block" flex>
                     <label>PMID (DB Reference)</label>
-                    <input disabled name="db_reference" ng-model="gafData.db_reference"/>
+                    <input disabled name="db_reference" ng-model="current_gaf.db_reference"/>
                 </md-input-container>
             </div>
             <div layout="row" layout-sm="column">
                 <md-input-container flex>
-                    <label>Evidence Code</label>
-                    <md-select disabled name="evidence_code" ng-model="gafData.evidence_code">
-                        <!--<md-option ng-repeat="eco_code in eco_codes">{{eco_code}}</md-option>-->
-                    </md-select>
+                    <label>{{current_gaf.evidence_code}} Evidence Code</label>
+                    <input disabled name="evidence_code" ng-model="current_gaf.evidence_code"/>
                 </md-input-container>
-                <div layout="row" layout-sm="column" flex="40">
-                    <md-input-container flex>
-                        <label>With/From</label>
-                        <md-select disabled name="with_from_db" ng-model="gafData.with_from_db">
-                            <!--<md-option ng-repeat="w_f_db in with_from_db">{{w_f_db}}</md-option>-->
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container flex>
-                        <label>ID</label>
-                        <input disabled name="with_from_id" ng-model="gafData.with_from_id"/>
-                    </md-input-container>
-                </div>
+                <md-input-container ng-if="
+                        current_gaf.evidence_code != 'IDA'
+                        && current_gaf.evidence_code != 'IMP'" flex>
+                    <label>With/From</label>
+                    <input disabled name="with_from_db" ng-model="current_gaf.with_or_from"/>
+                </md-input-container>
             </div>
             <div layout="row" layout-sm="column">
                 <md-input-container class="md-block" flex>
                     <label>Notes</label>
-                    <textarea disabled name="notes" ng-model="gafData.notes" rows="5"></textarea>
+                    <textarea disabled name="notes" ng-model="current_gaf.notes" rows="5"></textarea>
                 </md-input-container>
             </div>
             <!--<md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>-->
