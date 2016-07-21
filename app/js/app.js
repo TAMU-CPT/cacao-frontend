@@ -537,42 +537,17 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
 
 cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend',
     function($scope, CacaoBackend) {
-        $scope.updateData = function(page) {
-            CacaoBackend.all('gafs').getList({review_state: 1, page: page}).then(function(data) {
-                $scope.for_review = data;
 
-            });
-        };
+        //$scope.next_gaf = function() {
+            //CacaoBackend.all('gafs').getList({uuid: $scope.current_gaf.uuid,}).then(function(data) {
 
-        $scope.next_gaf = function() {
-            if ($scope.gaf_index == 4) {
-                $scope.page += 1;
-                $scope.gaf_index = 0;
-                CacaoBackend.all('gafs').getList({review_state: 1, page: $scope.page}).then(function(data) {
-                    $scope.for_review = data;
-                    $scope.current_gaf = $scope.for_review[0];
-                    $scope.num_left -= 1;
-                    //console.log($scope.current_gaf.date);
-                    console.log($scope.current_gaf);
-                });
-            }
-            else {
-                $scope.gaf_index += 1;
-                $scope.num_left -= 1;
-                $scope.current_gaf = $scope.for_review[$scope.gaf_index];
-                //console.log($scope.current_gaf.date);
-                console.log($scope.current_gaf);
-            }
-        };
-
+                //$scope.current_gaf = data[0];
+            //});
+        //};
 
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
-            $scope.page = 1;
-            $scope.gaf_index = 0;
-            $scope.num_left = data.meta.count - 1;
-            $scope.for_review = data;
-            $scope.current_gaf = $scope.for_review[0];
-            //console.log($scope.current_gaf.date);
-            console.log($scope.current_gaf);
+            $scope.current_gaf = data[0];
+            $scope.current_gaf.review_state=2;
+            $scope.current_gaf.put();
         });
 }]);
