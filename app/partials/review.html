@@ -8,49 +8,90 @@
       font-size: 16px;
     }
 </style>
+<!--<md-progress-linear md-mode="determinate" value="90"></md-progress-linear>-->
+<!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
+  <!--<div class="md-toolbar-tools">-->
+      <!--<span>GAFs for Review</span>-->
+  <!--</div>-->
+<!--</md-toolbar>-->
+<!--FLAGGED = (-->
+    <!--(0, 'Protein'),-->
+    <!--(1, 'Publication'),-->
+    <!--(2, 'Qualifier'),-->
+    <!--(3, 'Go term'),-->
+    <!--(4, 'Evidence'),-->
+    <!--(5, 'Originality'),-->
+<!--)-->
+
+
 <md-card>
     <md-card-title>
-        <md-card-title-text ng-show="!for_review.length">
-            <span class="md-headline">There are no GAFs to review at this time.</span>
+        </md-card-title-text>
+            <span ng-show="for_review.length" class="md-headline">You have {{for_review.length}} annotations left to review!</span>
+            <span ng-show="!for_review.length" class="md-headline">There are no Annotations to review at this time.</span>
         </md-card-title-text>
     </md-card-title>
     <md-card-content ng-show="for_review.length">
-        <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
-          <div class="md-toolbar-tools">
-              <span>GAFs for Review</span>
-          </div>
-        </md-toolbar>
-        <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
-          <div class="md-toolbar-tools">
-            <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
-            <span flex></span>
-            <md-button class="md-primary md-raised" ng-click="review_gafs()" aria-label="review">Review Now</md-button>
-          </div>
-        </md-toolbar>
-        <md-table-container>
-            <table md-table md-row-select="options.rowSelection" ng-model="selected">
-                <thead md-head>
-                    <tr md-row>
-                        <th md-column><span>Data</span></th>
-                        <th md-column><span>Student</span></th>
-                        <th md-column><span>Gene ID</span></th>
-                        <th md-column><span>GO ID</span></th>
-                        <th md-column><span>Evidence Code</span></th>
-                        <th md-column><span>Taxon</span></th>
-                    </tr>
-                </thead>
-                <tbody md-body>
-                    <tr md-row md-select="gaf" md-auto-select="options.autoSelect" ng-repeat="gaf in for_review">
-                        <td md-cell>{{gaf.date}}</td>
-                        <td md-cell>{{gaf.owner}}</td>
-                        <td md-cell>{{gaf.db_object_id}}</td>
-                        <td md-cell>{{gaf.go_id}}</td>
-                        <td md-cell>{{gaf.evidence_code}}</td>
-                        <td md-cell>{{gaf.taxon}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </md-table-container>
-        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{for_review.meta.count}}" md-page-select="options.pageSelect" md-on-paginate="updateData"></md-table-pagination>
+    </md-card-content>
+</md-card>
+
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">GAF Form</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <form name="idk">
+            <div layout="row" layout-sm="column">
+                <md-input-container flex>
+                    <label>Gene ID</label>
+                    <input disabled name="db_object_id" ng-model="gafData.db_object_id"/>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Qualifier</label>
+                    <md-select disabled name="qualifier" ng-model="gafData.qualifier">
+                        <!--<md-option ng-repeat="qualifier in qualifiers">{{qualifier}}</md-option>-->
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-sm="column">
+                <md-input-container class="md-block" flex>
+                    <label>GO ID</label>
+                    <input disabled ng-model="gafData.go_id"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <label>PMID (DB Reference)</label>
+                    <input disabled name="db_reference" ng-model="gafData.db_reference"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-sm="column">
+                <md-input-container flex>
+                    <label>Evidence Code</label>
+                    <md-select disabled name="evidence_code" ng-model="gafData.evidence_code">
+                        <!--<md-option ng-repeat="eco_code in eco_codes">{{eco_code}}</md-option>-->
+                    </md-select>
+                </md-input-container>
+                <div layout="row" layout-sm="column" flex="40">
+                    <md-input-container flex>
+                        <label>With/From</label>
+                        <md-select disabled name="with_from_db" ng-model="gafData.with_from_db">
+                            <!--<md-option ng-repeat="w_f_db in with_from_db">{{w_f_db}}</md-option>-->
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label>ID</label>
+                        <input disabled name="with_from_id" ng-model="gafData.with_from_id"/>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" layout-sm="column">
+                <md-input-container class="md-block" flex>
+                    <label>Notes</label>
+                    <textarea disabled name="notes" ng-model="gafData.notes" rows="5"></textarea>
+                </md-input-container>
+            </div>
+            <!--<md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>-->
+        </form>
     </md-card-content>
 </md-card>

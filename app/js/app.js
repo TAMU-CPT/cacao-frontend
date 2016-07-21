@@ -537,32 +537,11 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
 
 cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend',
     function($scope, CacaoBackend) {
-
-        $scope.selected = [];
-
-        $scope.query = {
-            limit: 5,
-            page: 1
-        };
-
-        $scope.options = {
-            rowSelection: true,
-            autoSelect: true,
-            limitSelect: true,
-            pageSelect: true
-        };
-
-        $scope.query.page = 1;
-
         $scope.updateData = function(page) {
             CacaoBackend.all('gafs').getList({review_state: 1, page: page}).then(function(data) {
                 $scope.for_review = data;
 
             });
-        };
-
-        $scope.review_gafs = function() {
-            console.log($scope.selected);
         };
 
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
