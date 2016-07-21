@@ -1,0 +1,56 @@
+<style>
+    md-toolbar.md-table-toolbar.alternate {
+      color: #1e88e5;
+      background-color: #e3f2fd;
+    }
+
+    md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
+      font-size: 16px;
+    }
+</style>
+<md-card>
+    <md-card-title>
+        <md-card-title-text ng-show="!for_review.length">
+            <span class="md-headline">There are no GAFs to review at this time.</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content ng-show="for_review.length">
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+          <div class="md-toolbar-tools">
+              <span>GAFs for Review</span>
+          </div>
+        </md-toolbar>
+        <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+          <div class="md-toolbar-tools">
+            <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+            <span flex></span>
+            <md-button class="md-primary md-raised" ng-click="review_gafs()" aria-label="review">Review Now</md-button>
+          </div>
+        </md-toolbar>
+        <md-table-container>
+            <table md-table md-row-select="options.rowSelection" ng-model="selected">
+                <thead md-head>
+                    <tr md-row>
+                        <th md-column><span>Data</span></th>
+                        <th md-column><span>Student</span></th>
+                        <th md-column><span>Gene ID</span></th>
+                        <th md-column><span>GO ID</span></th>
+                        <th md-column><span>Evidence Code</span></th>
+                        <th md-column><span>Taxon</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="gaf" md-auto-select="options.autoSelect" ng-repeat="gaf in for_review">
+                        <td md-cell>{{gaf.date}}</td>
+                        <td md-cell>{{gaf.owner}}</td>
+                        <td md-cell>{{gaf.db_object_id}}</td>
+                        <td md-cell>{{gaf.go_id}}</td>
+                        <td md-cell>{{gaf.evidence_code}}</td>
+                        <td md-cell>{{gaf.taxon}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{for_review.meta.count}}" md-page-select="options.pageSelect" md-on-paginate="updateData"></md-table-pagination>
+    </md-card-content>
+</md-card>
