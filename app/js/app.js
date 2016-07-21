@@ -509,7 +509,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             };
 
             function with_or_from() {
-                if ($scope.gafData.with_from_dab && $scopelgafData.with_from_id) {
+                if ($scope.gafData.with_from_db && $scope.gafData.with_from_id) {
                     return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
                 }
                 else {
@@ -544,7 +544,35 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend',
             });
         };
 
+        $scope.next_gaf = function() {
+            if ($scope.gaf_index == 4) {
+                $scope.page += 1;
+                $scope.gaf_index = 0;
+                CacaoBackend.all('gafs').getList({review_state: 1, page: $scope.page}).then(function(data) {
+                    $scope.for_review = data;
+                    $scope.current_gaf = $scope.for_review[0];
+                    $scope.num_left -= 1;
+                    //console.log($scope.current_gaf.date);
+                    console.log($scope.current_gaf);
+                });
+            }
+            else {
+                $scope.gaf_index += 1;
+                $scope.num_left -= 1;
+                $scope.current_gaf = $scope.for_review[$scope.gaf_index];
+                //console.log($scope.current_gaf.date);
+                console.log($scope.current_gaf);
+            }
+        };
+
+
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
+            $scope.page = 1;
+            $scope.gaf_index = 0;
+            $scope.num_left = data.meta.count - 1;
             $scope.for_review = data;
+            $scope.current_gaf = $scope.for_review[0];
+            //console.log($scope.current_gaf.date);
+            console.log($scope.current_gaf);
         });
 }]);
