@@ -98,43 +98,6 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
         }]);
 }]);
 
-cacaoApp.directive('mdButton', ['$timeout',
-    function($timeout){
-        return {
-            link: function(scope, element, attr) {
-                scope.mouseActive = false;
-                element.on('mousedown', function() {
-                    scope.mouseActive = true;
-                    $timeout(function(){
-                      scope.mouseActive = false;
-                    }, 100);
-                  })
-                  .on('focus', function() {
-                    if(scope.mouseActive === false) { element.addClass('md-focused'); }
-                  })
-                  .on('blur', function() {
-                    element.removeClass('md-focused');
-                    scope.mouseActive = false;
-                });
-                //scope.$watch(function() {return element.attr('class'); }, function(newValue) {
-                    //if(newValue.indexOf('md-focused') > -1) {
-                        //console.log(newValue);
-                        //$timeout(function () {
-                            //element.removeClass('md-focused');
-                            //scope.$apply();
-                        //});
-                        //console.log(attr.class);
-                        ////console.log(attr.class);
-                    //}
-                    ////if ('md-focused' in newValue){
-                        ////element.removeClass('md-focused');
-                        ////console.log('done');
-                    ////}
-                //});
-            }
-        };
-}]);
-
 cacaoApp.directive('goidCustomdir', function(CacaoBackend) {
     return {
         require: 'ngModel',
@@ -556,6 +519,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
 
             CacaoBackend.all('gafs').post({
                 db: $scope.gafData.db,
+                review_state: 1,
                 db_object_id: $scope.gafData.db_object_id,
                 db_object_symbol: $scope.gafData.db_object_symbol,
                 qualifier: quals[$scope.gafData.qualifier],
