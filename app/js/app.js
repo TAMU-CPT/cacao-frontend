@@ -535,19 +535,29 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         };
 }]);
 
-cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend',
-    function($scope, CacaoBackend) {
+cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
+    function($scope, CacaoBackend, $timeout) {
 
-        //$scope.next_gaf = function() {
-            //CacaoBackend.all('gafs').getList({uuid: $scope.current_gaf.uuid,}).then(function(data) {
+        var next_gaf = function() {
+            CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
+                console.log(data.meta.count);
+                $scope.current_gaf = data[0];
+                $scope.num_left = data.meta.count;
+            });
+        };
 
-                //$scope.current_gaf = data[0];
-            //});
-        //};
-
-        CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
-            $scope.current_gaf = data[0];
+        $scope.put_gaf= function() {
+            console.log("next gaf");
             $scope.current_gaf.review_state=2;
             $scope.current_gaf.put();
+            $timeout(next_gaf, 100);
+
+        };
+
+        // get initial object on page load
+        CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
+            console.log('startin');
+            $scope.current_gaf = data[0];
+            $scope.num_left = data.meta.count;
         });
 }]);

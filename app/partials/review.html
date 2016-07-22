@@ -27,16 +27,13 @@
 <md-card>
     <md-card-title>
         </md-card-title-text>
-            <span ng-show="for_review.length" class="md-headline">You have {{for_review.length}} annotations left to review!</span>
-            <span ng-show="!for_review.length" class="md-headline">There are no Annotations to review at this time.</span>
-            <md-button ng-disabled="!num_left" class="md-raised md-accent" ng-click="next_gaf()">Next</md-button>
+            <span ng-show="num_left" class="md-headline">You have {{num_left}} annotations left to review!</span>
+            <span ng-show="!num_left" class="md-headline">There are no Annotations to review at this time.</span>
+            <md-button ng-disabled="!num_left" class="md-raised md-accent" ng-click="put_gaf()">Next</md-button>
         </md-card-title-text>
     </md-card-title>
-    <md-card-content ng-show="for_review.length">
-    </md-card-content>
 </md-card>
-
-<md-card flex="50">
+<md-card flex="50" ng-show="num_left">
     <md-card-title>
         <md-card-title-text>
             <span class="md-headline">GAF Form</span>
