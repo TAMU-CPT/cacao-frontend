@@ -14,6 +14,9 @@
         height: inherit;
         overflow-y: auto;
     }
+    md-checkbox.md-checked.green .md-icon {
+        background-color: rgba(0, 255, 0, 0.87);
+    }
 </style>
 
 <md-card>
@@ -25,8 +28,8 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div layout="column" layout-align="center center">
-    <md-card ng-show="num_left">
+<div layout="row" layout-align="center center">
+    <md-card ng-show="num_left" flex="30">
         <md-card-header style="background-color:#e3f2fd;">
             <md-card-avatar>
                 <img gravatar-src="current_gaf.owner.email" style="border-radius: 50%">
@@ -39,7 +42,7 @@
         <md-card-content>
             <form name="idk">
                 <div layout="row" layout-sm="column">
-                    <md-checkbox class="md-primary" ng-false-value="0" ng-true-value="null" ng-model="flagged.protein" ng-click="checked()" aria-label="Gene ID Checkbox"></md-checkbox>
+                    <md-checkbox class="green" ng-false-value="0" ng-true-value="null" ng-model="flagged.protein" ng-click="checked()" aria-label="Gene ID Checkbox"></md-checkbox>
                     <md-input-container flex>
                         <label>Gene ID</label>
                         <input disabled name="db_object_id" ng-model="current_gaf.db_object_id"/>
@@ -76,9 +79,10 @@
                         <label>Evidence Code</label>
                         <input disabled name="evidence_code" ng-model="current_gaf.evidence_code"/>
                     </md-input-container>
-                    <md-input-container ng-if="
-                            current_gaf.evidence_code != 'IDA'
-                            && current_gaf.evidence_code != 'IMP'" flex>
+                    <md-input-container flex>
+                    <!--<md-input-container ng-if="-->
+                            <!--current_gaf.evidence_code != 'IDA'-->
+                            <!--&& current_gaf.evidence_code != 'IMP'" flex>-->
                         <label>With/From</label>
                         <input disabled name="with_from_db" ng-model="current_gaf.with_or_from"/>
                     </md-input-container>
@@ -98,5 +102,15 @@
                 </md-input-container>
             </div>
         </md-card-content>
+    </md-card>
+
+    <md-card flex="30">
+        <md-card-title>
+            </md-card-title-text>
+                <span ng-show="num_left" class="md-headline">You have {{num_left}} annotations left to review!</span>
+                <span ng-show="!num_left" class="md-headline">There are no Annotations to review at this time.</span>
+                <md-button ng-disabled="!num_left" class="md-raised md-accent" ng-click="put_gaf()">Next</md-button>
+            </md-card-title-text>
+        </md-card-title>
     </md-card>
 </div>
