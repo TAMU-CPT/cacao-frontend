@@ -14,8 +14,12 @@
         height: inherit;
         overflow-y: auto;
     }
-    md-checkbox.md-checked.green .md-icon {
-        background-color: rgba(0, 255, 0, 0.87);
+    md-checkbox.md-checked .md-icon {
+        background-color: rgba(0, 205, 0, 0.87);
+    }
+
+    .md-icon {
+        border-color: red !important;
     }
 </style>
 
@@ -39,17 +43,17 @@
                 <span flex class="md-subhead">{{current_gaf.date}}</span>
             </md-card-header-text>
         </md-card-header>
-        <md-card-content>
+        <md-card-content md-colors="{background: 'red'}">
             <form name="idk">
                 <div layout="row" layout-sm="column">
-                    <md-checkbox class="green" ng-false-value="0" ng-true-value="null" ng-model="flagged.protein" ng-click="checked()" aria-label="Gene ID Checkbox"></md-checkbox>
+                    <md-checkbox ng-false-value="0" ng-true-value="null" ng-model="flagged.protein" ng-click="checked()" aria-label="Gene ID Checkbox"></md-checkbox>
                     <md-input-container flex>
                         <label>Gene ID</label>
                         <input disabled name="db_object_id" ng-model="current_gaf.db_object_id"/>
                     </md-input-container>
                 </div>
                 <div layout="row" layout-sm="column">
-                    <md-checkbox class="md-primary" ng-false-value="2" ng-true-value="null" ng-model="flagged.qualifier" aria-label="Qualifier Checkbox"></md-checkbox>
+                    <md-checkbox ng-false-value="2" ng-true-value="null" ng-model="flagged.qualifier" aria-label="Qualifier Checkbox"></md-checkbox>
                     <md-input-container flex ng-show="current_gaf.qualifier">
                         <label>Qualifier</label>
                         <input required name="qualifier" ng-model="current_gaf.qualifier"/>
@@ -60,21 +64,21 @@
                     </md-input-container>
                 </div>
                 <div layout="row" layout-sm="column">
-                    <md-checkbox class="md-primary" ng-false-value="3" ng-true-value="null" ng-model="flagged.go_id" aria-label="GO ID Checkbox"></md-checkbox>
+                    <md-checkbox ng-false-value="3" ng-true-value="null" ng-model="flagged.go_id" aria-label="GO ID Checkbox"></md-checkbox>
                     <md-input-container class="md-block" flex>
                         <label>GO ID</label>
                         <input disabled ng-model="current_gaf.go_id"/>
                     </md-input-container>
                 </div>
                 <div layout="row" layout-sm="column">
-                    <md-checkbox class="md-primary" ng-false-value="1" ng-true-value="null" ng-model="flagged.publication" aria-label="PMID Checkbox"></md-checkbox>
+                    <md-checkbox ng-false-value="1" ng-true-value="null" ng-model="flagged.publication" aria-label="PMID Checkbox"></md-checkbox>
                     <md-input-container class="md-block" flex>
                         <label>PMID (DB Reference)</label>
                         <input disabled name="db_reference" ng-model="current_gaf.db_reference"/>
                     </md-input-container>
                 </div>
                 <div layout="row" layout-sm="column">
-                    <md-checkbox class="md-primary" ng-false-value="4" ng-true-value="null" ng-model="flagged.evidence" aria-label="Evidence Code Checkbox"></md-checkbox>
+                    <md-checkbox ng-false-value="4" ng-true-value="null" ng-model="flagged.evidence" aria-label="Evidence Code Checkbox"></md-checkbox>
                     <md-input-container flex>
                         <label>Evidence Code</label>
                         <input disabled name="evidence_code" ng-model="current_gaf.evidence_code"/>
