@@ -495,10 +495,18 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
         };
         init();
 
-        $scope.user = {};
-        if ($scope.jwtData) {
-            $scope.user = $localStorage.jwtData.username;
-        }
+        //$scope.user = {};
+        //console.log($scope.jwtData);
+        //if ($scope.jwtData) {
+            //console.log('wtf');
+            //$scope.user = {
+                //username: $localStorage.jwtData.username,
+                //id: $localStorage.jwtData.user_id,
+                //email: $localStorage.jwtData.email,
+            //}
+            //console.log($scope.user);
+            ////$scope.user = $localStorage.jwtData.username;
+        //}
 
         $scope.saveData = function() {
             // qualifier
@@ -531,6 +539,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 db_object_type: $scope.gafData.db_object_type,
                 taxon: $scope.gafData.taxon,
                 assigned_by: $scope.gafData.assigned_by,
+                notes: $scope.gafData.notes,
             });
         };
 }]);
