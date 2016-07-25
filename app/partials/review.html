@@ -44,6 +44,8 @@
                         <label>Gene ID</label>
                         <input disabled name="db_object_id" ng-model="current_gaf.db_object_id"/>
                     </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
                     <md-checkbox class="md-primary" ng-false-value="2" ng-true-value="null" ng-model="flagged.qualifier" aria-label="Qualifier Checkbox"></md-checkbox>
                     <md-input-container flex ng-show="current_gaf.qualifier">
                         <label>Qualifier</label>
@@ -60,6 +62,8 @@
                         <label>GO ID</label>
                         <input disabled ng-model="current_gaf.go_id"/>
                     </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
                     <md-checkbox class="md-primary" ng-false-value="1" ng-true-value="null" ng-model="flagged.publication" aria-label="PMID Checkbox"></md-checkbox>
                     <md-input-container class="md-block" flex>
                         <label>PMID (DB Reference)</label>
