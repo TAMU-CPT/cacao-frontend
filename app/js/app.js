@@ -572,6 +572,16 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         var check = function() {
             console.log($scope.flagged);
         };
+
+        $scope.anyFlagged = function() {
+            // Check if any of them are non-null
+            return Object.keys($scope.flagged).map(function (key) {
+                return $scope.flagged[key] !== null;
+            }).some(function(val){
+                return val;
+            });
+        }
+
         $scope.checked = function() {
             $timeout(check, 100);
         };

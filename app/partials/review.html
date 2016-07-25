@@ -32,7 +32,7 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div layout="row" layout-align="center center">
+<div layout="row" layout-align="center">
     <md-card ng-show="num_left" flex="30">
         <md-card-header style="background-color:#e3f2fd;">
             <md-card-avatar>
@@ -108,13 +108,30 @@
         </md-card-content>
     </md-card>
 
-    <md-card flex="30">
-        <md-card-title>
-            </md-card-title-text>
-                <span ng-show="num_left" class="md-headline">You have {{num_left}} annotations left to review!</span>
-                <span ng-show="!num_left" class="md-headline">There are no Annotations to review at this time.</span>
-                <md-button ng-disabled="!num_left" class="md-raised md-accent" ng-click="put_gaf()">Next</md-button>
-            </md-card-title-text>
-        </md-card-title>
+    <md-card flex="70" ng-show="!anyFlagged()">
+        <md-toolbar class="md-primary">
+          <h2 class="md-toolbar-tools">
+            <span>Annotation Correct</span>
+          </h2>
+        </md-toolbar>
+        <md-content class="md-padding">
+            This annotation was marked as correct.
+            <md-button class="md-primary md-raised">Submit</md-button>
+        </md-content>
+    </md-card>
+
+    <md-card flex="70" ng-show="anyFlagged()">
+        <md-toolbar class="md-warn">
+          <h2 class="md-toolbar-tools">
+            <span>Annotation Incorrect: Reviewer Comments</span>
+          </h2>
+        </md-toolbar>
+        <md-content class="md-padding">
+            <md-input-container>
+                <label>Review Comments</label>
+                <textarea rows="3" md-no-autogrow/>
+            <md-button class="md-primary md-raised">Submit</md-button>
+            </md-input-container>
+        </md-content>
     </md-card>
 </div>
