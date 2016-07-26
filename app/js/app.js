@@ -401,7 +401,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
 
         function init() {
             $scope.gafData.go_id = "GO:";
-
             $scope.urlParams = $location.search();
             if ($scope.urlParams.taxon) {
                 $scope.gafData.taxon = $scope.urlParams.taxon;
@@ -494,19 +493,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             assigned_by: 'CPT',
         };
         init();
-
-        //$scope.user = {};
-        //console.log($scope.jwtData);
-        //if ($scope.jwtData) {
-            //console.log('wtf');
-            //$scope.user = {
-                //username: $localStorage.jwtData.username,
-                //id: $localStorage.jwtData.user_id,
-                //email: $localStorage.jwtData.email,
-            //}
-            //console.log($scope.user);
-            ////$scope.user = $localStorage.jwtData.username;
-        //}
 
         $scope.saveData = function() {
             // qualifier

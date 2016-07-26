@@ -1,4 +1,18 @@
 <style>
+    .cssSlideUp.ng-hide-remove, .cssSlideUp.ng-hide-add {
+        /* ensure visibility during the transition */
+        transition: 1s linear all;
+        transition-delay:0s;
+    }
+    .cssSlideUp {
+        opacity:1;
+        max-height: 500px;
+        overflow: hidden;
+    }
+    .cssSlideUp.ng-hide {
+        opacity:0;
+        max-height:0;
+    }
     md-toolbar.md-table-toolbar.alternate {
       color: #1e88e5;
       background-color: #e3f2fd;
@@ -15,11 +29,17 @@
         overflow-y: auto;
     }
     md-checkbox.md-checked .md-icon {
-        background-color: rgba(0, 205, 0, 0.87);
+        background-color: #69c552;
     }
-
     .md-icon {
-        border-color: red !important;
+        border-color: #f44336 !important;
+    }
+    md-card md-card-header md-card-avatar {
+        height:50px;
+        width:50px;
+    }
+    md-card md-card-header md-card-avatar+md-card-header-text .md-title {
+        font-size:20px;
     }
 </style>
 
@@ -34,7 +54,8 @@
 </md-card>
 <div layout="row" layout-align="center">
     <md-card ng-show="num_left" flex="30">
-        <md-card-header style="background-color:#e3f2fd;">
+        <md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
+        <!--<md-card-header style="background-color:#e3f2fd;">-->
             <md-card-avatar>
                 <img gravatar-src="current_gaf.owner.email" style="border-radius: 50%">
             </md-card-avatar>
@@ -43,7 +64,7 @@
                 <span flex class="md-subhead">{{current_gaf.date}}</span>
             </md-card-header-text>
         </md-card-header>
-        <md-card-content md-colors="{background: 'red'}">
+        <md-card-content>
             <form name="idk">
                 <div layout="row" layout-sm="column">
                     <md-checkbox ng-false-value="0" ng-true-value="null" ng-model="flagged.protein" ng-click="checked()" aria-label="Gene ID Checkbox"></md-checkbox>
@@ -99,39 +120,44 @@
                 </div>
                 <!--<md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>-->
             </form>
-            <div layout="row" layout-sm="column">
-                <md-input-container flex>
-                    <label>Review Comments</label>
-                    <textarea rows="3" md-no-autogrow/>
-                </md-input-container>
-            </div>
         </md-card-content>
     </md-card>
 
-    <md-card flex="70" ng-show="!anyFlagged()">
-        <md-toolbar class="md-primary">
-          <h2 class="md-toolbar-tools">
-            <span>Annotation Correct</span>
-          </h2>
-        </md-toolbar>
-        <md-content class="md-padding">
-            This annotation was marked as correct.
-            <md-button class="md-primary md-raised">Submit</md-button>
-        </md-content>
-    </md-card>
+    <div flex="30">
+        <md-card>
+            <md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
+                <md-card-header-text ng-hide="anyFlagged()">
+                    <div layout="row" layout-align-sm="start center">
+                        <div flex="60" layout="column">
+                            <div flex class="md-title">Good Annotation</div>
+                            <div flex class="md-subhead">Click submit to approve</div>
+                        </div>
 
-    <md-card flex="70" ng-show="anyFlagged()">
-        <md-toolbar class="md-warn">
-          <h2 class="md-toolbar-tools">
-            <span>Annotation Incorrect: Reviewer Comments</span>
-          </h2>
-        </md-toolbar>
-        <md-content class="md-padding">
-            <md-input-container>
-                <label>Review Comments</label>
-                <textarea rows="3" md-no-autogrow/>
-            <md-button class="md-primary md-raised">Submit</md-button>
-            </md-input-container>
-        </md-content>
-    </md-card>
+                        <div flex="40" layout="column">
+                            <md-button class="md-primary md-raised">Submit</md-button>
+                        </div>
+                    </div>
+                </md-card-header-text>
+                <md-card-header-text ng-hide="!anyFlagged()">
+                    <div layout="row" layout-align-sm="start center">
+                        <div flex="60" layout="column">
+                            <div flex class="md-title">Bad Annotation</div>
+                            <div flex class="md-subhead">Comment below</div>
+                        </div>
+                    </div>
+                </md-card-header-text>
+            </md-card-header>
+            <div class="cssSlideUp" ng-hide="!anyFlagged()">
+                <md-content class="md-padding">
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Review Comments</label>
+                            <textarea rows="3" md-no-autogrow/>
+                        </md-input-container>
+                    </div>
+                    <md-button class="md-primary md-raised">Submit</md-button>
+                </md-content>
+            </div>
+        </md-card>
+    </div>
 </div>
