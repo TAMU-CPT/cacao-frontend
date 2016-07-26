@@ -64,7 +64,7 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             }).
             when('/test', {
                 templateUrl: 'partials/test.html',
-                controller: 'GAFCtrl'
+                controller: 'TestCtrl'
             }).
             when('/logout', {
                 templateUrl: 'partials/login.html',
@@ -409,6 +409,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 $scope.gafData.taxon = '';
             }
             if ($scope.urlParams.gene) {
+                $scope.gaf_update($scope.urlParams.gene);
                 $scope.gafData.db_object_id = $scope.urlParams.gene;
                 $scope.gafData.db_object_symbol = $scope.urlParams.gene;
             }
@@ -532,31 +533,38 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
 
 cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
     function($scope, CacaoBackend, $timeout) {
-
-        $scope.flagged = {
-            protein: null,
-            qualifier: null,
-            go_id: null,
-            publication: null,
-            evidence: null,
-        }
-
-        var next_gaf = function() {
-            //CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
-                //$scope.current_gaf = data[0];
-                //$scope.num_left = data.meta.count;
-            //});
+        function init() {
+            if ($scope.assessmentForm) {
+                $scope.assessmentForm.$setUntouched();
+                $scope.assessment = {};
+            }
+            $scope.flagged = {
+                protein: null,
+                qualifier: null,
+                go_id: null,
+                publication: null,
+                evidence: null,
+            }
+            console.log($scope.flagged);
         };
 
-        $scope.put_gaf= function() {
-            //$scope.current_gaf.review_state=1;
-            //$scope.current_gaf.put();
-            //$timeout(next_gaf, 100);
+        var next_gaf = function() {
+            CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
+                $scope.current_gaf = data[0];
+                $scope.num_left = data.meta.count;
+            });
+        };
 
+        $scope.put_gaf= function(state) {
+            $scope.current_gaf.review_state=state;
+            $scope.current_gaf.put();
+            $timeout(next_gaf, 100);
+            init();
         };
 
         var check = function() {
             console.log($scope.flagged);
+            console.log("checked");
         };
 
         $scope.anyFlagged = function() {
@@ -573,8 +581,10 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         };
 
         // get initial object on page load
-        CacaoBackend.all('gafs').getList({review_state: 2,}).then(function(data) {
+        CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
             $scope.current_gaf = data[0];
             $scope.num_left = data.meta.count;
         });
+
+        init();
 }]);

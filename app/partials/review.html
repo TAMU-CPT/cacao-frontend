@@ -1,11 +1,10 @@
 <style>
     .cssSlideUp.ng-hide-remove, .cssSlideUp.ng-hide-add {
-        /* ensure visibility during the transition */
-        transition: 1s linear all;
-        transition-delay:0s;
+        display: block !important; /* yes, important */
     }
     .cssSlideUp {
         opacity:1;
+        transition: 1s ease-in-out all;
         max-height: 500px;
         overflow: hidden;
     }
@@ -65,7 +64,7 @@
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
-            <form name="idk">
+            <form name="prev_gaf_form">
                 <div layout="row" layout-sm="column">
                     <md-checkbox ng-false-value="0" ng-true-value="null" ng-model="flagged.protein" ng-click="checked()" aria-label="Gene ID Checkbox"></md-checkbox>
                     <md-input-container flex>
@@ -134,7 +133,7 @@
                         </div>
 
                         <div flex="40" layout="column">
-                            <md-button class="md-primary md-raised">Submit</md-button>
+                            <md-button class="md-primary md-raised" ng-click="put_gaf(2)">Submit</md-button>
                         </div>
                     </div>
                 </md-card-header-text>
@@ -150,12 +149,18 @@
             <div class="cssSlideUp" ng-hide="!anyFlagged()">
                 <md-content class="md-padding">
                     <div layout="row" layout-sm="column">
-                        <md-input-container flex>
-                            <label>Review Comments</label>
-                            <textarea rows="3" md-no-autogrow/>
-                        </md-input-container>
+                        <form name="assessmentForm">
+                            <md-input-container flex>
+                                <label>Review Comments</label>
+                                <textarea required name="notes" ng-model="assessment.notes" rows="3" md-no-autogrow/>
+                                <div ng-messages="assessmentForm.notes.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                            <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="put_gaf(3)">Submit</md-button>
+                        </form>
                     </div>
-                    <md-button class="md-primary md-raised">Submit</md-button>
+                    <!--<md-button class="md-primary md-raised">Submit</md-button>-->
                 </md-content>
             </div>
         </md-card>
