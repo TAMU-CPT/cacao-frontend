@@ -47,7 +47,6 @@
         </md-card-title-text>
             <span ng-show="num_left" class="md-headline">You have {{num_left}} annotations left to review!</span>
             <span ng-show="!num_left" class="md-headline">There are no Annotations to review at this time.</span>
-            <md-button ng-disabled="!num_left" class="md-raised md-accent" ng-click="put_gaf()">Next</md-button>
         </md-card-title-text>
     </md-card-title>
 </md-card>
@@ -148,19 +147,18 @@
             </md-card-header>
             <div class="cssSlideUp" ng-hide="!anyFlagged()">
                 <md-content class="md-padding">
-                    <div layout="row" layout-sm="column">
-                        <form name="assessmentForm">
+                    <form name="assessmentForm">
+                        <div layout="row" layout-sm="column">
                             <md-input-container flex>
                                 <label>Review Comments</label>
-                                <textarea required name="notes" ng-model="assessment.notes" rows="3" md-no-autogrow/>
+                                <textarea required name="notes" ng-model="assessment.notes" rows="5" md-no-autogrow/>
                                 <div ng-messages="assessmentForm.notes.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                             </md-input-container>
-                            <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="put_gaf(3)">Submit</md-button>
-                        </form>
-                    </div>
-                    <!--<md-button class="md-primary md-raised">Submit</md-button>-->
+                        </div>
+                        <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="put_gaf(3)">Submit</md-button>
+                    </form>
                 </md-content>
             </div>
         </md-card>
