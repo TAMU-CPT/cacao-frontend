@@ -545,7 +545,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
                 publication: null,
                 evidence: null,
             }
-            console.log($scope.flagged);
         };
 
         var next_gaf = function() {
@@ -558,13 +557,9 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         $scope.put_gaf= function(state) {
             $scope.current_gaf.review_state=state;
             $scope.current_gaf.put();
+            $scope.saveAssessment();
             $timeout(next_gaf, 100);
             init();
-        };
-
-        var check = function() {
-            console.log($scope.flagged);
-            console.log("checked");
         };
 
         $scope.anyFlagged = function() {
@@ -576,10 +571,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
             });
         }
 
-        $scope.checked = function() {
-            $timeout(check, 100);
-        };
-
         // get initial object on page load
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
             $scope.current_gaf = data[0];
@@ -587,4 +578,27 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         });
 
         init();
+
+        $scope.saveAssessment = function() {
+            var notes = "Valid Annotation"
+            var flagged = [];
+
+            // only change notes/flags if gaf was bad aka review_state 3
+            if($scope.current_gaf.review_state == 3) {
+                notes = $scope.assessment.notes;
+                for (var i in $scope.flagged) {
+                    if ($scope.flagged[i] != null) {
+                        flagged.push(String($scope.flagged[i]));
+                    }
+                }
+            }
+
+            CacaoBackend.all('assessments').post({
+                // not working
+                //gaf: $scope.current_gaf,
+                notes: notes,
+                // not working
+                //flagged: [1,2],
+            });
+        };
 }]);
