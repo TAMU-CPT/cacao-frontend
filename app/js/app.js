@@ -580,25 +580,23 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         init();
 
         $scope.saveAssessment = function() {
-            var notes = "Valid Annotation"
-            var flagged = [];
+            var notes = "Valid Annotation";
+            var flagged = []
 
             // only change notes/flags if gaf was bad aka review_state 3
             if($scope.current_gaf.review_state == 3) {
                 notes = $scope.assessment.notes;
                 for (var i in $scope.flagged) {
                     if ($scope.flagged[i] != null) {
-                        flagged.push(String($scope.flagged[i]));
+                        flagged.push($scope.flagged[i]);
                     }
                 }
             }
 
             CacaoBackend.all('assessments').post({
-                // not working
-                //gaf: $scope.current_gaf,
+                gaf: 'http://localhost:8000/gafs/' + $scope.current_gaf.id + '/',
                 notes: notes,
-                // not working
-                //flagged: [1,2],
+                flagged: flagged.join(),
             });
         };
 }]);
