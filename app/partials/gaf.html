@@ -4,11 +4,13 @@
         display: block !important; /* yes, important */
     }
     .cssSlideUp {
-        transition: .5s linear all;
+        opacity:1;
+        transition: 1s ease-in-out all;
         max-height: 500px;
         overflow: hidden;
     }
     .cssSlideUp.ng-hide {
+        opacity:0;
         max-height:0;
     }
     .pop_up_card md-toolbar {
@@ -158,12 +160,14 @@
                         </div>
                     </md-toolbar>
                     <div class="cssSlideUp" ng-show="goTermData" ng-hide="show_go">
-                        <md-card-title ng-show="goTermData">
-                            <md-card-title-text>
-                                <span ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
-                                <span ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
-                                <md-button flex="20" class="md-raised md-accent" href="#/goid/{{goTermData.id}}" TARGET="_blank">See More</md-button>
-                            </md-card-title-text>
+                        <md-card-title ng-show="goTermData" layout="row">
+                            <div layout="column" flex="80">
+                                <md-card-title-text>
+                                    <span ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
+                                    <span ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
+                                    <md-button flex="20" class="md-raised md-accent" href="#/goid/{{goTermData.id}}" TARGET="_blank">See More</md-button>
+                                </md-card-title-text>
+                            </div>
                             <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
                                 <div class="md-media-lg">
                                     <a href="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" data-lightbox="image-1" data-title="{{goTermData.id}}">
