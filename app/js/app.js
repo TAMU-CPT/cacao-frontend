@@ -50,6 +50,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 templateUrl: 'partials/gaf.html',
                 controller: 'GAFCtrl'
             }).
+            when('/gaf/:gafID', {
+                templateUrl: 'partials/gaf-detail.html',
+                controller: 'GAFDetailCtrl'
+            }).
             when('/pmid/:PMID', {
                 templateUrl: 'partials/pmid.html',
                 controller: 'PMIDDetailCtrl'
@@ -428,8 +432,8 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 }]);
 
 // GAF
-cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$location', '$filter', 'Restangular', '$timeout',
-    function($scope, CacaoBackend, $localStorage, $location, $filter, Restangular, $timeout) {
+cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout',
+    function($scope, CacaoBackend, $location, $timeout) {
 
         // collapses other cards if new gene id entered
         $scope.$watch('prevAnnotData', function(newValue, oldValue) {
@@ -475,21 +479,24 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             $scope.urlParams = $location.search();
             if ($scope.urlParams.taxon) {
                 $scope.gafData.taxon = $scope.urlParams.taxon;
+                $location.search('taxon', null)
             }
             else {
                 $scope.gafData.taxon = '';
             }
             if ($scope.urlParams.gene) {
                 $scope.gaf_update($scope.urlParams.gene);
-                $scope.gafData.db_object_id = $scope.urlParams.gene;
+                $scope.gafData.db_object_id = "" + $scope.urlParams.gene;
                 $scope.gafData.db_object_symbol = $scope.urlParams.gene;
                 $scope.disable_field = true;
+                console.log($scope.gafData.db_object_id);
             }
             else {
                  $scope.gafData.db_object_id = '';
                  $scope.gafData.db_object_symbol = '';
                  $scope.disable_field = false;
             }
+            $location.search('gene', null, { reloadOnSearch: false });
         }
 
         $scope.query = {
@@ -600,7 +607,14 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 taxon: $scope.gafData.taxon,
                 assigned_by: $scope.gafData.assigned_by,
                 notes: $scope.gafData.notes,
+            })
+            .then(function(gaf) {
+                $location.path('/gaf/' + gaf.id);
+            }, function() {
+                console.log("there was an error");
             });
+
+
         };
 }]);
 
@@ -703,4 +717,11 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
                 flagged: flagged.join(),
             });
         };
+}]);
+
+cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
+    function($scope, $routeParams, CacaoBackend) {
+        CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(data) {
+            $scope.gaf = data;
+        });
 }]);
