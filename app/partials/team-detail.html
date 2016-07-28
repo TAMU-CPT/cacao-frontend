@@ -53,10 +53,12 @@
                                 <td md-cell>{{d.db_object_name}}</td>
                                 <td md-cell>{{d.db_reference}}</td>
                                 <td md-cell>
-                                    <md-tooltip md-direction="down">
-                                        {{d.evidence_code | eco_to_text}}
-                                    </md-tooltip>
-                                    {{ d.evidence_code }}
+                                    <span>
+                                        {{ d.evidence_code }}
+                                        <md-tooltip md-direction="bottom">
+                                            {{d.evidence_code | eco_to_text}}
+                                        </md-tooltip>
+                                    </span>
                                 </td>
                                 <td md-cell>{{d.date}}</td>
                             </tr>
