@@ -40,6 +40,11 @@
     md-card md-card-header md-card-avatar+md-card-header-text .md-title {
         font-size:20px;
     }
+    @media only screen and (max-width: 660px) {
+        md-card-avatar {
+            display: none;
+        }
+    }
 </style>
 
 <md-card>
@@ -53,7 +58,6 @@
 <div layout="row" layout-align="center">
     <md-card ng-show="num_left" flex="30">
         <md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
-        <!--<md-card-header style="background-color:#e3f2fd;">-->
             <md-card-avatar>
                 <img gravatar-src="current_gaf.owner.email" style="border-radius: 50%">
             </md-card-avatar>
@@ -121,17 +125,17 @@
         </md-card-content>
     </md-card>
 
-    <div flex="30">
+    <div flex="70">
         <md-card>
             <md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
                 <md-card-header-text ng-hide="anyFlagged()">
                     <div layout="row" layout-align-sm="start center">
-                        <div flex="60" layout="column">
+                        <div>
                             <div flex class="md-title">Good Annotation</div>
                             <div flex class="md-subhead">Click submit to approve</div>
                         </div>
-
-                        <div flex="40" layout="column">
+                        <span flex></span>
+                        <div>
                             <md-button class="md-primary md-raised" ng-click="put_gaf(2)">Submit</md-button>
                         </div>
                     </div>
