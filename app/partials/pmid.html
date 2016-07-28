@@ -20,3 +20,34 @@
         <md-button ng-show="pubmedData.pmc" class="md-raised md-accent" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC{{pubmedData.pmc}}" TARGET="_blank">PMC</md-button>
     </md-card-content>
 </md-card>
+<md-card ng-show="pubmedData">
+    <md-card-title>
+        <md-card-title-text>
+            <span ng-show="prev_annotations.length" class="md-headline">GAFs submitted with PMID:{{pubmedData.pmid}}</span>
+            <span ng-show="!prev_annotations.length" class="md-headline">No GAFs have been submitted with PMID:{{pubmedData.pmid}}</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content ng-show="prev_annotations.length">
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                    <tr md-row>
+                        <th md-column><span>Gene ID</span></th>
+                        <th md-column><span>Name</span></th>
+                        <th md-column><span>GO ID</span></th>
+                        <th md-column><span>Evidence Code</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row ng-repeat="d in prev_annotations">
+                        <td md-cell>{{d.db_object_id}}</td>
+                        <td md-cell>{{d.db_object_name}}</td>
+                        <td md-cell>{{d.go_id}}</td>
+                        <td md-cell>{{d.evidence_code}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.meta.count}}" md-page-select="options.pageSelect" md-on-paginate="updateData"></md-table-pagination>
+    </md-card-content>
+</md-card>
