@@ -568,6 +568,22 @@ cacaoApp.filter('review_state_to_english', function() {
                 return "Rejected";
         }
     };
+});
+
+cacaoApp.filter('eco_to_text', function() {
+    return function(input) {
+        switch(input){
+            case 'IDA': return 'Inferred from Direct Assay';
+            case 'IMP': return 'Inferred from Mutant Phenotype';
+            case 'IGI': return 'Inferred from Genetic Interaction';
+            case 'IEA': return 'Inferred from Electronic Assay';
+            case 'ISS': return 'Inferred from Sequence Similarity';
+            case 'ISO': return 'Inferred from Sequence Orthology';
+            case 'ISA': return 'Inferred from Sequence Alignment';
+            case 'ISM': return 'Inferred from Sequence Model';
+            case 'IGC': return 'Inferred from Genomic Context';
+        }
+    };
 })
 
 cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
