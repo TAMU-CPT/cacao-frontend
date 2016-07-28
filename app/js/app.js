@@ -46,9 +46,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 templateUrl: 'partials/login.html',
                 controller: 'LoginCtrl'
             }).
-            when('/gaf', {
+            when('/gaf/:taxon?/:gene?', {
                 templateUrl: 'partials/gaf.html',
-                controller: 'GAFCtrl'
+                controller: 'GAFCtrl',
+                reloadOnSearch: false
             }).
             when('/gaf/:gafID', {
                 templateUrl: 'partials/gaf-detail.html',
@@ -432,8 +433,8 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
 }]);
 
 // GAF
-cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout',
-    function($scope, CacaoBackend, $location, $timeout) {
+cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout', '$routeParams',
+    function($scope, CacaoBackend, $location, $timeout, $routeParams) {
 
         // collapses other cards if new gene id entered
         $scope.$watch('prevAnnotData', function(newValue, oldValue) {
@@ -476,27 +477,25 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout
 
         function init() {
             $scope.gafData.go_id = "GO:";
-            $scope.urlParams = $location.search();
-            if ($scope.urlParams.taxon) {
-                $scope.gafData.taxon = $scope.urlParams.taxon;
-                $location.search('taxon', null)
+            if ($routeParams.taxon) {
+                $scope.gafData.taxon = $routeParams.taxon;
+                $location.search('taxon', null);
             }
             else {
                 $scope.gafData.taxon = '';
             }
-            if ($scope.urlParams.gene) {
-                $scope.gaf_update($scope.urlParams.gene);
-                $scope.gafData.db_object_id = "" + $scope.urlParams.gene;
-                $scope.gafData.db_object_symbol = $scope.urlParams.gene;
+            if ($routeParams.gene) {
+                $scope.gaf_update($routeParams.gene);
+                $scope.gafData.db_object_id = "" + $routeParams.gene;
+                $scope.gafData.db_object_symbol = $routeParams.gene;
                 $scope.disable_field = true;
-                console.log($scope.gafData.db_object_id);
+                $location.search('gene', null);
             }
             else {
                  $scope.gafData.db_object_id = '';
                  $scope.gafData.db_object_symbol = '';
                  $scope.disable_field = false;
             }
-            $location.search('gene', null, { reloadOnSearch: false });
         }
 
         $scope.query = {
