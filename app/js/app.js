@@ -46,7 +46,7 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 templateUrl: 'partials/login.html',
                 controller: 'LoginCtrl'
             }).
-            when('/gaf/:taxon?/:gene?', {
+            when('/gaf/create/:taxon?/:gene?', {
                 templateUrl: 'partials/gaf.html',
                 controller: 'GAFCtrl',
                 reloadOnSearch: false
@@ -612,8 +612,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout
             }, function() {
                 console.log("there was an error");
             });
-
-
         };
 }]);
 
@@ -635,6 +633,7 @@ cacaoApp.filter('review_state_to_english', function() {
 cacaoApp.filter('eco_to_text', function() {
     return function(input) {
         switch(input){
+            case 'ND' : return 'No Data';
             case 'IDA': return 'Inferred from Direct Assay';
             case 'IMP': return 'Inferred from Mutant Phenotype';
             case 'IGI': return 'Inferred from Genetic Interaction';
@@ -647,6 +646,34 @@ cacaoApp.filter('eco_to_text', function() {
         }
     };
 })
+
+cacaoApp.filter('header_color', function() {
+    return function(input) {
+        switch(input){
+            case 0:
+                return 'rgba(226, 226, 226, 1)';
+            case 1:
+                return 'rgba(249, 243, 65, .32)';
+            case 2:
+                return 'rgba(105, 197, 82, 0.18)';
+            case 3:
+                return 'rgba(244, 67, 54, 0.38)';
+        }
+    }
+})
+
+cacaoApp.filter('header_icon', function() {
+    return function(input) {
+        switch(input){
+            case 1:
+                return "hourglass_full";
+            case 2:
+                return "done";
+            case 3:
+                return "close";
+        }
+    };
+});
 
 cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
     function($scope, CacaoBackend, $timeout) {
@@ -667,6 +694,9 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         var next_gaf = function() {
             CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
                 $scope.current_gaf = data[0];
+                if (!$scope.current_gaf.qualifier) {
+                     $scope.current_gaf.qualifier = "None";
+                }
                 $scope.num_left = data.meta.count;
             });
         };
@@ -691,6 +721,9 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         // get initial object on page load
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
             $scope.current_gaf = data[0];
+            if (!$scope.current_gaf.qualifier) {
+                 $scope.current_gaf.qualifier = "None";
+            }
             $scope.num_left = data.meta.count;
         });
 
@@ -722,5 +755,11 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
     function($scope, $routeParams, CacaoBackend) {
         CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(data) {
             $scope.gaf = data;
+            if (!$scope.gaf.qualifier) {
+                 $scope.gaf.qualifier = "None";
+            }
+            if (!$scope.gaf.notes) {
+                 $scope.gaf.notes = "None";
+            }
         });
 }]);

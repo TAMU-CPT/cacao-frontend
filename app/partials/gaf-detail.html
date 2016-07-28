@@ -1,12 +1,98 @@
-<div class="container-fluid">
-    <h1>{{gaf}}</h1>
-    <!--<md-card ng-repeat="user in team.users" flex="25">-->
-        <!--<md-card-title>-->
-            <!--<md-card-title-media>-->
-                <!--<div class="md-media-sm card-media" layout layout-align="center center">-->
-                    <!--<img gravatar-src="user.email" style="border-radius: 50%">-->
-                <!--</div>-->
-            <!--</md-card-title-media>-->
-        <!--</md-card-title>-->
-    <!--</md-card>-->
+<style>
+    md-toolbar.md-table-toolbar.alternate {
+      color: #1e88e5;
+      background-color: #e3f2fd;
+    }
+
+    md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
+      font-size: 16px;
+    }
+    md-input-container .md-input[disabled] {
+        color: black;
+    }
+    md-card md-card-header md-card-avatar {
+        height:50px;
+        width:50px;
+    }
+    md-card md-card-header md-card-avatar+md-card-header-text .md-title {
+        max-height:100px;
+        font-size:20px;
+    }
+    md-card md-card-header md-card-avatar+md-card-header-text {
+        max-height:100px;
+    }
+    @media only screen and (max-width: 660px) {
+        md-card-avatar {
+            display: none;
+        }
+    }
+</style>
+<div layout="row" layout-align="center center">
+    <md-card flex="40">
+        <md-card-header style="background-color: {{gaf.review_state | header_color}}">
+            <md-card-avatar>
+                <img gravatar-src="gaf.owner.email" style="border-radius: 50%">
+            </md-card-avatar>
+            <md-card-header-text>
+                <div layout="row" layout-align="center center">
+                    <div>
+                        <div flex class="md-title">{{gaf.owner.username || "External"}}</div>
+                        <div flex class="md-subhead">{{gaf.date}}</div>
+                    </div>
+                    <span flex></span>
+                    <div layout="column" layout-align="center center" ng-show="gaf.review_state != 0" ng-cloak>
+                        <ng-md-icon icon="{{gaf.review_state | header_icon}}" "fill: white" ></ng-md-icon>
+                    </div>
+                </div>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <form name="prev_gaf_form">
+                <div layout="row" layout-sm="column">
+                    <md-input-container flex>
+                        <label>Gene ID</label>
+                        <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container flex>
+                        <label>Qualifier</label>
+                        <input disabled name="qualifier" ng-model="gaf.qualifier"/>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container class="md-block" flex>
+                        <label>GO ID</label>
+                        <input disabled ng-model="gaf.go_id"/>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container class="md-block" flex>
+                        <label>PMID (DB Reference)</label>
+                        <input disabled name="db_reference" ng-model="gaf.db_reference"/>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container flex>
+                        <label>Evidence Code</label>
+                        <input disabled name="evidence_code" ng-model="gaf.evidence_code"/>
+                    </md-input-container>
+                    <md-input-container ng-if="
+                            gaf.evidence_code != 'ND'
+                            && gaf.evidence_code != 'IDA'
+                            && gaf.evidence_code != 'IMP'" flex>
+                        <label>With/From</label>
+                        <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container class="md-block" flex>
+                        <label>Notes</label>
+                        <textarea disabled name="notes" ng-model="gaf.notes" rows="5"></textarea>
+                    </md-input-container>
+                </div>
+                <md-button ng-cloak ng-show="gaf.review_state != 0" class="md-primary md-raised" ng-click="challengeGaf()">Challenge</md-button>
+            </form>
+        </md-card-content>
+    </md-card>
 </div>
