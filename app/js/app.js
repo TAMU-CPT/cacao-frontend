@@ -265,6 +265,29 @@ cacaoApp.controller('PMIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
                 $scope.bad_pmid = $routeParams.PMID;
             }
         );
+
+        $scope.query = {
+            limit: 5,
+            page: 1
+        };
+
+        $scope.updateData = function(page) {
+            CacaoBackend.all('gafs').getList({db_reference : 'PMID:'+$routeParams.PMID, page: page}).then(function(data) {
+                $scope.prev_annotations = data;
+            });
+        };
+
+        // previous annotations with same pmid
+        $scope.options = {
+            limitSelect: true,
+            pageSelect: true
+        };
+
+        $scope.query.page = 1;
+
+        CacaoBackend.all('gafs').getList({db_reference: 'PMID:'+$routeParams.PMID}).then(function(data) {
+            $scope.prev_annotations = data;
+        });
 }]);
 
 cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
@@ -278,6 +301,7 @@ cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
                 $scope.bad_go_id = $routeParams.GOID;
             }
         );
+
 
         $scope.query = {
             limit: 5,
@@ -365,7 +389,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
             if (newValue != oldValue && !$scope.bad_db_object_id) {
                 $scope.show_gafs = false;
                 if ($scope.show_go != null) {
-                    $scope.show_go =true;
+                    $scope.show_go = true;
                 }
                 if ($scope.show_paper != null) {
                     $scope.show_paper = true;
@@ -412,10 +436,12 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$localStorage', '$loc
                 $scope.gaf_update($scope.urlParams.gene);
                 $scope.gafData.db_object_id = $scope.urlParams.gene;
                 $scope.gafData.db_object_symbol = $scope.urlParams.gene;
+                $scope.disable_field = true;
             }
             else {
                  $scope.gafData.db_object_id = '';
                  $scope.gafData.db_object_symbol = '';
+                 $scope.disable_field = false;
             }
         }
 
