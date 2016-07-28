@@ -1,13 +1,61 @@
-<div class="container-fluid">
+<div layout="row" class="md-padding">
+    <div class="container-fluid" layout="column" flex="25">
     <h1>{{user.username}}</h1>
+    <a href="mailto:{{user.email}}">{{user.email}}</a>
+
+    <h3>Groups</h3>
     <ul>
-        <li>{{user.email}}</li>
-        <li>Groups:
-            <ul>
-                <li ng-repeat="group in user.group">
-                    <a href="#/teams/{{group.id}}">{{group.name}}</a>
-                </li>
-            </ul>
+        <li ng-repeat="group in user.group">
+            <a href="#/teams/{{group.id}}">{{group.name}}</a>
         </li>
     </ul>
+    </div>
+    <div flex="75">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{ user.username }}'s Submitted Annotations</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content ng-show="data">
+                <md-table-container>
+                    <table md-table>
+                        <thead md-head>
+                            <tr md-row>
+                                <th md-column><span>Status</span></th>
+                                <th md-column><span>Gene ID</span></th>
+                                <th md-column><span>Name</span></th>
+                                <th md-column><span>Reference</span></th>
+                                <th md-column><span>Evidence Code</span></th>
+                                <th md-column><span>Date</span></th>
+                            </tr>
+                        </thead>
+                        <tbody md-body>
+                            <tr md-row ng-repeat="d in data">
+                                <td md-cell>
+                                    {{d.review_state | review_state_to_english}}
+                                </td>
+                                <td md-cell>{{d.db_object_id}}</td>
+                                <td md-cell>{{d.db_object_name}}</td>
+                                <td md-cell>{{d.db_reference}}</td>
+                                <td md-cell>
+                                    <md-tooltip md-direction="down">
+                                        {{d.evidence_code | eco_to_text}}
+                                    </md-tooltip>
+                                    {{ d.evidence_code }}
+                                </td>
+                                <td md-cell>{{d.date}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <md-table-pagination
+                    md-limit="query.limit"
+                    md-page="query.page"
+                    md-total="{{data.meta.count}}"
+                    md-page-select="options.pageSelect"
+                    md-on-paginate="updateData"></md-table-pagination>
+            </md-card-content>
+        </md-card>
+    </div>
 </div>

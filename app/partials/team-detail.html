@@ -2,6 +2,7 @@
     <div class="container-fluid" layout="column" flex="25">
         <h1>{{team.name}}</h1>
         <md-card ng-repeat="user in team.users">
+            <a ng-href="#/users/{{ user.id }}">
             <md-card-title>
                 <md-card-title-media>
                     <div class="md-media-sm card-media" layout layout-align="center center">
@@ -13,6 +14,7 @@
                     <span class="md-subhead description" ng-bind=""></span>
                 </md-card-title-text>
             </md-card-title>
+            </a>
         </md-card>
     </div>
     <div flex="75">
@@ -28,6 +30,7 @@
                         <thead md-head>
                             <tr md-row>
                                 <th md-column><span>Status</span></th>
+                                <th md-column><span>User</span></th>
                                 <th md-column><span>Gene ID</span></th>
                                 <th md-column><span>Name</span></th>
                                 <th md-column><span>Reference</span></th>
@@ -38,7 +41,14 @@
                         <tbody md-body>
                             <tr md-row ng-repeat="d in data">
                                 <td md-cell>
-                                    {{d.review_state | review_state_to_english}}</td>
+                                    {{d.review_state | review_state_to_english}}
+                                </td>
+                                <td md-cell>
+                                    <img gravatar-src="d.owner.email" gravatar-size="30" style="border-radius: 50%">
+                                    <a href="#/users/{{d.owner.id}}">
+                                        {{ d.owner.username }}
+                                    </a>
+                                </td>
                                 <td md-cell>{{d.db_object_id}}</td>
                                 <td md-cell>{{d.db_object_name}}</td>
                                 <td md-cell>{{d.db_reference}}</td>
