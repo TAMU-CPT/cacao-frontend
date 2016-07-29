@@ -26,8 +26,124 @@
             display: none;
         }
     }
+    .cssSlideLeft.ng-hide-remove, .cssSlideUp.ng-hide-add {
+        display: block !important; /* yes, important */
+    }
+    .cssSlideLeft {
+        opacity:1;
+        transition: 1s ease-in-out all;
+        max-width: 500px;
+        overflow: hidden;
+    }
+    .cssSlideLeft.ng-hide {
+        opacity:0;
+        max-width:0;
+    }
 </style>
 <div layout="row" layout-align="center center">
+    <md-card flex="40" ng-show="challenge" class="cssSlideLeft">
+        <md-card-header style="background-color: {{gaf.review_state | header_color}}">
+            <md-card-avatar>
+                <img gravatar-src="gaf.owner.email" style="border-radius: 50%">
+            </md-card-avatar>
+            <md-card-header-text>
+                <div layout="row" layout-align="center center">
+                    <div>
+                        <div flex class="md-title">{{gaf.owner.username || "External"}}</div>
+                        <div flex class="md-subhead">{{gaf.date}}</div>
+                    </div>
+                    <span flex></span>
+                    <div layout="column" layout-align="center center" ng-show="gaf.review_state != 0" ng-cloak>
+                        <ng-md-icon icon="{{gaf.review_state | header_icon}}" "fill: white" >
+                            <md-tooltip>
+                                {{gaf.review_state | review_state_to_english}}
+                            </md-tooltip>
+                        </ng-md-icon>
+                    </div>
+                </div>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <form name="GAFForm" ng-submit="saveData()" novalidate>
+                <div layout="row" layout-sm="column">
+                    <md-input-container flex>
+                        <label>Gene ID</label>
+                        <input ng-disabled="{{disable_field}}" required name="db_object_id" ng-model="gafData.db_object_id" ng-model-options="{ updateOn: blur }" ng-blur="gaf_update(gafData.db_object_id)"/>
+                        <div ng-messages="GAFForm.db_object_id.$error">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label>Qualifier</label>
+                        <md-select name="qualifier" ng-model="gafData.qualifier" placeholder="Qualifier">
+                            <md-option></md-option>
+                            <md-option ng-repeat="qualifier in qualifiers">{{qualifier}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container class="md-block" flex>
+                        <label>GO ID</label>
+                        <input required name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
+                        <div ng-messages="GAFForm.go_id.$error" md-auto-hide="false" ng-show="GAFForm.go_id.$touched">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="startwithGo">Must start with 'GO:'</div>
+                            <div ng-message="minlength">This is required.</div>
+                            <div ng-message="customRequired">Invalid GO ID</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex>
+                        <label>PMID (DB Reference)</label>
+                        <input required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>
+                        <div ng-messages="GAFForm.db_reference.$error" md-auto-hide="false" ng-show="GAFForm.db_reference.$touched">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="pmidValid">Invalid PMID</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container flex>
+                        <md-select name="evidence_code" ng-model="gafData.evidence_code" placeholder="Evidence Code" ng-required="true">
+                            <md-option ng-repeat="eco_code in eco_codes">{{eco_code}}</md-option>
+                        </md-select>
+                        <div ng-messages="GAFForm.evidence_code.$error" ng-show="GAFForm.evidence_code.$invalid">
+                            <div ng-message="required" ng-show="GAFForm.evidence_code.$touched">This is required.</div>
+                        </div>
+                        </md-input-container>
+                    <div layout="row" layout-sm="column" ng-if="GAFForm.evidence_code.$modelValue
+                                && GAFForm.evidence_code.$modelValue != 'IDA: Inferred from Direct Assay'
+                                && GAFForm.evidence_code.$modelValue != 'IMP: Inferred from Mutant Phenotype'" flex="40">
+                        <md-input-container flex>
+                            <md-select name="with_from_db" ng-model="gafData.with_from_db" placeholder="DB" ng-required="true">
+                                <md-option ng-repeat="w_f_db in with_from_db">{{w_f_db}}</md-option>
+                            </md-select>
+                            <div ng-messages="GAFForm.with_from_db.$error" ng-show="GAFForm.with_from_db.$invalid">
+                                <div ng-message="required" ng-show="GAFForm.with_from_db.$touched">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>ID</label>
+                            <input required name="with_from_id" ng-model="gafData.with_from_id"/>
+                            <div ng-messages="GAFForm.with_from_id.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container class="md-block" flex>
+                        <label>Notes</label>
+                        <textarea required name="notes" ng-model="gafData.notes" rows="5"></textarea>
+                        <div ng-messages="GAFForm.notes.$error">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>
+            </form>
+        </md-card-content>
+    </md-card>
+
     <md-card flex="40">
         <md-card-header style="background-color: {{gaf.review_state | header_color}}">
             <md-card-avatar>
@@ -51,52 +167,48 @@
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
-            <form name="prev_gaf_form">
-                <div layout="row" layout-sm="column">
-                    <md-input-container flex>
-                        <label>Gene ID</label>
-                        <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
-                    </md-input-container>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container flex>
-                        <label>Qualifier</label>
-                        <input disabled name="qualifier" ng-model="gaf.qualifier"/>
-                    </md-input-container>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container class="md-block" flex>
-                        <label>GO ID</label>
-                        <input disabled ng-model="gaf.go_id"/>
-                    </md-input-container>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container class="md-block" flex>
-                        <label>PMID (DB Reference)</label>
-                        <input disabled name="db_reference" ng-model="gaf.db_reference"/>
-                    </md-input-container>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container flex>
-                        <label>Evidence Code</label>
-                        <input disabled name="evidence_code" ng-model="gaf.evidence_code"/>
-                    </md-input-container>
-                    <md-input-container ng-if="
-                            gaf.evidence_code != 'ND'
-                            && gaf.evidence_code != 'IDA'
-                            && gaf.evidence_code != 'IMP'" flex>
-                        <label>With/From</label>
-                        <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
-                    </md-input-container>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container class="md-block" flex>
-                        <label>Notes</label>
-                        <textarea disabled name="notes" ng-model="gaf.notes" rows="5"></textarea>
-                    </md-input-container>
-                </div>
-                <md-button ng-cloak ng-show="gaf.review_state != 0" class="md-primary md-raised" ng-click="challengeGaf()">Challenge</md-button>
-            </form>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex>
+                    <label>Gene ID</label>
+                    <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Qualifier</label>
+                    <input disabled name="qualifier" ng-model="gaf.qualifier"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex>
+                    <label>GO ID</label>
+                    <input disabled ng-model="gaf.go_id"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <label>PMID (DB Reference)</label>
+                    <input disabled name="db_reference" ng-model="gaf.db_reference"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex>
+                    <label>Evidence Code</label>
+                    <input disabled name="evidence_code" ng-model="gaf.evidence_code"/>
+                </md-input-container>
+                <md-input-container ng-if="
+                        gaf.evidence_code != 'ND'
+                        && gaf.evidence_code != 'IDA'
+                        && gaf.evidence_code != 'IMP'" flex>
+                    <label>With/From</label>
+                    <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex>
+                    <label>Notes</label>
+                    <textarea disabled name="notes" ng-model="gaf.notes" rows="5"></textarea>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-align="center center">
+                <md-button ng-click="challenge = !challenge" ng-cloak ng-hide="gaf.review_state == 0 || challenge" class="md-primary md-raised" ng-click="challengeGaf()">Challenge this Annotation</md-button>
+            </div>
         </md-card-content>
     </md-card>
 </div>

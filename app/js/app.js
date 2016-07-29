@@ -762,4 +762,11 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
                  $scope.gaf.notes = "None";
             }
         });
+
+        $scope.challenge = false;
+}]);
+
+cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend',
+    function($scope, CacaoBackend) {
+        $scope.onOff = false;
 }]);
