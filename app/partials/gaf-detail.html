@@ -42,7 +42,7 @@
 </style>
 <div layout="row" layout-align="center center">
     <md-card flex="40" ng-show="challenge" class="cssSlideLeft">
-        <md-card-header style="background-color: {{gaf.review_state | header_color}}">
+        <md-card-header style="background-color: rgba(33, 150, 243, 0.33)">
             <md-card-avatar>
                 <img gravatar-src="gaf.owner.email" style="border-radius: 50%">
             </md-card-avatar>
@@ -54,10 +54,8 @@
                     </div>
                     <span flex></span>
                     <div layout="column" layout-align="center center" ng-show="gaf.review_state != 0" ng-cloak>
-                        <ng-md-icon icon="{{gaf.review_state | header_icon}}" "fill: white" >
-                            <md-tooltip>
-                                {{gaf.review_state | review_state_to_english}}
-                            </md-tooltip>
+                        <ng-md-icon icon="whatshot" "fill: white" >
+                            <md-tooltip>Challenge</md-tooltip>
                         </ng-md-icon>
                     </div>
                 </div>
@@ -207,7 +205,19 @@
                 </md-input-container>
             </div>
             <div layout="row" layout-align="center center">
-                <md-button ng-click="challenge = !challenge" ng-cloak ng-hide="gaf.review_state == 0 || challenge" class="md-primary md-raised" ng-click="challengeGaf()">Challenge this Annotation</md-button>
+                <!--<md-button ng-click="challenge = !challenge" ng-hide="-->
+                    <!--gaf.review_state == 0 ||-->
+                    <!--challenge ||-->
+                    <!--gaf.owner.username == current_user"-->
+                    <!--class="md-primary md-raised" ng-click="challengeGaf()">-->
+                    <!--Challenge this Annotation-->
+                <!--</md-button>-->
+                <md-button ng-click="challenge = !challenge" ng-hide="
+                    gaf.review_state == 0 ||
+                    challenge"
+                    class="md-primary md-raised" ng-click="challengeGaf()">
+                    Challenge this Annotation
+                </md-button>
             </div>
         </md-card-content>
     </md-card>

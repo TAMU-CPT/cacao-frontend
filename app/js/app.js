@@ -751,8 +751,8 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         };
 }]);
 
-cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
-    function($scope, $routeParams, CacaoBackend) {
+cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$localStorage',
+    function($scope, $routeParams, CacaoBackend, $localStorage) {
         CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(data) {
             $scope.gaf = data;
             if (!$scope.gaf.qualifier) {
@@ -763,6 +763,7 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
             }
         });
 
+        $scope.current_user = $localStorage.jwtData.username;
         $scope.challenge = false;
 }]);
 
