@@ -41,7 +41,11 @@
                     </div>
                     <span flex></span>
                     <div layout="column" layout-align="center center" ng-show="gaf.review_state != 0" ng-cloak>
-                        <ng-md-icon icon="{{gaf.review_state | header_icon}}" "fill: white" ></ng-md-icon>
+                        <ng-md-icon icon="{{gaf.review_state | header_icon}}" "fill: white" >
+                            <md-tooltip>
+                                {{gaf.review_state | review_state_to_english}}
+                            </md-tooltip>
+                        </ng-md-icon>
                     </div>
                 </div>
             </md-card-header-text>
