@@ -753,6 +753,45 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
 
 cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$localStorage',
     function($scope, $routeParams, CacaoBackend, $localStorage) {
+        $scope.current_user = $localStorage.jwtData.username;
+        $scope.challenge = false;
+
+        $scope.eco_codes = [
+            'IDA: Inferred from Direct Assay',
+            'IMP: Inferred from Mutant Phenotype',
+            'IGI: Inferred from Genetic Interaction',
+            'ISS: Inferred from Sequence Similarity',
+            'ISO: Inferred from Sequence Orthology',
+            'ISA: Inferred from Sequence Alignment',
+            'ISM: Inferred from Sequence Model',
+            'IGC: Inferred from Genomic Context',
+        ];
+
+        $scope.qualifiers = [
+            'NOT',
+            'Contributes to',
+            'Colocalizes with',
+            //'Incorrect (CACAO)',
+        ]
+
+        $scope.with_from_db = [
+             'UniProtKB',
+             'PMID',
+             'InterPro',
+             'EcoCyc',
+             'DictyBase',
+             'FB',
+             'MGI',
+             'SGD',
+             'TAIR',
+             'WB',
+             'Zfin',
+        ]
+
+        $scope.reveal_gaf_form = function() {
+            console.log($scope.gaf);
+        }
+
         CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(data) {
             $scope.gaf = data;
             if (!$scope.gaf.qualifier) {
@@ -763,8 +802,6 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             }
         });
 
-        $scope.current_user = $localStorage.jwtData.username;
-        $scope.challenge = false;
 }]);
 
 cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend',
