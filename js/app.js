@@ -1,5 +1,20 @@
-'use strict';
-
+window._ = require('lodash');
+require('angular');
+require('angular-route');
+require('restangular');
+require('angular-resource');
+require('angular-material');
+require('angular-material-icons');
+require('angular-aria');
+require('angular-gravatar');
+require('angular-material-data-table');
+require('angular-messages');
+require('angular-animate');
+require('jquery');
+require('ngstorage');
+require('angular-jwt');
+require('lightbox2');
+var jwt_decode = require('jwt-decode');
 /* App Module */
 
 var cacaoApp = angular.module('cacaoApp', [
@@ -65,7 +80,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             }).
             when('/review', {
                 templateUrl: 'partials/review.html',
-                controller: 'ReviewCtrl'
+                controller: 'ReviewCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
             }).
             when('/test', {
                 templateUrl: 'partials/test.html',
@@ -81,6 +99,16 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             otherwise({
                 redirectTo: '/'
             });
+
+            function loginRequired($q, $location, $localStorage) {
+                var deferred = $q.defer();
+                if ($localStorage.jwtToken) {
+                    deferred.resolve();
+                } else {
+                    $location.path('/login');
+                }
+                return deferred.promise;
+            }
 
         $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
             return {
