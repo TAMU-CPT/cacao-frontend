@@ -17,6 +17,38 @@ require('lightbox2');
 var jwt_decode = require('jwt-decode');
 /* App Module */
 
+const eco_codes = [
+    'IDA: Inferred from Direct Assay',
+    'IMP: Inferred from Mutant Phenotype',
+    'IGI: Inferred from Genetic Interaction',
+    'ISS: Inferred from Sequence Similarity',
+    'ISO: Inferred from Sequence Orthology',
+    'ISA: Inferred from Sequence Alignment',
+    'ISM: Inferred from Sequence Model',
+    'IGC: Inferred from Genomic Context',
+];
+
+const qualifiers = [
+    'NOT',
+    'Contributes to',
+    'Colocalizes with',
+    //'Incorrect (CACAO)',
+]
+
+const with_from_db = [
+     'UniProtKB',
+     'PMID',
+     'InterPro',
+     'EcoCyc',
+     'DictyBase',
+     'FB',
+     'MGI',
+     'SGD',
+     'TAIR',
+     'WB',
+     'Zfin',
+]
+
 var cacaoApp = angular.module('cacaoApp', [
     'ngRoute',
     'restangular',
@@ -108,7 +140,7 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                     $location.path('/login');
                 }
                 return deferred.promise;
-            }
+            };
 
         $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
             return {
@@ -504,6 +536,9 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout
         });
 
         function init() {
+            $scope.eco_codes = eco_codes;
+            $scope.qualifiers = qualifiers;
+            $scope.with_from_db = with_from_db;
             $scope.gafData.go_id = "GO:";
             if ($routeParams.taxon) {
                 $scope.gafData.taxon = $routeParams.taxon;
@@ -563,37 +598,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout
             }
         };
 
-        $scope.eco_codes = [
-            'IDA: Inferred from Direct Assay',
-            'IMP: Inferred from Mutant Phenotype',
-            'IGI: Inferred from Genetic Interaction',
-            'ISS: Inferred from Sequence Similarity',
-            'ISO: Inferred from Sequence Orthology',
-            'ISA: Inferred from Sequence Alignment',
-            'ISM: Inferred from Sequence Model',
-            'IGC: Inferred from Genomic Context',
-        ];
-
-        $scope.qualifiers = [
-            'NOT',
-            'Contributes to',
-            'Colocalizes with',
-            //'Incorrect (CACAO)',
-        ]
-
-        $scope.with_from_db = [
-             'UniProtKB',
-             'PMID',
-             'InterPro',
-             'EcoCyc',
-             'DictyBase',
-             'FB',
-             'MGI',
-             'SGD',
-             'TAIR',
-             'WB',
-             'Zfin',
-        ]
 
         $scope.gafData = {
             db: 'UniProtKB',
@@ -603,13 +607,6 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout
         init();
 
         $scope.saveData = function() {
-            // qualifier
-            var quals = {
-                'NOT': 'NOT',
-                'Contributes to': 'contributes_to',
-                'Colocalizes with': 'colocalizes_with',
-            };
-
             function with_or_from() {
                 if ($scope.gafData.with_from_db && $scope.gafData.with_from_id) {
                     return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
@@ -624,7 +621,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout
                 review_state: 1,
                 db_object_id: $scope.gafData.db_object_id,
                 db_object_symbol: $scope.gafData.db_object_symbol,
-                qualifier: quals[$scope.gafData.qualifier],
+                qualifier: $scope.gafData.qualifier,
                 go_id: $scope.gafData.go_id,
                 db_reference: 'PMID:' + $scope.gafData.db_reference,
                 evidence_code: $scope.gafData.evidence_code.slice(0,3),
@@ -675,6 +672,43 @@ cacaoApp.filter('eco_to_text', function() {
     };
 })
 
+cacaoApp.filter('eco_to_text_full', function() {
+    return function(input) {
+        switch(input){
+            case 'ND' : return 'No Data';
+            case 'IDA': return 'IDA: Inferred from Direct Assay';
+            case 'IMP': return 'IMP: Inferred from Mutant Phenotype';
+            case 'IGI': return 'IGI: Inferred from Genetic Interaction';
+            case 'IEA': return 'IEA: Inferred from Electronic Assay';
+            case 'ISS': return 'ISS: Inferred from Sequence Similarity';
+            case 'ISO': return 'ISO: Inferred from Sequence Orthology';
+            case 'ISA': return 'ISA: Inferred from Sequence Alignment';
+            case 'ISM': return 'ISM: Inferred from Sequence Model';
+            case 'IGC': return 'IGC: Inferred from Genomic Context';
+        }
+    };
+})
+
+cacaoApp.filter('qualifier_to_text', function() {
+    return function(input) {
+        switch(input){
+            case 'NOT': return 'NOT';
+            case 'Contributes to': return 'contributes_to';
+            case 'Colocalizes with': return 'colocalizes_with';
+        }
+    };
+})
+
+cacaoApp.filter('qualifier_to_text', function() {
+    return function(input) {
+        switch(input){
+            case 'NOT': return 'NOT';
+            case 'contributes_to': return 'Contributes to';
+            case 'colocalizes_with': return 'Colocalizes with';
+        }
+    };
+})
+
 cacaoApp.filter('header_color', function() {
     return function(input) {
         switch(input){
@@ -703,8 +737,8 @@ cacaoApp.filter('header_icon', function() {
     };
 });
 
-cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
-    function($scope, CacaoBackend, $timeout) {
+cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter',
+    function($scope, CacaoBackend, $timeout, $filter) {
         function init() {
             if ($scope.assessmentForm) {
                 $scope.assessmentForm.$setUntouched();
@@ -722,8 +756,11 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         var next_gaf = function() {
             CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
                 $scope.current_gaf = data[0];
+                $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
                 if (!$scope.current_gaf.qualifier) {
-                     $scope.current_gaf.qualifier = "None";
+                    $scope.current_gaf.show_qualifier = "None";
+                } else {
+                    $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
                 }
                 $scope.num_left = data.meta.count;
             });
@@ -749,8 +786,11 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         // get initial object on page load
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
             $scope.current_gaf = data[0];
+            $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
             if (!$scope.current_gaf.qualifier) {
-                 $scope.current_gaf.qualifier = "None";
+                 $scope.current_gaf.show_qualifier = "None";
+            } else {
+                $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
             }
             $scope.num_left = data.meta.count;
         });
@@ -779,49 +819,28 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout',
         };
 }]);
 
-cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$localStorage',
-    function($scope, $routeParams, CacaoBackend, $localStorage) {
+cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$localStorage', '$filter',
+    function($scope, $routeParams, CacaoBackend, $localStorage, $filter) {
         $scope.current_user = $localStorage.jwtData.username;
         $scope.challenge = false;
 
-        $scope.eco_codes = [
-            'IDA: Inferred from Direct Assay',
-            'IMP: Inferred from Mutant Phenotype',
-            'IGI: Inferred from Genetic Interaction',
-            'ISS: Inferred from Sequence Similarity',
-            'ISO: Inferred from Sequence Orthology',
-            'ISA: Inferred from Sequence Alignment',
-            'ISM: Inferred from Sequence Model',
-            'IGC: Inferred from Genomic Context',
-        ];
-
-        $scope.qualifiers = [
-            'NOT',
-            'Contributes to',
-            'Colocalizes with',
-            //'Incorrect (CACAO)',
-        ]
-
-        $scope.with_from_db = [
-             'UniProtKB',
-             'PMID',
-             'InterPro',
-             'EcoCyc',
-             'DictyBase',
-             'FB',
-             'MGI',
-             'SGD',
-             'TAIR',
-             'WB',
-             'Zfin',
-        ]
 
         $scope.reveal_gaf_form = function() {
-            console.log($scope.gaf);
+            $scope.eco_codes = eco_codes;
+            $scope.qualifiers = qualifiers;
+            $scope.with_from_db = with_from_db;
+
+            $scope.gafData = angular.copy($scope.gaf);
+            $scope.gafData.evidence_code = $filter('eco_to_text_full')($scope.gafData.evidence_code);
+            $scope.gafData.qualifier = $filter('text_to_qualifier')($scope.gafData.qualifier);
+            $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
+            $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
         }
 
         CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(data) {
             $scope.gaf = data;
+
+            $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
             if (!$scope.gaf.qualifier) {
                  $scope.gaf.qualifier = "None";
             }
@@ -830,6 +849,38 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             }
         });
 
+        $scope.saveData = function() {
+            function with_or_from() {
+                if ($scope.gafData.with_from_db && $scope.gafData.with_from_id) {
+                    return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
+                }
+                else {
+                    return '';
+                }
+            };
+
+            CacaoBackend.all('gafs').post({
+                db: $scope.gafData.db,
+                review_state: 1,
+                db_object_id: $scope.gafData.db_object_id,
+                db_object_symbol: $scope.gafData.db_object_symbol,
+                qualifier: $scope.gafData.qualifier,
+                go_id: $scope.gafData.go_id,
+                db_reference: 'PMID:' + $scope.gafData.db_reference,
+                evidence_code: $scope.gafData.evidence_code.slice(0,3),
+                with_or_from: with_or_from(),
+                aspect: $scope.gafData.aspect,
+                db_object_type: $scope.gafData.db_object_type,
+                taxon: $scope.gafData.taxon,
+                assigned_by: $scope.gafData.assigned_by,
+                notes: $scope.gafData.notes,
+            })
+            .then(function(gaf) {
+                $location.path('/gaf/' + gaf.id);
+            }, function() {
+                console.log("there was an error");
+            });
+        };
 }]);
 
 cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend',

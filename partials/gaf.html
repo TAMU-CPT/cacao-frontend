@@ -47,7 +47,7 @@
                                     <label>Qualifier</label>
                                     <md-select name="qualifier" ng-model="gafData.qualifier" placeholder="Qualifier">
                                         <md-option></md-option>
-                                        <md-option ng-repeat="qualifier in qualifiers">{{qualifier}}</md-option>
+                                        <md-option ng-repeat="qualifier in qualifiers" ng-value="qualifier | qualifier_to_text">{{qualifier}}</md-option>
                                     </md-select>
                                 </md-input-container>
                             </div>
@@ -80,6 +80,7 @@
                             </div>
                             <div layout="row" layout-sm="column">
                                 <md-input-container flex>
+                                    <label>Evidence Code</label>
                                     <md-select name="evidence_code" ng-model="gafData.evidence_code" placeholder="Evidence Code" ng-required="true">
                                         <md-option ng-repeat="eco_code in eco_codes">{{eco_code}}</md-option>
                                     </md-select>
