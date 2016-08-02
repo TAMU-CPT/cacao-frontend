@@ -78,7 +78,7 @@
                 <div layout="row" layout-sm="column">
                     <md-input-container flex>
                         <label>Qualifier</label>
-                        <input disabled name="qualifier" ng-model="current_gaf.qualifier"/>
+                        <input disabled name="qualifier" value="{{current_gaf.qualifier | qualifier_to_text}}"/>
                     </md-input-container>
                     <md-checkbox ng-false-value="'Qualifier'" ng-true-value="null" ng-model="flagged.qualifier" aria-label="Qualifier Checkbox"></md-checkbox>
                 </div>
