@@ -30,8 +30,8 @@ const eco_codes = [
 
 const qualifiers = [
     'NOT',
-    'Contributes to',
-    'Colocalizes with',
+    'contributes_to',
+    'colocalizes_with',
     //'Incorrect (CACAO)',
 ]
 
@@ -850,8 +850,6 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             $scope.gaf = data;
 
             $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
-            $scope.gaf.show_qualifier = $filter('qualifier_to_text')($scope.gaf.qualifier);
-            console.log($scope.gaf.show_qualifier);
             console.log($scope.gaf.qualifier);
         });
 
