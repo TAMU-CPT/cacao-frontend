@@ -737,6 +737,12 @@ cacaoApp.filter('header_icon', function() {
     };
 });
 
+cacaoApp.filter('goChartUrl', function() {
+    return function(input) {
+        return 'http://www.ebi.ac.uk/QuickGO-Beta/services/chart?ids=' + input;
+    };
+});
+
 cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter',
     function($scope, CacaoBackend, $timeout, $filter) {
         function init() {

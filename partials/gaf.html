@@ -176,8 +176,8 @@
                             </div>
                             <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
                                 <div class="md-media-lg">
-                                    <a href="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" data-lightbox="image-1" data-title="{{goTermData.id}}">
-                                        <img src="http://amigo.geneontology.org/visualize?mode=quickgo&beta=0&inline=false&term={{goTermData.id}}" />
+                                    <a href="{{ goTermData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{goTermData.id}}">
+                                        <img src="{{ goTermData.id | goChartUrl }}" />
                                     </a>
                                 </div>
                             </md-card-title-media>
