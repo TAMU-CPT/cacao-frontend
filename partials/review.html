@@ -50,7 +50,7 @@
 <md-card>
     <md-card-title>
         </md-card-title-text>
-            <span ng-show="num_left" class="md-headline">You have {{num_left}} annotations left to review!</span>
+            <span ng-show="num_left" class="md-headline">You have {{num_left}} annotation{{plural()}} left to review!</span>
             <span ng-show="!num_left" class="md-headline">There are no Annotations to review at this time.</span>
         </md-card-title-text>
     </md-card-title>
@@ -101,13 +101,13 @@
                         <label>Evidence Code</label>
                         <input disabled name="evidence_code" ng-model="current_gaf.evidence_code"/>
                     </md-input-container>
-                    <md-checkbox ng-false-value="'Evidence Code'" ng-true-value="null" ng-model="flagged.evidence" aria-label="Evidence Code Checkbox"></md-checkbox>
                     <md-input-container ng-if="
                             current_gaf.evidence_code != 'IDA'
                             && current_gaf.evidence_code != 'IMP'" flex>
                         <label>With/From</label>
                         <input disabled name="with_from_db" ng-model="current_gaf.with_or_from"/>
                     </md-input-container>
+                    <md-checkbox ng-false-value="'Evidence Code'" ng-true-value="null" ng-model="flagged.evidence" aria-label="Evidence Code Checkbox"></md-checkbox>
                 </div>
                 <div layout="row" layout-sm="column">
                     <md-input-container class="md-block" flex>

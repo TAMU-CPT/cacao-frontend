@@ -775,6 +775,14 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             }
         });
 
+        $scope.plural = function() {
+            if ($scope.num_left == 1) {
+                return '';
+            } else {
+                return 's';
+            }
+        };
+
         init();
 
         $scope.saveAssessment = function() {
