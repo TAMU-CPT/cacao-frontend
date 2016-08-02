@@ -28,10 +28,23 @@ const eco_codes = [
     'IGC: Inferred from Genomic Context',
 ];
 
+const eco_code_defs = {
+    'ND' : 'No Data',
+    'IDA': 'Inferred from Direct Assay',
+    'IMP': 'Inferred from Mutant Phenotype',
+    'IGI': 'Inferred from Genetic Interaction',
+    'IEA': 'Inferred from Electronic Assay',
+    'ISS': 'Inferred from Sequence Similarity',
+    'ISO': 'Inferred from Sequence Orthology',
+    'ISA': 'Inferred from Sequence Alignment',
+    'ISM': 'Inferred from Sequence Model',
+    'IGC': 'Inferred from Genomic Context',
+};
+
 const qualifiers = [
     'NOT',
-    'Contributes to',
-    'Colocalizes with',
+    'contributes_to',
+    'colocalizes_with',
     //'Incorrect (CACAO)',
 ]
 
@@ -656,38 +669,20 @@ cacaoApp.filter('review_state_to_english', function() {
 });
 
 cacaoApp.filter('eco_to_text', function() {
-    return function(input) {
-        switch(input){
-            case 'ND' : return 'No Data';
-            case 'IDA': return 'Inferred from Direct Assay';
-            case 'IMP': return 'Inferred from Mutant Phenotype';
-            case 'IGI': return 'Inferred from Genetic Interaction';
-            case 'IEA': return 'Inferred from Electronic Assay';
-            case 'ISS': return 'Inferred from Sequence Similarity';
-            case 'ISO': return 'Inferred from Sequence Orthology';
-            case 'ISA': return 'Inferred from Sequence Alignment';
-            case 'ISM': return 'Inferred from Sequence Model';
-            case 'IGC': return 'Inferred from Genomic Context';
+    return function(input, full) {
+        if(full){
+            return input + ': ' + eco_code_defs[input];
+        } else {
+            return eco_code_defs[input];
         }
     };
-})
+});
 
-cacaoApp.filter('eco_to_text_full', function() {
+cacaoApp.filter('text_to_eco', function() {
     return function(input) {
-        switch(input){
-            case 'ND' : return 'No Data';
-            case 'IDA': return 'IDA: Inferred from Direct Assay';
-            case 'IMP': return 'IMP: Inferred from Mutant Phenotype';
-            case 'IGI': return 'IGI: Inferred from Genetic Interaction';
-            case 'IEA': return 'IEA: Inferred from Electronic Assay';
-            case 'ISS': return 'ISS: Inferred from Sequence Similarity';
-            case 'ISO': return 'ISO: Inferred from Sequence Orthology';
-            case 'ISA': return 'ISA: Inferred from Sequence Alignment';
-            case 'ISM': return 'ISM: Inferred from Sequence Model';
-            case 'IGC': return 'IGC: Inferred from Genomic Context';
-        }
+        return input.replace(/:.*/g, '');
     };
-})
+});
 
 cacaoApp.filter('text_to_qualifier', function() {
     return function(input) {
@@ -695,6 +690,7 @@ cacaoApp.filter('text_to_qualifier', function() {
             case 'NOT': return 'NOT';
             case 'Contributes to': return 'contributes_to';
             case 'Colocalizes with': return 'colocalizes_with';
+            case 'None': return null;
         }
     };
 })
@@ -705,6 +701,7 @@ cacaoApp.filter('qualifier_to_text', function() {
             case 'NOT': return 'NOT';
             case 'contributes_to': return 'Contributes to';
             case 'colocalizes_with': return 'Colocalizes with';
+            default: return 'None';
         }
     };
 })
@@ -769,11 +766,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 if ($scope.num_left > 0) {
                     $scope.current_gaf = data[0];
                     $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
-                    if (!$scope.current_gaf.qualifier) {
-                        $scope.current_gaf.show_qualifier = "None";
-                    } else {
-                        $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
-                    }
+                    $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
                 }
             });
         };
@@ -801,11 +794,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             if ($scope.num_left > 0) {
                 $scope.current_gaf = data[0];
                 $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
-                if (!$scope.current_gaf.qualifier) {
-                     $scope.current_gaf.show_qualifier = "None";
-                } else {
-                    $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
-                }
+                $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
             }
         });
 
@@ -840,11 +829,12 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
 
         $scope.reveal_gaf_form = function() {
             $scope.eco_codes = eco_codes;
-            $scope.qualifiers = qualifiers;
+            $scope.qualifiers = qualifiers.map(function(x){ return $filter('qualifier_to_text')(x); });
             $scope.with_from_db = with_from_db;
 
             $scope.gafData = angular.copy($scope.gaf);
-            $scope.gafData.evidence_code = $filter('eco_to_text_full')($scope.gafData.evidence_code);
+            $scope.gafData.evidence_code = $filter('eco_to_text')($scope.gafData.evidence_code, true);
+            $scope.gafData.qualifier = $filter('qualifier_to_text')($scope.gafData.qualifier);
             $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
             $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
         }
@@ -853,15 +843,6 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             $scope.gaf = data;
 
             $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
-            if (!$scope.gaf.qualifier) {
-                 $scope.gaf.show_qualifier = "None";
-            } else {
-                $scope.gaf.show_qualifier = $filter('qualifier_to_text')($scope.gaf.qualifier);
-            }
-            if (!$scope.gaf.notes) {
-                 $scope.gaf.notes = "None";
-            }
-            console.log($scope.gaf.show_qualifier);
             console.log($scope.gaf.qualifier);
         });
 
