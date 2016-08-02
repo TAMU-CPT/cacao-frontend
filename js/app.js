@@ -705,6 +705,7 @@ cacaoApp.filter('qualifier_to_text', function() {
             case 'NOT': return 'NOT';
             case 'contributes_to': return 'Contributes to';
             case 'colocalizes_with': return 'Colocalizes with';
+            default: return 'None';
         }
     };
 })
@@ -849,11 +850,7 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             $scope.gaf = data;
 
             $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
-            if (!$scope.gaf.qualifier) {
-                 $scope.gaf.show_qualifier = "None";
-            } else {
-                $scope.gaf.show_qualifier = $filter('qualifier_to_text')($scope.gaf.qualifier);
-            }
+            $scope.gaf.show_qualifier = $filter('qualifier_to_text')($scope.gaf.qualifier);
             if (!$scope.gaf.notes) {
                  $scope.gaf.notes = "None";
             }
