@@ -176,8 +176,8 @@
                             </div>
                             <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
                                 <div class="md-media-lg">
-                                    <a href="{{ goTermData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{goTermData.id}}">
-                                        <img src="{{ goTermData.id | goChartUrl }}" />
+                                    <a ng-if="goTerData.id" ng-href="{{ goTermData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{goTermData.id}}">
+                                        <img ng-src="{{ goTermData.id | goChartUrl }}" />
                                     </a>
                                 </div>
                             </md-card-title-media>
