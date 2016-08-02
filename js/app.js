@@ -739,7 +739,11 @@ cacaoApp.filter('header_icon', function() {
 
 cacaoApp.filter('goChartUrl', function() {
     return function(input) {
-        return 'http://www.ebi.ac.uk/QuickGO-Beta/services/chart?ids=' + input;
+        if (input) {
+            return 'http://www.ebi.ac.uk/QuickGO-Beta/services/chart?ids=' + input;
+        } else {
+            return '';
+        }
     };
 });
 

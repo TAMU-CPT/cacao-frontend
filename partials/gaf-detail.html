@@ -80,7 +80,6 @@
                     </md-input-container>
                     <md-input-container flex>
                         <label>Qualifier</label>
-                        {{gafData.qualifier}}
                         <md-select name="qualifier" ng-model="gafData.qualifier" placeholder="Qualifier">
                             <md-option></md-option>
                             <md-option ng-repeat="qualifier in qualifiers" ng-value="qualifier | qualifier_to_text">{{qualifier}}</md-option>
