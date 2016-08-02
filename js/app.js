@@ -684,17 +684,6 @@ cacaoApp.filter('text_to_eco', function() {
     };
 });
 
-cacaoApp.filter('text_to_qualifier', function() {
-    return function(input) {
-        switch(input){
-            case 'NOT': return 'NOT';
-            case 'Contributes to': return 'contributes_to';
-            case 'Colocalizes with': return 'colocalizes_with';
-            case 'None': return null;
-        }
-    };
-})
-
 cacaoApp.filter('qualifier_to_text', function() {
     return function(input) {
         switch(input){
@@ -829,12 +818,11 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
 
         $scope.reveal_gaf_form = function() {
             $scope.eco_codes = eco_codes;
-            $scope.qualifiers = qualifiers.map(function(x){ return $filter('qualifier_to_text')(x); });
+            $scope.qualifiers = qualifiers;
             $scope.with_from_db = with_from_db;
 
             $scope.gafData = angular.copy($scope.gaf);
             $scope.gafData.evidence_code = $filter('eco_to_text')($scope.gafData.evidence_code, true);
-            $scope.gafData.qualifier = $filter('qualifier_to_text')($scope.gafData.qualifier);
             $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
             $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
         }
