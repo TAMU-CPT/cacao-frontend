@@ -812,7 +812,6 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             $scope.gafData = angular.copy($scope.gaf);
             $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
             $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
-            console.log($scope.gafData);
         }
 
         CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(data) {
@@ -845,8 +844,14 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
                 assigned_by: $scope.gafData.assigned_by,
                 notes: $scope.gafData.notes,
             })
-            .then(function(gaf) {
-                $location.path('/gaf/' + gaf.id);
+            .then(function() {
+                CacaoBackend.all('challenges').post({
+                    gaf: 'http://localhost:8000/gafs/' + $scope.gaf.id + '/',
+                    reason: $scope.challenge_data.notes,
+                })
+                .then(function() {
+                    $location.path('/review');
+                });
             }, function() {
                 console.log("there was an error");
             });
