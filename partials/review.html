@@ -120,7 +120,7 @@
     </md-card>
 
     <div flex="70">
-        <md-card>
+        <md-card ng-show="num_left">
             <md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
                 <md-card-header-text ng-hide="anyFlagged()">
                     <div layout="row" layout-align-sm="start center">
