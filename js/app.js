@@ -18,28 +18,15 @@ var jwt_decode = require('jwt-decode');
 /* App Module */
 
 const eco_codes = [
-    'IDA: Inferred from Direct Assay',
-    'IMP: Inferred from Mutant Phenotype',
-    'IGI: Inferred from Genetic Interaction',
-    'ISS: Inferred from Sequence Similarity',
-    'ISO: Inferred from Sequence Orthology',
-    'ISA: Inferred from Sequence Alignment',
-    'ISM: Inferred from Sequence Model',
-    'IGC: Inferred from Genomic Context',
+    'IDA',
+    'IMP',
+    'IGI',
+    'ISS',
+    'ISO',
+    'ISA',
+    'ISM',
+    'IGC',
 ];
-
-const eco_code_defs = {
-    'ND' : 'No Data',
-    'IDA': 'Inferred from Direct Assay',
-    'IMP': 'Inferred from Mutant Phenotype',
-    'IGI': 'Inferred from Genetic Interaction',
-    'IEA': 'Inferred from Electronic Assay',
-    'ISS': 'Inferred from Sequence Similarity',
-    'ISO': 'Inferred from Sequence Orthology',
-    'ISA': 'Inferred from Sequence Alignment',
-    'ISM': 'Inferred from Sequence Model',
-    'IGC': 'Inferred from Genomic Context',
-};
 
 const qualifiers = [
     'NOT',
@@ -637,7 +624,7 @@ cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout
                 qualifier: $scope.gafData.qualifier,
                 go_id: $scope.gafData.go_id,
                 db_reference: 'PMID:' + $scope.gafData.db_reference,
-                evidence_code: $scope.gafData.evidence_code.slice(0,3),
+                evidence_code: $scope.gafData.evidence_code,
                 with_or_from: with_or_from(),
                 aspect: $scope.gafData.aspect,
                 db_object_type: $scope.gafData.db_object_type,
@@ -669,18 +656,19 @@ cacaoApp.filter('review_state_to_english', function() {
 });
 
 cacaoApp.filter('eco_to_text', function() {
-    return function(input, full) {
-        if(full){
-            return input + ': ' + eco_code_defs[input];
-        } else {
-            return eco_code_defs[input];
-        }
-    };
-});
-
-cacaoApp.filter('text_to_eco', function() {
     return function(input) {
-        return input.replace(/:.*/g, '');
+        switch(input){
+            case 'ND' : return 'No Data';
+            case 'IDA': return 'Inferred from Direct Assay';
+            case 'IMP': return 'Inferred from Mutant Phenotype';
+            case 'IGI': return 'Inferred from Genetic Interaction';
+            case 'IEA': return 'Inferred from Electronic Assay';
+            case 'ISS': return 'Inferred from Sequence Similarity';
+            case 'ISO': return 'Inferred from Sequence Orthology';
+            case 'ISA': return 'Inferred from Sequence Alignment';
+            case 'ISM': return 'Inferred from Sequence Model';
+            case 'IGC': return 'Inferred from Genomic Context';
+        }
     };
 });
 
@@ -822,53 +810,46 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             $scope.with_from_db = with_from_db;
 
             $scope.gafData = angular.copy($scope.gaf);
-            $scope.gafData.evidence_code = $filter('eco_to_text')($scope.gafData.evidence_code, true);
             $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
             $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
+            console.log($scope.gafData);
         }
 
         CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(data) {
             $scope.gaf = data;
-
             $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
-            console.log($scope.gaf.qualifier);
         });
 
         $scope.saveData = function() {
-            console.log($scope.gafData);
-            //console.log($scope.gafData.show_qualifier);
-            //console.log($scope.gafData.qualifier);
-            //console.log($scope.gaf.show_qualifier);
-            //console.log($scope.gaf.qualifier);
-            //function with_or_from() {
-                //if ($scope.gafData.evidence_code.slice(0,3) != 'IDA' && $scope.gafData.evidence_code.slice(0,3) != 'IMP') {
-                    //return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
-                //} else {
-                    //return '';
-                //}
-            //};
+            function with_or_from() {
+                if ($scope.gafData.evidence_code != 'IDA' && $scope.gafData.evidence_code != 'IMP') {
+                    return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
+                } else {
+                    return '';
+                }
+            };
 
-            //CacaoBackend.all('gafs').post({
-                //db: $scope.gafData.db,
-                //review_state: 1,
-                //db_object_id: $scope.gafData.db_object_id,
-                //db_object_symbol: $scope.gafData.db_object_symbol,
-                //qualifier: $scope.gafData.qualifier,
-                //go_id: $scope.gafData.go_id,
-                //db_reference: 'PMID:' + $scope.gafData.db_reference,
-                //evidence_code: $scope.gafData.evidence_code.slice(0,3),
-                //with_or_from: with_or_from(),
-                //aspect: $scope.gafData.aspect,
-                //db_object_type: $scope.gafData.db_object_type,
-                //taxon: $scope.gafData.taxon,
-                //assigned_by: $scope.gafData.assigned_by,
-                //notes: $scope.gafData.notes,
-            //})
-            //.then(function(gaf) {
-                //$location.path('/gaf/' + gaf.id);
-            //}, function() {
-                //console.log("there was an error");
-            //});
+            CacaoBackend.all('gafs').post({
+                db: $scope.gafData.db,
+                review_state: 1,
+                db_object_id: $scope.gafData.db_object_id,
+                db_object_symbol: $scope.gafData.db_object_symbol,
+                qualifier: $scope.gafData.qualifier,
+                go_id: $scope.gafData.go_id,
+                db_reference: 'PMID:' + $scope.gafData.db_reference,
+                evidence_code: $scope.gafData.evidence_code,
+                with_or_from: with_or_from(),
+                aspect: $scope.gafData.aspect,
+                db_object_type: $scope.gafData.db_object_type,
+                taxon: $scope.gafData.taxon,
+                assigned_by: $scope.gafData.assigned_by,
+                notes: $scope.gafData.notes,
+            })
+            .then(function(gaf) {
+                $location.path('/gaf/' + gaf.id);
+            }, function() {
+                console.log("there was an error");
+            });
         };
 }]);
 
