@@ -756,13 +756,14 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         var next_gaf = function() {
             CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
                 $scope.num_left = data.meta.count;
-                console.log($scope.num_left);
-                $scope.current_gaf = data[0];
-                $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
-                if (!$scope.current_gaf.qualifier) {
-                    $scope.current_gaf.show_qualifier = "None";
-                } else {
-                    $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
+                if ($scope.num_left > 0) {
+                    $scope.current_gaf = data[0];
+                    $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
+                    if (!$scope.current_gaf.qualifier) {
+                        $scope.current_gaf.show_qualifier = "None";
+                    } else {
+                        $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
+                    }
                 }
             });
         };
@@ -787,8 +788,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         // get initial object on page load
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
             $scope.num_left = data.meta.count;
-            if ($scope.num_left) {
-                console.log($scope.num_left);
+            if ($scope.num_left > 0) {
                 $scope.current_gaf = data[0];
                 $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
                 if (!$scope.current_gaf.qualifier) {
