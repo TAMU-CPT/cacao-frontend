@@ -28,6 +28,19 @@ const eco_codes = [
     'IGC: Inferred from Genomic Context',
 ];
 
+const eco_code_defs = {
+    'ND' : 'No Data',
+    'IDA': 'Inferred from Direct Assay',
+    'IMP': 'Inferred from Mutant Phenotype',
+    'IGI': 'Inferred from Genetic Interaction',
+    'IEA': 'Inferred from Electronic Assay',
+    'ISS': 'Inferred from Sequence Similarity',
+    'ISO': 'Inferred from Sequence Orthology',
+    'ISA': 'Inferred from Sequence Alignment',
+    'ISM': 'Inferred from Sequence Model',
+    'IGC': 'Inferred from Genomic Context',
+};
+
 const qualifiers = [
     'NOT',
     'contributes_to',
@@ -656,38 +669,20 @@ cacaoApp.filter('review_state_to_english', function() {
 });
 
 cacaoApp.filter('eco_to_text', function() {
-    return function(input) {
-        switch(input){
-            case 'ND' : return 'No Data';
-            case 'IDA': return 'Inferred from Direct Assay';
-            case 'IMP': return 'Inferred from Mutant Phenotype';
-            case 'IGI': return 'Inferred from Genetic Interaction';
-            case 'IEA': return 'Inferred from Electronic Assay';
-            case 'ISS': return 'Inferred from Sequence Similarity';
-            case 'ISO': return 'Inferred from Sequence Orthology';
-            case 'ISA': return 'Inferred from Sequence Alignment';
-            case 'ISM': return 'Inferred from Sequence Model';
-            case 'IGC': return 'Inferred from Genomic Context';
+    return function(input, full) {
+        if(full){
+            return input + ': ' + eco_code_defs[input];
+        } else {
+            return eco_code_defs[input];
         }
     };
-})
+});
 
-cacaoApp.filter('eco_to_text_full', function() {
+cacaoApp.filter('text_to_eco', function() {
     return function(input) {
-        switch(input){
-            case 'ND' : return 'No Data';
-            case 'IDA': return 'IDA: Inferred from Direct Assay';
-            case 'IMP': return 'IMP: Inferred from Mutant Phenotype';
-            case 'IGI': return 'IGI: Inferred from Genetic Interaction';
-            case 'IEA': return 'IEA: Inferred from Electronic Assay';
-            case 'ISS': return 'ISS: Inferred from Sequence Similarity';
-            case 'ISO': return 'ISO: Inferred from Sequence Orthology';
-            case 'ISA': return 'ISA: Inferred from Sequence Alignment';
-            case 'ISM': return 'ISM: Inferred from Sequence Model';
-            case 'IGC': return 'IGC: Inferred from Genomic Context';
-        }
+        return input.replace(/:.*/g, '');
     };
-})
+});
 
 cacaoApp.filter('text_to_qualifier', function() {
     return function(input) {
