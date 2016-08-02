@@ -88,8 +88,8 @@
                                     </div>
                                     </md-input-container>
                                 <div layout="row" layout-sm="column" ng-if="GAFForm.evidence_code.$modelValue
-                                            && GAFForm.evidence_code.$modelValue != 'IDA: Inferred from Direct Assay'
-                                            && GAFForm.evidence_code.$modelValue != 'IMP: Inferred from Mutant Phenotype'" flex="40">
+                                            && GAFForm.evidence_code.$modelValue != 'IDA'
+                                            && GAFForm.evidence_code.$modelValue != 'IMP'" flex="40">
                                     <md-input-container flex>
                                         <md-select name="with_from_db" ng-model="gafData.with_from_db" placeholder="DB" ng-required="true">
                                             <md-option ng-repeat="w_f_db in with_from_db">{{w_f_db}}</md-option>

@@ -738,7 +738,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         };
 
         var next_gaf = function() {
-            CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
+            CacaoBackend.all('gafs').getList({review_state: 1,limit: 1}).then(function(data) {
                 $scope.num_left = data.meta.count;
                 if ($scope.num_left > 0) {
                     $scope.current_gaf = data[0];
@@ -750,9 +750,10 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
 
         $scope.put_gaf= function(state) {
             $scope.current_gaf.review_state=state;
-            $scope.current_gaf.put();
+            $scope.current_gaf.put().then(function() {
+                next_gaf();
+            });
             $scope.saveAssessment();
-            $timeout(next_gaf, 100);
             init();
         };
 
@@ -852,9 +853,10 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
                 assigned_by: $scope.gafData.assigned_by,
                 notes: $scope.gafData.notes,
             })
-            .then(function() {
+            .then(function(gaf) {
                 CacaoBackend.all('challenges').post({
-                    gaf: 'http://localhost:8000/gafs/' + $scope.gaf.id + '/',
+                    challenge_gaf: 'http://localhost:8000/gafs/' + gaf.id + '/',
+                    original_gaf: 'http://localhost:8000/gafs/' + $scope.gaf.id + '/',
                     reason: $scope.challenge_data.notes,
                 })
                 .then(function() {
