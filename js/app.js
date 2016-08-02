@@ -690,6 +690,7 @@ cacaoApp.filter('text_to_qualifier', function() {
             case 'NOT': return 'NOT';
             case 'Contributes to': return 'contributes_to';
             case 'Colocalizes with': return 'colocalizes_with';
+            case 'None': return null;
         }
     };
 })
@@ -761,11 +762,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 if ($scope.num_left > 0) {
                     $scope.current_gaf = data[0];
                     $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
-                    if (!$scope.current_gaf.qualifier) {
-                        $scope.current_gaf.show_qualifier = "None";
-                    } else {
-                        $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
-                    }
+                    $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
                 }
             });
         };
@@ -793,11 +790,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             if ($scope.num_left > 0) {
                 $scope.current_gaf = data[0];
                 $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
-                if (!$scope.current_gaf.qualifier) {
-                     $scope.current_gaf.show_qualifier = "None";
-                } else {
-                    $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
-                }
+                $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
             }
         });
 
