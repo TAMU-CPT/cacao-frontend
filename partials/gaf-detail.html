@@ -53,12 +53,12 @@
             <md-card-avatar>
                 <img gravatar-src="gaf.owner.email" style="border-radius: 50%">
             </md-card-avatar>
-            <md-card-header-text>
+            <md-card-header-text layout-align="center">
                 <div layout="row" layout-align="center center">
-                    <div>
+                    <!--<div>-->
                         <div flex class="md-title">{{gaf.owner.username || "External"}}</div>
-                        <div flex class="md-subhead">{{gaf.date}}</div>
-                    </div>
+                        <!--<div flex class="md-subhead">{{gaf.date}}</div>-->
+                    <!--</div>-->
                     <span flex></span>
                     <div layout="column" layout-align="center center" ng-show="gaf.review_state != 0" ng-cloak>
                         <ng-md-icon icon="whatshot" "fill: white" >
@@ -145,6 +145,15 @@
                         </div>
                     </md-input-container>
                 </div>
+                <div layout="row" layout-sm="column">
+                    <md-input-container class="md-block" flex>
+                        <label>Challenge Comments</label>
+                        <textarea required name="challenge_notes" ng-model="challenge_data.notes" rows="1" md-no-autogrow></textarea>
+                        <div ng-messages="GAFForm.challenge_notes.$error">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
                 <md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>
             </form>
         </md-card-content>
@@ -180,7 +189,7 @@
                 </md-input-container>
                 <md-input-container flex>
                     <label>Qualifier</label>
-                    <input disabled name="qualifier" ng-model="gaf.qualifier"/>
+                    <input disabled name="qualifier" ng-model="gaf.show_qualifier"/>
                 </md-input-container>
             </div>
             <div layout="row" layout-xs="column">
@@ -214,16 +223,16 @@
             </div>
             <div layout="row" layout-align="center center">
                 <!--<md-button ng-click="challenge = !challenge" ng-hide="-->
-                    <!--gaf.review_state == 0 ||-->
+                    <!--gaf.review_state != 2 ||-->
                     <!--challenge ||-->
                     <!--gaf.owner.username == current_user"-->
                     <!--class="md-primary md-raised" ng-click="challengeGaf()">-->
                     <!--Challenge this Annotation-->
                 <!--</md-button>-->
                 <md-button ng-click="challenge = !challenge; reveal_gaf_form()" ng-hide="
-                    gaf.review_state == 0 ||
+                    gaf.review_state != 2 ||
                     challenge"
-                    class="md-primary md-raised" ng-click="challengeGaf()">
+                    class="md-primary md-raised">
                     Challenge this Annotation
                 </md-button>
             </div>
