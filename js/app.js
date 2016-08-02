@@ -825,11 +825,12 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
 
         $scope.reveal_gaf_form = function() {
             $scope.eco_codes = eco_codes;
-            $scope.qualifiers = qualifiers;
+            $scope.qualifiers = qualifiers.map(function(x){ return $filter('qualifier_to_text')(x); });
             $scope.with_from_db = with_from_db;
 
             $scope.gafData = angular.copy($scope.gaf);
-            $scope.gafData.evidence_code = $filter('eco_to_text_full')($scope.gafData.evidence_code);
+            $scope.gafData.evidence_code = $filter('eco_to_text')($scope.gafData.evidence_code, true);
+            $scope.gafData.qualifier = $filter('qualifier_to_text')($scope.gafData.qualifier);
             $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
             $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
         }
