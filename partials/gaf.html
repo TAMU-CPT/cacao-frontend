@@ -171,12 +171,14 @@
                                 <md-card-title-text>
                                     <span ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
                                     <span ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
-                                    <md-button flex="20" class="md-raised md-accent" href="#/goid/{{goTermData.id}}" TARGET="_blank">See More</md-button>
                                 </md-card-title-text>
+                                <div>
+                                    <md-button class="md-raised md-accent" href="#/goid/{{goTermData.id}}" TARGET="_blank">See More</md-button>
+                                </div>
                             </div>
                             <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
                                 <div class="md-media-lg">
-                                    <a ng-if="goTerData.id" ng-href="{{ goTermData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{goTermData.id}}">
+                                    <a ng-href="{{ goTermData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{goTermData.id}}">
                                         <img ng-src="{{ goTermData.id | goChartUrl }}" />
                                     </a>
                                 </div>
