@@ -159,7 +159,8 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                'responseError': function (response) {
                    console.log('Failed with', response.status, 'status');
                    if (response.status == 401 || response.status == 403 || response.status == 400 || response.status == 500) {
-                       $location.path('/login');
+                       console.log('bad');
+                       //$location.path('/login');
                    }
                    return $q.reject(response);
                }
@@ -734,6 +735,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 go_id: null,
                 publication: null,
                 evidence: null,
+                notes: null,
             }
         };
 
@@ -767,6 +769,9 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         }
 
         // get initial object on page load
+        // get all unreviewed gafs (iterate through every page)
+        // list of sets of gafs with same orig gaf (if they are part of a challenge)
+        //
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
             $scope.num_left = data.meta.count;
             if ($scope.num_left > 0) {
@@ -803,6 +808,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             CacaoBackend.all('assessments').post({
                 gaf: 'http://localhost:8000/gafs/' + $scope.current_gaf.id + '/',
                 notes: notes,
+                challenge: $scope.current_gaf.challenge_gaf ? 'http://localhost:8000/challenges/' + $scope.current_gaf.challenge_gaf.id + '/' : null,
                 flagged: flagged.join(),
             });
         };

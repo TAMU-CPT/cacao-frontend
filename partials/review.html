@@ -114,6 +114,7 @@
                         <label>Notes</label>
                         <textarea disabled name="notes" ng-model="current_gaf.notes" rows="5"></textarea>
                     </md-input-container>
+                    <md-checkbox ng-false-value="'Notes'" ng-true-value="null" ng-model="flagged.notes" aria-label="Notes Checkbox"></md-checkbox>
                 </div>
             </form>
         </md-card-content>
