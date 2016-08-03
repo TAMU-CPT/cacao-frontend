@@ -182,59 +182,73 @@
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
-            <div layout="row" layout-xs="column">
-                <md-input-container flex>
-                    <label>Gene ID</label>
-                    <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
-                </md-input-container>
-                <md-input-container flex>
-                    <label>Qualifier</label>
-                    <input disabled name="qualifier" value="{{gaf.qualifier | qualifier_to_text}}"/>
-                </md-input-container>
-            </div>
-            <div layout="row" layout-xs="column">
-                <md-input-container class="md-block" flex>
-                    <label>GO ID</label>
-                    <input disabled ng-model="gaf.go_id"/>
-                </md-input-container>
-                <md-input-container class="md-block" flex>
-                    <label>PMID (DB Reference)</label>
-                    <input disabled name="db_reference" ng-model="gaf.db_reference"/>
-                </md-input-container>
-            </div>
-            <div layout="row" layout-xs="column">
-                <md-input-container flex>
-                    <label>Evidence Code</label>
-                    <input disabled name="evidence_code" ng-model="gaf.evidence_code"/>
-                </md-input-container>
-                <md-input-container ng-if="
-                        gaf.evidence_code != 'ND'
-                        && gaf.evidence_code != 'IDA'
-                        && gaf.evidence_code != 'IMP'" flex>
-                    <label>With/From</label>
-                    <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
-                </md-input-container>
-            </div>
-            <div layout="row" layout-xs="column">
-                <md-input-container class="md-block" flex>
-                    <label>Notes</label>
-                    <textarea disabled name="notes" ng-model="gaf.notes" rows="5"></textarea>
-                </md-input-container>
-            </div>
-            <div layout="row" layout-align="center center">
-                <!--<md-button ng-click="challenge = !challenge" ng-hide="-->
-                    <!--gaf.review_state != 2 ||-->
-                    <!--challenge ||-->
-                    <!--gaf.owner.username == current_user"-->
-                    <!--class="md-primary md-raised" ng-click="challengeGaf()">-->
-                    <!--Challenge this Annotation-->
-                <!--</md-button>-->
-                <md-button ng-click="challenge = !challenge; reveal_gaf_form()" ng-hide="
-                    gaf.review_state != 2 ||
-                    challenge"
-                    class="md-primary md-raised">
-                    Challenge this Annotation
-                </md-button>
+            <div layout="row">
+                <div>
+                    <div layout="row" layout-xs="column">
+                        <md-input-container flex>
+                            <label>Gene ID</label>
+                            <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-xs="column">
+                        <md-input-container flex>
+                            <label>Qualifier</label>
+                            <input disabled name="qualifier" value="{{gaf.qualifier | qualifier_to_text}}"/>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-xs="column">
+                        <md-input-container class="md-block" flex>
+                            <label>GO ID</label>
+                            <input disabled ng-model="gaf.go_id"/>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-xs="column">
+                        <md-input-container class="md-block" flex>
+                            <label>PMID (DB Reference)</label>
+                            <input disabled name="db_reference" ng-model="gaf.db_reference"/>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-xs="column">
+                        <md-input-container flex>
+                            <label>Evidence Code</label>
+                            <input disabled name="evidence_code" ng-model="gaf.evidence_code"/>
+                        </md-input-container>
+                        <md-input-container ng-if="
+                                gaf.evidence_code != 'ND'
+                                && gaf.evidence_code != 'IDA'
+                                && gaf.evidence_code != 'IMP'" flex>
+                            <label>With/From</label>
+                            <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-xs="column">
+                        <md-input-container class="md-block" flex>
+                            <label>Notes</label>
+                            <textarea disabled name="notes" ng-model="gaf.notes" rows="5"></textarea>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="center center">
+                        <!--<md-button ng-click="challenge = !challenge" ng-hide="-->
+                            <!--gaf.review_state != 2 ||-->
+                            <!--challenge ||-->
+                            <!--gaf.owner.username == current_user"-->
+                            <!--class="md-primary md-raised" ng-click="challengeGaf()">-->
+                            <!--Challenge this Annotation-->
+                        <!--</md-button>-->
+                        <md-button ng-click="challenge = !challenge; reveal_gaf_form()" ng-hide="
+                            gaf.superseded ||
+                            gaf.review_state == 0 ||
+                            gaf.review_state == 1 ||
+                            (gaf.review_state == 3 && gaf.challenge_gaf) ||
+                            challenge"
+                            class="md-primary md-raised">
+                            Challenge this Annotation
+                        </md-button>
+                    </div>
+                </div>
+
+                <div>
+                </div>
             </div>
         </md-card-content>
     </md-card>
