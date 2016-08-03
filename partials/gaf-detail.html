@@ -159,7 +159,7 @@
         </md-card-content>
     </md-card>
 
-    <md-card flex="40">
+    <md-card flex="30">
         <md-card-header style="background-color: {{gaf.review_state | header_color}}">
             <md-card-avatar>
                 <img gravatar-src="gaf.owner.email" style="border-radius: 50%">
@@ -182,74 +182,97 @@
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
-            <div layout="row">
-                <div>
-                    <div layout="row" layout-xs="column">
-                        <md-input-container flex>
-                            <label>Gene ID</label>
-                            <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-xs="column">
-                        <md-input-container flex>
-                            <label>Qualifier</label>
-                            <input disabled name="qualifier" value="{{gaf.qualifier | qualifier_to_text}}"/>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-xs="column">
-                        <md-input-container class="md-block" flex>
-                            <label>GO ID</label>
-                            <input disabled ng-model="gaf.go_id"/>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-xs="column">
-                        <md-input-container class="md-block" flex>
-                            <label>PMID (DB Reference)</label>
-                            <input disabled name="db_reference" ng-model="gaf.db_reference"/>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-xs="column">
-                        <md-input-container flex>
-                            <label>Evidence Code</label>
-                            <input disabled name="evidence_code" ng-model="gaf.evidence_code"/>
-                        </md-input-container>
-                        <md-input-container ng-if="
-                                gaf.evidence_code != 'ND'
-                                && gaf.evidence_code != 'IDA'
-                                && gaf.evidence_code != 'IMP'" flex>
-                            <label>With/From</label>
-                            <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-xs="column">
-                        <md-input-container class="md-block" flex>
-                            <label>Notes</label>
-                            <textarea disabled name="notes" ng-model="gaf.notes" rows="5"></textarea>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-align="center center">
-                        <!--<md-button ng-click="challenge = !challenge" ng-hide="-->
-                            <!--gaf.review_state != 2 ||-->
-                            <!--challenge ||-->
-                            <!--gaf.owner.username == current_user"-->
-                            <!--class="md-primary md-raised" ng-click="challengeGaf()">-->
-                            <!--Challenge this Annotation-->
-                        <!--</md-button>-->
-                        <md-button ng-click="challenge = !challenge; reveal_gaf_form()" ng-hide="
-                            gaf.superseded ||
-                            gaf.review_state == 0 ||
-                            gaf.review_state == 1 ||
-                            (gaf.review_state == 3 && gaf.challenge_gaf) ||
-                            challenge"
-                            class="md-primary md-raised">
-                            Challenge this Annotation
-                        </md-button>
-                    </div>
-                </div>
-
-                <div>
-                </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex>
+                    <label>Gene ID</label>
+                    <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
+                </md-input-container>
             </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex>
+                    <label>Qualifier</label>
+                    <input disabled name="qualifier" value="{{gaf.qualifier | qualifier_to_text}}"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex>
+                    <label>GO ID</label>
+                    <input disabled ng-model="gaf.go_id"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex>
+                    <label>PMID (DB Reference)</label>
+                    <input disabled name="db_reference" ng-model="gaf.db_reference"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex>
+                    <label>Evidence Code</label>
+                    <input disabled name="evidence_code" ng-model="gaf.evidence_code"/>
+                </md-input-container>
+                <md-input-container ng-if="
+                        gaf.evidence_code != 'ND'
+                        && gaf.evidence_code != 'IDA'
+                        && gaf.evidence_code != 'IMP'" flex>
+                    <label>With/From</label>
+                    <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex>
+                    <label>Notes</label>
+                    <textarea disabled name="notes" ng-model="gaf.notes" rows="5"></textarea>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-align="center center">
+                <!--<md-button ng-click="challenge = !challenge" ng-hide="-->
+                    <!--gaf.review_state != 2 ||-->
+                    <!--challenge ||-->
+                    <!--gaf.owner.username == current_user"-->
+                    <!--class="md-primary md-raised" ng-click="challengeGaf()">-->
+                    <!--Challenge this Annotation-->
+                <!--</md-button>-->
+                <md-button ng-click="challenge = !challenge; reveal_gaf_form()" ng-hide="
+                    gaf.superseded ||
+                    gaf.review_state == 0 ||
+                    gaf.review_state == 1 ||
+                    (gaf.review_state == 3 && gaf.challenge_gaf) ||
+                    challenge"
+                    class="md-primary md-raised">
+                    Challenge this Annotation
+                </md-button>
+            </div>
+        </md-card-content>
+    </md-card>
+    <md-card flex="50">
+        <md-card-header style="background-color: {{gaf.review_state | header_color}}">
+            <md-card-header-text>
+                <div flex class="md-title">History</div>
+                <div flex class="md-subhead">last updated: {{gaf.date}}</div>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                        <tr md-row>
+                            <th md-column><span>Event</th>
+                            <th md-column><span>User</span></th>
+                            <th md-column><span>Notes</span></th>
+                            <th md-column><span>Date</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row ng-repeat="d in prev_annotations">
+                            <td md-cell>{{d.go_id}}</td>
+                            <td md-cell>{{d.db_object_name}}</td>
+                            <td md-cell>{{d.db_reference}}</td>
+                            <td md-cell>{{d.evidence_code}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
         </md-card-content>
     </md-card>
 </div>

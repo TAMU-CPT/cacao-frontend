@@ -99,8 +99,8 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 reloadOnSearch: false
             }).
             when('/gaf/:gafID', {
-                templateUrl: 'partials/gaf-detail.html',
-                controller: 'GAFDetailCtrl'
+                templateUrl: 'partials/gaf-detail2.html',
+                controller: 'GAFDetailCtrl2'
             }).
             when('/pmid/:PMID', {
                 templateUrl: 'partials/pmid.html',
@@ -877,4 +877,41 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
 cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend',
     function($scope, CacaoBackend) {
         $scope.onOff = false;
+}]);
+
+cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter',
+    function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter) {
+        $scope.current_user = $localStorage.jwtData.username;
+        $scope.challenge = false;
+
+        CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(gaf) {
+            $scope.gaf = gaf;
+            $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
+
+            $scope.event_info = []
+            if (gaf.assessment) {
+                $scope.event_info.push({
+                    event: 'Original Assessment',
+                    user: null,
+                    notes: gaf.assessment.notes,
+                    date: gaf.assessment.date,
+                })
+            }
+            for (var chal in gaf.original_gaf) {
+                $scope.event_info.push({
+                    event: 'Challenge',
+                    user: gaf.original_gaf[chal].owner,
+                    notes: gaf.original_gaf[chal].reason,
+                    date: gaf.original_gaf[chal].date,
+                })
+                if (gaf.original_gaf[chal].assessment) {
+                    $scope.event_info.push({
+                         event: 'Assessment',
+                         user: null,
+                         notes: gaf.original_gaf[chal].assessment.notes,
+                         date: gaf.original_gaf[chal].assessment.date,
+                    })
+                }
+            }
+        });
 }]);
