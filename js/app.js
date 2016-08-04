@@ -99,6 +99,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 controller: 'GAFCtrl',
                 reloadOnSearch: false
             }).
+            when('/gaf/list', {
+                templateUrl: 'partials/gaf-list.html',
+                controller: 'GAFListCtrl'
+            }).
             when('/gaf/:gafID', {
                 templateUrl: 'partials/gaf-detail2.html',
                 controller: 'GAFDetailCtrl2'
@@ -813,6 +817,28 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 flagged: flagged.join(),
             });
         };
+}]);
+
+cacaoApp.controller('GAFListCtrl', ['$scope', 'CacaoBackend',
+    function($scope, CacaoBackend) {
+
+        $scope.updateData = function(page) {
+            $scope.query.page = page;
+            CacaoBackend.all('gafs').getList($scope.query).then(function(data) {
+                $scope.data = data;
+            });
+        };
+        $scope.options = {
+            limitSelect: true,
+            pageSelect: true
+        };
+
+        $scope.query = {
+            limit: 5,
+            page: 1,
+        };
+
+        $scope.updateData(1);
 }]);
 
 cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter',
