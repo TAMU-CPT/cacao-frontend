@@ -275,6 +275,16 @@ cacaoApp.directive('pmidCustomdir', function(CacaoBackend) {
     };
 });
 
+cacaoApp.directive("userIcon", function() {
+    return {
+        scope: {},
+        templateUrl: 'partials/user/icon.html',
+        link: function(scope, element, attrs) {
+            scope.user = JSON.parse(attrs.user);
+        }
+    };
+});
+
 cacaoApp.factory('CacaoBackend', function(Restangular) {
     return Restangular.withConfig(function(RestangularConfigurer) {
         RestangularConfigurer.setBaseUrl('http://localhost:8000/');

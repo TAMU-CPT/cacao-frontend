@@ -4,7 +4,7 @@
             <thead md-head md-order="ordering" md-on-reorder="updateData">
                 <tr md-row>
                     <th md-column md-order-by="review_state"><span>Status</span></th>
-                    <th md-column md-order-by="owner"><span>User</span></th>
+                    <th md-column><span>User</span></th>
                     <th md-column md-order-by="db_object_id"><span>Gene ID</span></th>
                     <th md-column md-order-by="db_object_symbol"><span>Name</span></th>
                     <th md-column md-order-by="db_reference"><span>Reference</span></th>
@@ -18,10 +18,7 @@
                         {{d.review_state | review_state_to_english}}
                     </td>
                     <td md-cell>
-                        <img gravatar-src="d.owner.email" gravatar-size="30" style="border-radius: 50%">
-                        <a href="#/users/{{d.owner.id}}">
-                            {{ d.owner.username }}
-                        </a>
+                        <user-icon user="{{d.owner}}"></user-icon>
                     </td>
                     <td md-cell>{{d.db_object_id}}</td>
                     <td md-cell>{{d.db_object_name}}</td>
