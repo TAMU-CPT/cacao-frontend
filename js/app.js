@@ -104,8 +104,8 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 controller: 'GAFListCtrl'
             }).
             when('/gaf/:gafID', {
-                templateUrl: 'partials/gaf-detail2.html',
-                controller: 'GAFDetailCtrl2'
+                templateUrl: 'partials/gaf-detail.html',
+                controller: 'GAFDetailCtrl'
             }).
             when('/pmid/:PMID', {
                 templateUrl: 'partials/pmid.html',
@@ -271,16 +271,6 @@ cacaoApp.directive('pmidCustomdir', function(CacaoBackend) {
                 return ngModelValue;
             }
             ctrl.$parsers.push(customValidator);
-        }
-    };
-});
-
-cacaoApp.directive("userIcon", function() {
-    return {
-        scope: {},
-        templateUrl: 'partials/user/icon.html',
-        link: function(scope, element, attrs) {
-            scope.user = JSON.parse(attrs.user);
         }
     };
 });
@@ -752,6 +742,37 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 evidence: null,
                 notes: null,
             }
+
+            $scope.gaf_set_list = [];
+            CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
+                var pageSize = 5;
+                for(var currentPage = 0; currentPage < Math.ceil(outer_data.meta.count / pageSize); currentPage++) {
+                    CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
+                        data.map(function(gaf) {
+                            gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
+                            gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
+
+                            if ($scope.gaf_set_list.length == 0 || !gaf.challenge_gaf) {
+                                $scope.gaf_set_list.push([gaf]);
+                            } else {
+                                $scope.gaf_set_list.map(function(gaf_set) {
+                                    if(gaf_set[0].challenge_gaf){
+                                        if(gaf_set[0].challenge_gaf.original_gaf == gaf.challenge_gaf.original_gaf)
+                                            gaf_set.push(gaf)
+                                    }
+                                    else {
+                                        $scope.gaf_set_list.push([gaf])
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        };
+
+        $scope.test = function() {
+            console.log($scope.gaf_set_list);
         };
 
         var next_gaf = function() {
@@ -783,10 +804,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             });
         }
 
-        // get initial object on page load
-        // get all unreviewed gafs (iterate through every page)
-        // list of sets of gafs with same orig gaf (if they are part of a challenge)
-        //
         CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
             $scope.num_left = data.meta.count;
             if ($scope.num_left > 0) {
@@ -918,9 +935,63 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
         };
 }]);
 
-cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend',
-    function($scope, CacaoBackend) {
-        $scope.onOff = false;
+cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter',
+    function($scope, CacaoBackend, $filter) {
+        $scope.gafs = [];
+
+        CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
+            var pageSize = 5;
+            for(var currentPage = 0; currentPage < Math.ceil(outer_data.meta.count / pageSize); currentPage++) {
+                CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
+                    data.map(function(gaf) {
+                        gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
+                        gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
+                        $scope.gafs.push(gaf);
+                    });
+                });
+            }
+        });
+
+
+        $scope.test = function() {
+            var set_list = [];
+            for (var i in $scope.gafs) {
+                if (set_list.length == 0 || !$scope.gafs[i].challenge_gaf) {
+                    set_list.push([$scope.gafs[i]]);
+                }
+                else {
+                    set_list.map(function(gaf_set) {
+                        if(gaf_set[0].challenge_gaf){
+                            if(gaf_set[0].challenge_gaf.original_gaf == $scope.gafs[i].challenge_gaf.original_gaf)
+                                gaf_set.push($scope.gafs[i])
+                        }
+                        else {
+                            set_list.push([$scope.gafs[i]])
+                        }
+                    });
+                }
+            }
+            console.log(set_list);
+        };
+
+
+
+        //CacaoBackend.all('gafs').getList({page: page}).then(function(data) {
+            //console.log(data.meta.count);
+            //data.map(function(gaf){
+                //console.log(gaf);
+            //});
+            //for (var gaf in data) {
+                //data[gaf]
+                //console.log(data[gaf]);
+                //gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
+                //gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
+                //$scope.gafs.push(gaf);
+            //}
+            //if (!data.meta.next) {
+                //next = false;
+            //}
+        //});
 }]);
 
 cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter',
