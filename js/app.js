@@ -14,6 +14,7 @@ require('jquery');
 require('ngstorage');
 require('angular-jwt');
 require('lightbox2');
+var moment = require('moment');
 var jwt_decode = require('jwt-decode');
 /* App Module */
 
@@ -888,29 +889,39 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
             $scope.gaf = gaf;
             $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
 
+            function formatEntry(obj){
+                return {
+                    event: obj.event,
+                    user: obj.user,
+                    notes: obj.notes,
+                    date: moment(obj.date).fromNow(),
+                    date_real: moment(obj.date).format('MMMM Do YYYY, h:mm:ss a')
+                };
+            };
+
             $scope.event_info = []
             if (gaf.assessment) {
-                $scope.event_info.push({
-                    event: 'Original Assessment',
+                $scope.event_info.push(formatEntry({
+                    event: 'Initial Review',
                     user: null,
                     notes: gaf.assessment.notes,
                     date: gaf.assessment.date,
-                })
+                }))
             }
             for (var chal in gaf.original_gaf) {
-                $scope.event_info.push({
+                $scope.event_info.push(formatEntry({
                     event: 'Challenge',
                     user: gaf.original_gaf[chal].owner,
                     notes: gaf.original_gaf[chal].reason,
                     date: gaf.original_gaf[chal].date,
-                })
+                }))
                 if (gaf.original_gaf[chal].assessment) {
-                    $scope.event_info.push({
-                         event: 'Assessment',
+                    $scope.event_info.push(formatEntry({
+                         event: 'Challenge Assessment',
                          user: null,
                          notes: gaf.original_gaf[chal].assessment.notes,
                          date: gaf.original_gaf[chal].assessment.date,
-                    })
+                    }))
                 }
             }
         });
