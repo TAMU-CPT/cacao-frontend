@@ -22,6 +22,10 @@
         max-height: 4rem;
         overflow: auto;
     }
+    table.md-table td.md-cell div img {
+        max-width:50%;
+        height:auto;
+    }
 </style>
 <div layout="row" layout-xs="column" layout-align="center">
     <md-card flex-gt-xs="25">
@@ -136,7 +140,12 @@
                         <tr md-row ng-repeat="i in event_info">
 
                             <td md-cell><div>{{i.event}}</div</td>
-                            <td md-cell><div>{{i.user}}</div></td>
+                            <td md-cell>
+                                <div>
+                                    <img gravatar-src="i.user.email" style="border-radius: 50%">
+                                    <div>{{i.user.username}}</div>
+                                </div>
+                            </td>
                             <td md-cell><div>{{i.notes}}</div></td>
                             <td md-cell class="row4"style="white-space: nowrap">
                                 <div>
