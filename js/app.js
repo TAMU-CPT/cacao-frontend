@@ -903,7 +903,7 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
             if (gaf.assessment) {
                 $scope.event_info.push(formatEntry({
                     event: 'Initial Review',
-                    user: null,
+                    user: gaf.assessment.owner.username,
                     notes: gaf.assessment.notes,
                     date: gaf.assessment.date,
                 }))
@@ -911,14 +911,14 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
             for (var chal in gaf.original_gaf) {
                 $scope.event_info.push(formatEntry({
                     event: 'Challenge',
-                    user: gaf.original_gaf[chal].owner,
+                    user: gaf.original_gaf[chal].owner.username,
                     notes: gaf.original_gaf[chal].reason,
                     date: gaf.original_gaf[chal].date,
                 }))
                 if (gaf.original_gaf[chal].assessment) {
                     $scope.event_info.push(formatEntry({
                          event: 'Challenge Assessment',
-                         user: null,
+                         user: gaf.original_gaf[chal].assessment.owner.username,
                          notes: gaf.original_gaf[chal].assessment.notes,
                          date: gaf.original_gaf[chal].assessment.date,
                     }))
