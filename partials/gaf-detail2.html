@@ -23,7 +23,7 @@
         overflow: auto;
     }
     table.md-table td.md-cell div img {
-        max-width:50%;
+        max-width:100%;
         height:auto;
     }
 </style>
@@ -142,8 +142,12 @@
                             <td md-cell><div>{{i.event}}</div</td>
                             <td md-cell>
                                 <div>
-                                    <img gravatar-src="i.user.email" style="border-radius: 50%">
-                                    <div>{{i.user.username}}</div>
+                                    <a href="#/users/{{i.user.id}}">
+                                        <img gravatar-src="i.user.email" style="border-radius: 50%">
+                                    </a>
+                                    <md-tooltip>
+                                    {{i.user.username}}
+                                    </md-tooltip>
                                 </div>
                             </td>
                             <td md-cell><div>{{i.notes}}</div></td>
