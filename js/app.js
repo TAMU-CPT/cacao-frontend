@@ -821,10 +821,16 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
 
 cacaoApp.controller('GAFListCtrl', ['$scope', 'CacaoBackend',
     function($scope, CacaoBackend) {
+        $scope.ordering = "-date";
 
         $scope.updateData = function(page) {
-            $scope.query.page = page;
-            CacaoBackend.all('gafs').getList($scope.query).then(function(data) {
+            if(!isNaN(parseInt(page))){
+                $scope.query.page = page;
+            }
+            $scope.query.order = $scope.ordering;
+
+            $scope.promise = CacaoBackend.all('gafs').getList($scope.query);
+            $scope.promise.then(function(data) {
                 $scope.data = data;
             });
         };
@@ -836,6 +842,7 @@ cacaoApp.controller('GAFListCtrl', ['$scope', 'CacaoBackend',
         $scope.query = {
             limit: 5,
             page: 1,
+            order: $scope.ordering,
         };
 
         $scope.updateData(1);

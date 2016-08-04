@@ -1,15 +1,15 @@
 <div layout="column" class="md-padding">
     <md-table-container>
-        <table md-table>
-            <thead md-head>
+        <table md-table md-progress="promise">
+            <thead md-head md-order="ordering" md-on-reorder="updateData">
                 <tr md-row>
-                    <th md-column><span>Status</span></th>
-                    <th md-column><span>User</span></th>
-                    <th md-column><span>Gene ID</span></th>
-                    <th md-column><span>Name</span></th>
-                    <th md-column><span>Reference</span></th>
-                    <th md-column><span>Evidence Code</span></th>
-                    <th md-column><span>Date</span></th>
+                    <th md-column md-order-by="status"><span>Status</span></th>
+                    <th md-column md-order-by="user"><span>User</span></th>
+                    <th md-column md-order-by="gene"><span>Gene ID</span></th>
+                    <th md-column md-order-by="name"><span>Name</span></th>
+                    <th md-column md-order-by="ref"><span>Reference</span></th>
+                    <th md-column md-order-by="eco"><span>Evidence Code</span></th>
+                    <th md-column md-order-by="date"><span>Date</span></th>
                 </tr>
             </thead>
             <tbody md-body>
