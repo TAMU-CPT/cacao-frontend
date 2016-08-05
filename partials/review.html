@@ -16,16 +16,15 @@
       color: #1e88e5;
       background-color: #e3f2fd;
     }
-
+    textarea.md-input {
+        max-height:80px;
+        overflow:auto;
+    }
     md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
       font-size: 16px;
     }
     md-input-container .md-input[disabled] {
         color: black;
-    }
-    md-input-container textarea[md-no-autogrow].md-input {
-        height: inherit;
-        overflow-y: auto;
     }
     md-checkbox.md-checked .md-icon {
         background-color: #69c552;
@@ -45,6 +44,20 @@
             display: none;
         }
     }
+
+    .cssSlideLeft.ng-hide-remove, .cssSlideUp.ng-hide-add {
+        display: block !important; /* yes, important */
+    }
+    .cssSlideLeft {
+        opacity:1;
+        transition: 1s ease-in-out all;
+        max-width: 500px;
+        overflow: hidden;
+    }
+    .cssSlideLeft.ng-hide {
+        opacity:0;
+        max-width:0;
+    }
 </style>
 
 <md-card>
@@ -55,7 +68,64 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-show="remaining" layout="row" layout-align="center">
+<div ng-show="remaining" layout="row" layout-align="center start">
+    <md-card flex="30" ng-show="original_gaf.show" class="cssSlideLeft">
+        <md-card-header>
+            <md-card-avatar>
+                <img gravatar-src="original_gaf.owner.email" style="border-radius: 50%">
+            </md-card-avatar>
+            <md-card-header-text>
+                <span class="md-title">{{original_gaf.owner.username}}</span>
+                <span flex class="md-subhead">{{original_gaf.date}}</span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex>
+                    <label>Gene ID</label>
+                    <input disabled name="db_object_id" ng-model="original_gaf.db_object_id"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex>
+                    <label>Qualifier</label>
+                    <input disabled name="qualifier" value="{{original_gaf.qualifier | qualifier_to_text}}"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex>
+                    <label>GO ID</label>
+                    <input disabled ng-model="original_gaf.go_id"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex>
+                    <label>PMID (DB Reference)</label>
+                    <input disabled name="db_reference" ng-model="original_gaf.db_reference"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex>
+                    <label>Evidence Code</label>
+                    <input disabled name="evidence_code" ng-model="original_gaf.evidence_code"/>
+                </md-input-container>
+                <md-input-container ng-if="
+                        original_gaf.evidence_code != 'ND'
+                        && original_gaf.evidence_code != 'IDA'
+                        && original_gaf.evidence_code != 'IMP'" flex>
+                    <label>With/From</label>
+                    <input disabled name="with_from_db" ng-model="original_gaf.with_or_from"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex>
+                    <label>Notes</label>
+                    <textarea disabled name="notes" ng-model="original_gaf.notes"></textarea>
+                </md-input-container>
+            </div>
+        </md-card-content>
+    </md-card>
+
     <md-card flex="30">
         <md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
             <md-card-avatar>
@@ -120,46 +190,48 @@
         </md-card-content>
     </md-card>
 
-    <div flex="70">
-        <md-card>
-            <md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
-                <md-card-header-text ng-hide="anyFlagged()">
-                    <div layout="row" layout-align-sm="start center">
-                        <div>
-                            <div flex class="md-title">Good Annotation</div>
-                            <div flex class="md-subhead">Click submit to approve</div>
-                        </div>
-                        <span flex></span>
-                        <div>
-                            <md-button class="md-primary md-raised" ng-click="test()">Submit</md-button>
-                        </div>
-                    </div>
-                </md-card-header-text>
-                <md-card-header-text ng-hide="!anyFlagged()">
-                    <div layout="row" layout-align-sm="start center">
-                        <div flex="60" layout="column">
-                            <div flex class="md-title">Bad Annotation</div>
-                            <div flex class="md-subhead">Comment below</div>
-                        </div>
-                    </div>
-                </md-card-header-text>
-            </md-card-header>
-            <div class="cssSlideUp" ng-hide="!anyFlagged()">
-                <md-content class="md-padding">
-                    <form name="assessmentForm">
-                        <div layout="row" layout-sm="column">
-                            <md-input-container flex>
-                                <label>Review Comments</label>
-                                <textarea required name="notes" ng-model="assessment.notes" rows="5" md-no-autogrow></textarea>
-                                <div ng-messages="assessmentForm.notes.$error">
-                                    <div ng-message="required">This is required.</div>
-                                </div>
-                            </md-input-container>
-                        </div>
-                        <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="put_gaf(3)">Submit</md-button>
-                    </form>
-                </md-content>
-            </div>
-        </md-card>
-    </div>
+    <md-card flex>
+        <!--<md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">-->
+            <!--[><md-card-header-text ng-hide="anyFlagged()"><]-->
+            <!--<md-card-header-text>-->
+                <!--<div layout="row" layout-align-sm="start center">-->
+                    <!--<div>-->
+                        <!--<div flex class="md-title">Good Annotation</div>-->
+                        <!--<div flex class="md-subhead">Click submit to approve</div>-->
+                    <!--</div>-->
+                    <!--<span flex></span>-->
+                    <!--<div>-->
+                        <!--<md-button class="md-primary md-raised" ng-click="test()">Submit</md-button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</md-card-header-text>-->
+            <!--<md-card-header-text>-->
+            <!--[><md-card-header-text ng-hide="!anyFlagged()"><]-->
+                <!--<div layout="row" layout-align-sm="start center">-->
+                    <!--<div flex="60" layout="column">-->
+                        <!--<div flex class="md-title">Bad Annotation</div>-->
+                        <!--<div flex class="md-subhead">Comment below</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</md-card-header-text>-->
+        <!--</md-card-header>-->
+        <!--<div class="cssSlideUp">-->
+        <!--[><div class="cssSlideUp" ng-hide="!anyFlagged()"><]-->
+            <!--<md-content class="md-padding">-->
+                <!--<form name="assessmentForm">-->
+                    <!--<div layout="row" layout-sm="column">-->
+                        <!--<md-input-container flex>-->
+                            <!--<label>Review Comments</label>-->
+                            <!--<textarea required name="notes" ng-model="assessment.notes" rows="5" md-no-autogrow></textarea>-->
+                            <!--<div ng-messages="assessmentForm.notes.$error">-->
+                                <!--<div ng-message="required">This is required.</div>-->
+                            <!--</div>-->
+                        <!--</md-input-container>-->
+                    <!--</div>-->
+                    <!--<md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="put_gaf(3)">Submit</md-button>-->
+                <!--</form>-->
+            <!--</md-content>-->
+        <!--</div>-->
+        <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="test()">Submit</md-button>
+    </md-card>
 </div>
