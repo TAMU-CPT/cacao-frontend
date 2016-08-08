@@ -749,7 +749,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         $scope.gaf_current_index = 0;
         $scope.current_gaf = [];
         $scope.original_gaf = null;
-        $scope.remaining = false;
         $scope.flagged = {};
 
         CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {

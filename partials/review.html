@@ -60,15 +60,14 @@
     }
 </style>
 
-<md-card>
+<md-card ng-hide="remaining != false" ng-hide>
     <md-card-title>
         </md-card-title-text>
-            <span ng-show="remaining" class="md-headline">You have annotations to review.</span>
-            <span ng-show="!remaining" class="md-headline">There are no Annotations to review at this time.</span>
+            <span class="md-headline">There are no Annotations to review at this time.</span>
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-show="remaining" layout="row" layout-align="center start">
+<div ng-show="remaining" layout="row" layout-align="center">
     <md-card flex="30" ng-show="original_gaf.show" class="cssSlideLeft">
         <md-card-header>
             <md-card-avatar>
@@ -126,7 +125,7 @@
         </md-card-content>
     </md-card>
 
-    <md-card flex="30">
+    <md-card flex="30" ng-show="{{current_gaf.length < 2}}">
         <md-card-header style="background-color:{{!anyFlagged() ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
             <md-card-avatar>
                 <img gravatar-src="current_gaf.owner.email" style="border-radius: 50%">
