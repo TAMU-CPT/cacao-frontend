@@ -738,6 +738,19 @@ cacaoApp.filter('goChartUrl', function() {
     };
 });
 
+cacaoApp.filter('anyFlagged', function() {
+    return function(input) {
+        if (input) {
+            // Check if any of them are non-null
+            return Object.keys(input.flagged).map(function (key) {
+                return input.flagged[key] !== null;
+            }).some(function(val){
+                return val;
+            });
+        }
+    };
+});
+
 cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter',
     function($scope, CacaoBackend, $timeout, $filter) {
         if ($scope.assessmentForm) {
@@ -749,14 +762,13 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         $scope.gaf_current_index = 0;
         $scope.current_gaf = [];
         $scope.original_gaf = null;
-        $scope.flagged = {};
 
         CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
             var pageSize = 5;
             for(var currentPage = 0; currentPage < Math.ceil(outer_data.meta.count / pageSize); currentPage++) {
                 CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
                     data.map(function(gaf) {
-                        $scope.flagged[gaf.id] = {
+                        gaf.flagged = {
                             protein: null,
                             qualifier: null,
                             go_id: null,
@@ -803,14 +815,12 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         });
 
         // make remaining false if no gafs on page load
-
         $scope.test = function() {
             if ($scope.gaf_current_index < $scope.gaf_set_list.length - 1) {
                 ++$scope.gaf_current_index;
                 $scope.current_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
 
                 if ($scope.current_gaf[0].challenge_gaf) {
-                    console.log($scope.current_gaf[0]);
                     CacaoBackend.oneUrl(' ', $scope.current_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
                         $scope.original_gaf = original;
                         $scope.original_gaf.show = true;
@@ -829,15 +839,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 console.log('done');
             }
         };
-
-        $scope.anyFlagged = function() {
-            // Check if any of them are non-null
-            return Object.keys($scope.flagged).map(function (key) {
-                return $scope.flagged[key] !== null;
-            }).some(function(val){
-                return val;
-            });
-        }
 
         var next_gaf = function() {
             CacaoBackend.all('gafs').getList({review_state: 1,limit: 1}).then(function(data) {
