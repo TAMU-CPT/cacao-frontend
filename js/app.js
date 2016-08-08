@@ -756,7 +756,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             for(var currentPage = 0; currentPage < Math.ceil(outer_data.meta.count / pageSize); currentPage++) {
                 CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
                     data.map(function(gaf) {
-
                         $scope.flagged[gaf.id] = {
                             protein: null,
                             qualifier: null,
@@ -767,7 +766,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                         }
 
                         gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
-                        gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
+                        //gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
 
                         if ($scope.gaf_set_list.length == 0 ) {
                             if (gaf.challenge_gaf) {
@@ -781,22 +780,29 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                             $scope.remaining = true;
                         } else if (!gaf.challenge_gaf) {
                             $scope.gaf_set_list.push([gaf]);
+                            //console.log("no chal gaf,", gaf.id, gaf.notes);
                         } else {
+                            var unique_gaf = true;
                             $scope.gaf_set_list.map(function(gaf_set) {
                                 if(gaf_set[0].challenge_gaf){
                                     if(gaf_set[0].challenge_gaf.original_gaf == gaf.challenge_gaf.original_gaf) {
                                         gaf_set.push(gaf);
+                                        unique_gaf = false;
+                                        //console.log("chal gaf and the same,", gaf.id, gaf.notes);
                                     }
                                 }
-                                else {
-                                    $scope.gaf_set_list.push([gaf]);
-                                }
                             });
+                            if (unique_gaf) {
+                                $scope.gaf_set_list.push([gaf]);
+                                //console.log("chal gaf, but unique", gaf.id, gaf.notes);
+                            }
                         }
                     });
                 });
             }
         });
+
+        // make remaining false if no gafs on page load
 
         $scope.test = function() {
             if ($scope.gaf_current_index < $scope.gaf_set_list.length - 1) {
@@ -804,15 +810,22 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 $scope.current_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
 
                 if ($scope.current_gaf[0].challenge_gaf) {
-                    CacaoBackend.oneUrl(' ', $scope.current_gaf.challenge_gaf.original_gaf).get().then(function(original) {
+                    console.log($scope.current_gaf[0]);
+                    CacaoBackend.oneUrl(' ', $scope.current_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
                         $scope.original_gaf = original;
                         $scope.original_gaf.show = true;
                     });
-                } else { $scope.original_gaf.show = false; }
+                } else {
+                    if ($scope.original_gaf) {
+                        $scope.original_gaf.show = false;
+                    }
+                }
 
             } else {
                 $scope.remaining = false;
-                $scope.original_gaf.show = false;
+                if ($scope.original_gaf) {
+                    $scope.original_gaf.show = false;
+                }
                 console.log('done');
             }
         };
