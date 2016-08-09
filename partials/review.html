@@ -69,114 +69,116 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-if="!original_gaf.show" layout="row" layout-align="center start">
-    <md-card flex="30">
-        <!--<md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">-->
-        <md-card-header>
-            <md-card-avatar>
-                <img gravatar-src="current_gaf[0].owner.email" style="border-radius: 50%">
-            </md-card-avatar>
-            <md-card-header-text>
-                <span class="md-title">{{current_gaf[0].owner.username}}</span>
-                <span flex class="md-subhead">{{current_gaf[0].date}}</span>
-            </md-card-header-text>
-        </md-card-header>
-        <md-card-content>
-            <form name="prev_gaf_form">
-                <div layout="row" layout-sm="column">
-                    <md-input-container flex>
-                        <label>Gene ID</label>
-                        <input disabled name="db_object_id" ng-model="current_gaf[0].db_object_id"/>
-                    </md-input-container>
-                    <md-checkbox ng-false-value="'Protein'" ng-true-value="null" ng-model="current_gaf[0].flagged.protein" ng-click="checked()" aria-label="Gene ID Checkbox"></md-checkbox>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container flex>
-                        <label>Qualifier</label>
-                        <input disabled name="qualifier" value="{{current_gaf[0].qualifier | qualifier_to_text}}"/>
-                    </md-input-container>
-                    <md-checkbox ng-false-value="'Qualifier'" ng-true-value="null" ng-model="current_gaf[0].flagged.qualifier" aria-label="Qualifier Checkbox"></md-checkbox>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container class="md-block" flex>
-                        <label>GO ID</label>
-                        <input disabled ng-model="current_gaf[0].go_id"/>
-                    </md-input-container>
-                    <md-checkbox ng-false-value="'GO Term'" ng-true-value="null" ng-model="current_gaf[0].flagged.go_id" aria-label="GO ID Checkbox"></md-checkbox>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container class="md-block" flex>
-                        <label>PMID (DB Reference)</label>
-                        <input disabled name="db_reference" ng-model="current_gaf[0].show_db_reference"/>
-                    </md-input-container>
-                    <md-checkbox ng-false-value="'Publication'" ng-true-value="null" ng-model="current_gaf[0].flagged.publication" aria-label="PMID Checkbox"></md-checkbox>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container flex>
-                        <label>Evidence Code</label>
-                        <input disabled name="evidence_code" ng-model="current_gaf[0].evidence_code"/>
-                    </md-input-container>
-                    <md-input-container ng-if="
-                            current_gaf[0].evidence_code != 'IDA'
-                            && current_gaf[0].evidence_code != 'IMP'" flex>
-                        <label>With/From</label>
-                        <input disabled name="with_from_db" ng-model="current_gaf[0].with_or_from"/>
-                    </md-input-container>
-                    <md-checkbox ng-false-value="'Evidence Code'" ng-true-value="null" ng-model="current_gaf[0].flagged.evidence" aria-label="Evidence Code Checkbox"></md-checkbox>
-                </div>
-                <div layout="row" layout-sm="column">
-                    <md-input-container class="md-block" flex>
-                        <label>Notes</label>
-                        <textarea class="gafs" disabled name="notes" ng-model="current_gaf[0].notes"></textarea>
-                    </md-input-container>
-                    <md-checkbox ng-false-value="'Notes'" ng-true-value="null" ng-model="current_gaf[0].flagged.notes" aria-label="Notes Checkbox"></md-checkbox>
-                </div>
-            </form>
-        </md-card-content>
-    </md-card>
-
-    <md-card flex>
-        <md-card-header>
-        <!--<md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">-->
-            <md-card-header-text ng-hide="current_gaf[0] | anyFlagged">
-                <div layout="row" layout-align-sm="start center">
-                    <div>
-                        <div flex class="md-title">Good Annotation</div>
-                        <div flex class="md-subhead">Click submit to approve</div>
-                    </div>
-                    <span flex></span>
-                    <div>
-                        <!--<md-button class="md-primary md-raised" ng-click="test()">Submit</md-button>-->
-                    </div>
-                </div>
-            </md-card-header-text>
-            <md-card-header-text ng-hide="!(current_gaf[0] | anyFlagged)">
-                <div layout="row" layout-align-sm="start center">
-                    <div flex="60" layout="column">
-                        <div flex class="md-title">Bad Annotation</div>
-                        <div flex class="md-subhead">Comment below</div>
-                    </div>
-                </div>
-            </md-card-header-text>
-        </md-card-header>
-        <div class="cssSlideUp" ng-hide="!(current_gaf[0] | anyFlagged)">
-            <md-content class="md-padding">
-                <form name="assessmentForm">
+<div ng-if="!original_gaf.show" layout="row" layout-align="center center">
+    <div flex="50">
+        <md-card>
+            <!--<md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">-->
+            <md-card-header>
+                <md-card-avatar>
+                    <img gravatar-src="current_gaf[0].owner.email" style="border-radius: 50%">
+                </md-card-avatar>
+                <md-card-header-text>
+                    <span class="md-title">{{current_gaf[0].owner.username}}</span>
+                    <span flex class="md-subhead">{{current_gaf[0].date}}</span>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                <form name="prev_gaf_form">
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
-                            <label>Review Comments</label>
-                            <textarea required name="notes" ng-model="assessment.notes" rows="5"></textarea>
-                            <div ng-messages="assessmentForm.notes.$error">
-                                <div ng-message="required">This is required.</div>
-                            </div>
+                            <label>Gene ID</label>
+                            <input disabled name="db_object_id" ng-model="current_gaf[0].db_object_id"/>
                         </md-input-container>
+                        <md-checkbox ng-false-value="'Protein'" ng-true-value="null" ng-model="current_gaf[0].flagged.protein" ng-click="checked()" aria-label="Gene ID Checkbox"></md-checkbox>
                     </div>
-                    <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="test()">Submit</md-button>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Qualifier</label>
+                            <input disabled name="qualifier" value="{{current_gaf[0].qualifier | qualifier_to_text}}"/>
+                        </md-input-container>
+                        <md-checkbox ng-false-value="'Qualifier'" ng-true-value="null" ng-model="current_gaf[0].flagged.qualifier" aria-label="Qualifier Checkbox"></md-checkbox>
+                    </div>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container class="md-block" flex>
+                            <label>GO ID</label>
+                            <input disabled ng-model="current_gaf[0].go_id"/>
+                        </md-input-container>
+                        <md-checkbox ng-false-value="'GO Term'" ng-true-value="null" ng-model="current_gaf[0].flagged.go_id" aria-label="GO ID Checkbox"></md-checkbox>
+                    </div>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container class="md-block" flex>
+                            <label>PMID (DB Reference)</label>
+                            <input disabled name="db_reference" ng-model="current_gaf[0].show_db_reference"/>
+                        </md-input-container>
+                        <md-checkbox ng-false-value="'Publication'" ng-true-value="null" ng-model="current_gaf[0].flagged.publication" aria-label="PMID Checkbox"></md-checkbox>
+                    </div>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Evidence Code</label>
+                            <input disabled name="evidence_code" ng-model="current_gaf[0].evidence_code"/>
+                        </md-input-container>
+                        <md-input-container ng-if="
+                                current_gaf[0].evidence_code != 'IDA'
+                                && current_gaf[0].evidence_code != 'IMP'" flex>
+                            <label>With/From</label>
+                            <input disabled name="with_from_db" ng-model="current_gaf[0].with_or_from"/>
+                        </md-input-container>
+                        <md-checkbox ng-false-value="'Evidence Code'" ng-true-value="null" ng-model="current_gaf[0].flagged.evidence" aria-label="Evidence Code Checkbox"></md-checkbox>
+                    </div>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container class="md-block" flex>
+                            <label>Notes</label>
+                            <textarea class="gafs" disabled name="notes" ng-model="current_gaf[0].notes"></textarea>
+                        </md-input-container>
+                        <md-checkbox ng-false-value="'Notes'" ng-true-value="null" ng-model="current_gaf[0].flagged.notes" aria-label="Notes Checkbox"></md-checkbox>
+                    </div>
                 </form>
-            </md-content>
-        </div>
-        <!--<md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="test()">Submit</md-button>-->
-    </md-card>
+            </md-card-content>
+        </md-card>
+
+        <md-card>
+            <md-card-header>
+            <!--<md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">-->
+                <md-card-header-text ng-hide="current_gaf[0] | anyFlagged">
+                    <div layout="row" layout-align-sm="start center">
+                        <div>
+                            <div flex class="md-title">Good Annotation</div>
+                            <div flex class="md-subhead">Click submit to approve</div>
+                        </div>
+                        <span flex></span>
+                        <div>
+                            <md-button class="md-primary md-raised" ng-click="test()">Submit</md-button>
+                        </div>
+                    </div>
+                </md-card-header-text>
+                <md-card-header-text ng-hide="!(current_gaf[0] | anyFlagged)">
+                    <div layout="row" layout-align-sm="start center">
+                        <div flex="60" layout="column">
+                            <div flex class="md-title">Bad Annotation</div>
+                            <div flex class="md-subhead">Comment below</div>
+                        </div>
+                    </div>
+                </md-card-header-text>
+            </md-card-header>
+            <div class="cssSlideUp" ng-hide="!(current_gaf[0] | anyFlagged)">
+                <md-content class="md-padding">
+                    <form name="assessmentForm">
+                        <div layout="row" layout-sm="column">
+                            <md-input-container flex>
+                                <label>Review Comments</label>
+                                <textarea required name="notes" ng-model="assessment.notes" rows="5"></textarea>
+                                <div ng-messages="assessmentForm.notes.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="test()">Submit</md-button>
+                    </form>
+                </md-content>
+            </div>
+            <!--<md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="test()">Submit</md-button>-->
+        </md-card>
+    </div>
 </div>
 <div ng-if="original_gaf.show" layout="row" layout-align="center start">
     <md-card>
@@ -291,4 +293,4 @@
         </md-card-content>
     </md-card>
 </div>
-<md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="test()">Submit</md-button>
+<!--<md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="test()">Submit</md-button>-->
