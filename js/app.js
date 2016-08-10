@@ -751,6 +751,31 @@ cacaoApp.filter('anyFlagged', function() {
     };
 });
 
+cacaoApp.filter('field_to_flagged', function() {
+    return function(input) {
+        switch(input){
+            case 'qualifier': return 'qualifier';
+            case 'go_id': return 'go_id';
+            case 'db_reference': return 'publication';
+            case 'evidence_code': return 'evidence';
+            case 'notes': return 'notes';
+            default: return false;
+        }
+    };
+});
+
+cacaoApp.filter('flags_to_text', function() {
+    return function(input) {
+        switch(input){
+            case 'qualifier': return 'Qualifier';
+            case 'go_id': return 'GO Term';
+            case 'publication': return 'Publication';
+            case 'evidence': return 'Evidence Code';
+            case 'notes': return 'Notes';
+        }
+    };
+});
+
 cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter',
     function($scope, CacaoBackend, $timeout, $filter) {
         if ($scope.assessmentForm) {
@@ -778,13 +803,13 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                         }
 
                         gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
-                        gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
 
                         if ($scope.gaf_set_list.length == 0 ) {
                             if (gaf.challenge_gaf) {
                                 CacaoBackend.oneUrl(' ', gaf.challenge_gaf.original_gaf).get().then(function(original) {
                                     $scope.original_gaf = original;
                                     $scope.original_gaf.show = true;
+                                    adjust_flags(gaf);
                                 });
                             }
                             $scope.gaf_set_list.push([gaf]);
@@ -792,7 +817,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                             $scope.remaining = true;
                         } else if (!gaf.challenge_gaf) {
                             $scope.gaf_set_list.push([gaf]);
-                            //console.log("no chal gaf,", gaf.id, gaf.notes);
                         } else {
                             var unique_gaf = true;
                             $scope.gaf_set_list.map(function(gaf_set) {
@@ -800,19 +824,31 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                                     if(gaf_set[0].challenge_gaf.original_gaf == gaf.challenge_gaf.original_gaf) {
                                         gaf_set.push(gaf);
                                         unique_gaf = false;
-                                        //console.log("chal gaf and the same,", gaf.id, gaf.notes);
                                     }
                                 }
                             });
                             if (unique_gaf) {
                                 $scope.gaf_set_list.push([gaf]);
-                                //console.log("chal gaf, but unique", gaf.id, gaf.notes);
                             }
+                            adjust_flags(gaf);
                         }
                     });
                 });
             }
         });
+
+        var adjust_flags = function(gaf) {
+            CacaoBackend.oneUrl(' ', gaf.challenge_gaf.original_gaf).get().then(function(original) {
+                for (var field in gaf.plain()) {
+                    if (original[field] != gaf[field]) {
+                        var diff_field = $filter('field_to_flagged')(field);
+                        if(diff_field) {
+                            gaf.flagged[diff_field] = $filter('flags_to_text')(diff_field);
+                        }
+                    }
+                }
+            });
+        };
 
         // make remaining false if no gafs on page load
         $scope.test = function() {
@@ -840,17 +876,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             }
         };
 
-        var next_gaf = function() {
-            CacaoBackend.all('gafs').getList({review_state: 1,limit: 1}).then(function(data) {
-                $scope.num_left = data.meta.count;
-                if ($scope.num_left > 0) {
-                    $scope.current_gaf = data[0];
-                    $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
-                    $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
-                }
-            });
-        };
-
         $scope.put_gaf= function(state) {
             $scope.current_gaf.review_state=state;
             $scope.current_gaf.put().then(function() {
@@ -859,16 +884,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             $scope.saveAssessment();
             init();
         };
-
-
-        CacaoBackend.all('gafs').getList({review_state: 1,}).then(function(data) {
-            $scope.num_left = data.meta.count;
-            if ($scope.num_left > 0) {
-                $scope.current_gaf = data[0];
-                $scope.current_gaf.show_db_reference = parseInt($scope.current_gaf.db_reference.replace('PMID:', ''));
-                $scope.current_gaf.show_qualifier = $filter('qualifier_to_text')($scope.current_gaf.qualifier);
-            }
-        });
 
         $scope.plural = function() {
             if ($scope.num_left == 1) {

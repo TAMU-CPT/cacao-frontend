@@ -69,7 +69,7 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-if="!original_gaf.show" layout="row" layout-align="center center" ng-cloak>
+<div ng-if="!original_gaf.show" layout="row" layout-align="center start" ng-cloak>
     <div flex="30">
         <md-card>
             <!--<md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">-->
@@ -84,35 +84,35 @@
             </md-card-header>
             <md-card-content>
                 <form name="prev_gaf_form">
-                    <div layout="row" layout-sm="column">
+                    <div layout="row">
                         <md-input-container flex>
                             <label>Gene ID</label>
                             <input disabled name="db_object_id" ng-model="current_gaf[0].db_object_id"/>
                         </md-input-container>
                         <md-checkbox ng-false-value="'Protein'" ng-true-value="null" ng-model="current_gaf[0].flagged.protein" aria-label="Gene ID Checkbox"></md-checkbox>
                     </div>
-                    <div layout="row" layout-sm="column">
+                    <div layout="row">
                         <md-input-container flex>
                             <label>Qualifier</label>
-                            <input disabled name="qualifier" ng-model="current_gaf[0].show_qualifier"/>
+                            <input disabled name="qualifier" value="{{current_gaf[0].qualifier | qualifier_to_text}}"/>
                         </md-input-container>
                         <md-checkbox ng-false-value="'Qualifier'" ng-true-value="null" ng-model="current_gaf[0].flagged.qualifier" aria-label="Qualifier Checkbox"></md-checkbox>
                     </div>
-                    <div layout="row" layout-sm="column">
+                    <div layout="row">
                         <md-input-container class="md-block" flex>
                             <label>GO ID</label>
                             <input disabled ng-model="current_gaf[0].go_id"/>
                         </md-input-container>
                         <md-checkbox ng-false-value="'GO Term'" ng-true-value="null" ng-model="current_gaf[0].flagged.go_id" aria-label="GO ID Checkbox"></md-checkbox>
                     </div>
-                    <div layout="row" layout-sm="column">
+                    <div layout="row">
                         <md-input-container class="md-block" flex>
                             <label>PMID (DB Reference)</label>
                             <input disabled name="db_reference" ng-model="current_gaf[0].show_db_reference"/>
                         </md-input-container>
                         <md-checkbox ng-false-value="'Publication'" ng-true-value="null" ng-model="current_gaf[0].flagged.publication" aria-label="PMID Checkbox"></md-checkbox>
                     </div>
-                    <div layout="row" layout-sm="column">
+                    <div layout="row">
                         <md-input-container flex>
                             <label>Evidence Code</label>
                             <input disabled name="evidence_code" ng-model="current_gaf[0].evidence_code"/>
@@ -125,7 +125,7 @@
                         </md-input-container>
                         <md-checkbox ng-false-value="'Evidence Code'" ng-true-value="null" ng-model="current_gaf[0].flagged.evidence" aria-label="Evidence Code Checkbox"></md-checkbox>
                     </div>
-                    <div layout="row" layout-sm="column">
+                    <div layout="row">
                         <md-input-container class="md-block" flex>
                             <label>Notes</label>
                             <textarea class="gafs" disabled name="notes" ng-model="current_gaf[0].notes"></textarea>
@@ -182,12 +182,12 @@
 </div>
 
 <div ng-if="original_gaf.show">
-    <div layout="row" layout-align="center center">
+    <div layout="row" layout-align="center">
         <div layout="column">
             <md-card layout="row">
                 <md-toolbar>
                     <div class="md-toolbar-tools">
-                        <span class="md-headline">Original Annotation</span>
+                        <span class="md-headline">Original annotation for {{original_gaf.db_object_id}}</span>
                     </div>
                 </md-toolbar>
             </md-card>
@@ -203,31 +203,25 @@
                     </md-card-header-text>
                 </md-card-header>
                 <md-card-content>
-                    <div layout="row" layout-xs="column">
-                        <md-input-container flex>
-                            <label>Gene ID</label>
-                            <input disabled name="db_object_id" ng-model="original_gaf.db_object_id"/>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-xs="column">
+                    <div layout="row">
                         <md-input-container flex>
                             <label>Qualifier</label>
                             <input disabled name="qualifier" value="{{original_gaf.qualifier | qualifier_to_text}}"/>
                         </md-input-container>
                     </div>
-                    <div layout="row" layout-xs="column">
+                    <div layout="row">
                         <md-input-container class="md-block" flex>
                             <label>GO ID</label>
                             <input disabled ng-model="original_gaf.go_id"/>
                         </md-input-container>
                     </div>
-                    <div layout="row" layout-xs="column">
+                    <div layout="row">
                         <md-input-container class="md-block" flex>
                             <label>PMID (DB Reference)</label>
                             <input disabled name="db_reference" ng-model="original_gaf.db_reference"/>
                         </md-input-container>
                     </div>
-                    <div layout="row" layout-xs="column">
+                    <div layout="row">
                         <md-input-container flex>
                             <label>Evidence Code</label>
                             <input disabled name="evidence_code" ng-model="original_gaf.evidence_code"/>
@@ -240,7 +234,7 @@
                             <input disabled name="with_from_db" ng-model="original_gaf.with_or_from"/>
                         </md-input-container>
                     </div>
-                    <div layout="row" layout-xs="column">
+                    <div layout="row">
                         <md-input-container class="md-block" flex>
                             <label>Notes</label>
                             <textarea class="gafs" disabled name="notes" ng-model="original_gaf.notes"></textarea>
@@ -272,13 +266,6 @@
                     </md-card-header>
                     <md-card-content>
                         <form name="prev_gaf_form">
-                            <div layout="row" layout-sm="column">
-                                <md-input-container flex>
-                                    <label>Gene ID</label>
-                                    <input disabled name="db_object_id" ng-model="c_gaf.db_object_id"/>
-                                </md-input-container>
-                                <md-checkbox ng-false-value="'Protein'" ng-true-value="null" ng-model="c_gaf.flagged.protein" aria-label="Gene ID Checkbox"></md-checkbox>
-                            </div>
                             <div layout="row" layout-sm="column">
                                 <md-input-container flex>
                                     <label>Qualifier</label>
