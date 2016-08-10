@@ -778,7 +778,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                         }
 
                         gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
-                        //gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
+                        gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
 
                         if ($scope.gaf_set_list.length == 0 ) {
                             if (gaf.challenge_gaf) {
