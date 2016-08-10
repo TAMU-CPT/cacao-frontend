@@ -60,7 +60,7 @@
             <div layout="row" layout-xs="column">
                 <md-input-container flex>
                     <label>Qualifier</label>
-                    <input disabled name="qualifier" value="{{gaf.qualifier | qualifier_to_text}}"/>
+                    <input disabled name="qualifier" ng-model="gaf.show_qualifier"/>
                 </md-input-container>
             </div>
             <div layout="row" layout-xs="column">

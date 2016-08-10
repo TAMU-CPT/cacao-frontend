@@ -1057,6 +1057,7 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
 
         CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(gaf) {
             $scope.gaf = gaf;
+            $scope.gaf.show_qualifier = $filter('qualifier_to_text')($scope.gaf.qualifier);
             $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
 
             function formatEntry(obj){
