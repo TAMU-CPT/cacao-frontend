@@ -15,7 +15,9 @@
             <tbody md-body>
                 <tr md-row ng-repeat="d in data">
                     <td md-cell>
+                        <a href="#/gaf/{{d.id}}">
                         {{d.review_state | review_state_to_english}}
+                        </a>
                     </td>
                     <td md-cell>
                         <user-icon user="{{d.owner}}"></user-icon>
