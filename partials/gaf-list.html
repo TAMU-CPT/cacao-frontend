@@ -1,4 +1,5 @@
 <div layout="column" class="md-padding">
+    <md-whiteframe class="md-whiteframe-1dp" layout layout-align="center center">
     <md-table-container>
         <table md-table md-progress="promise">
             <thead md-head md-order="ordering" md-on-reorder="updateData">
@@ -15,7 +16,9 @@
             <tbody md-body>
                 <tr md-row ng-repeat="d in data">
                     <td md-cell>
+                        <a href="#/gaf/{{d.id}}">
                         {{d.review_state | review_state_to_english}}
+                        </a>
                     </td>
                     <td md-cell>
                         <user-icon user="{{d.owner}}"></user-icon>
@@ -42,4 +45,5 @@
         md-total="{{data.meta.count}}"
         md-page-select="options.pageSelect"
         md-on-paginate="updateData"></md-table-pagination>
+    </md-whiteframe>
 </div>
