@@ -73,7 +73,7 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-if="original_gaf.show != true" ng-hide="remaining == false" layout="row" layout-align="center start">
+<div ng-if="original_gaf.show != true" ng-hide="remaining == false" layout="row" layout-padding layout-wrap layout-fill  layout-align="center start">
     <div flex-gt-sm="30">
         <md-card>
             <md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">

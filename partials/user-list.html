@@ -1,8 +1,16 @@
-<div class="container-fluid">
-    <h1>USERS</h1>
-    <ul>
-        <li ng-repeat="user in users">
-            <a href="#/users/{{user.id}}">{{user.username}}</a>
-        </li>
-    </ul>
+<div class="container-fluid" layout="row" layout-align="center">
+    <md-card flex="50">
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                Users
+            </div>
+        </md-toolbar>
+        <md-card-content>
+            <ul>
+                <li ng-repeat="user in users">
+                    <a href="#/users/{{user.id}}">{{user.username}}</a>
+                </li>
+            </ul>
+        </md-card-content>
+    </md-card>
 </div>

@@ -1,8 +1,16 @@
-<div class="container-fluid">
-    <h1>TEAMS</h1>
-    <ul>
-        <li ng-repeat="team in teams">
-            <a href="#/teams/{{team.id}}">{{team.name}}</a>
-        </li>
-    </ul>
+<div class="container-fluid" layout="row" layout-align="center">
+    <md-card flex="50">
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                Teams
+            </div>
+        </md-toolbar>
+        <md-card-content>
+            <ul>
+                <li ng-repeat="team in teams">
+                    <a href="#/teams/{{team.id}}">{{team.name}}</a>
+                </li>
+            </ul>
+        </md-card-content>
+    </md-card>
 </div>
