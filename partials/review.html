@@ -1,4 +1,8 @@
 <style>
+
+    md-card md-card-header md-card-avatar+md-card-header-text {
+        max-height:100px;
+    }
     .cssSlideUp.ng-hide-remove, .cssSlideUp.ng-hide-add {
         display: block !important; /* yes, important */
     }
@@ -184,22 +188,11 @@
         <div flex-gt-sm="30">
             <div layout="column">
                 <md-card>
-                    <md-toolbar>
-                        <div class="md-toolbar-tools">
-                            <span class="md-headline">Original annotation for {{original_gaf.db_object_id}}</span>
-                        </div>
-                    </md-toolbar>
-                </md-card>
-
-                <md-card>
                     <md-card-header style="background-color:{{(current_gaf | challenge_flagged) == 0 ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
                     <!--<md-card-header>-->
-                        <md-card-avatar>
-                            <img gravatar-src="original_gaf.owner.email" style="border-radius: 50%">
-                        </md-card-avatar>
                         <md-card-header-text>
-                            <span class="md-title">{{original_gaf.owner.username}}</span>
-                            <span flex class="md-subhead">{{original_gaf.date}}</span>
+                            <span class="md-title">{{original_gaf.db_object_id}}</span>
+                            <span flex class="md-subhead">Original Annotation</span>
                         </md-card-header-text>
                     </md-card-header>
                     <md-card-content>
@@ -250,25 +243,34 @@
 
         <div flex-gt-sm="{{current_gaf.length > 1 ? 60 : 30}}">
             <div layout="column">
-                <md-card layout="row">
-                    <md-toolbar>
-                        <div class="md-toolbar-tools">
-                            <span class="md-headline">Challenge Annotation{{plural()}} for {{original_gaf.db_object_id}}</span>
-                        </div>
-                    </md-toolbar>
-                </md-card>
-
                 <div layout="row" layout-xs="column">
                     <div ng-repeat="c_gaf in current_gaf" flex>
                         <md-card>
                             <md-card-header style="background-color:{{(c_gaf | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
                             <!--<md-card-header>-->
-                                <md-card-avatar>
-                                    <img gravatar-src="c_gaf.owner.email" style="border-radius: 50%">
-                                </md-card-avatar>
                                 <md-card-header-text>
-                                    <span class="md-title">{{c_gaf.owner.username}}</span>
-                                    <span flex class="md-subhead">{{c_gaf.date}}</span>
+                                    <div layout="row" layout-align="center center">
+                                        <div>
+                                            <div flex class="md-title">{{original_gaf.db_object_id}}</div>
+                                            <div flex class="md-subhead">Challenge {{$index + 1}} of {{current_gaf.length}}</div>
+                                        </div>
+                                        <span flex></span>
+                                        <div layout="column" layout-align="center center" ng-cloak>
+                                            <ng-md-icon icon="whatshot" "fill: white" >
+                                                <md-tooltip>Challenge</md-tooltip>
+                                            </ng-md-icon>
+                                        </div>
+                                    </div>
+                                    <!--<span class="md-title">{{c_gaf.owner.username}}</span>-->
+                                    <!--<span flex class="md-subhead">{{c_gaf.date}}</span>-->
+                                    <!--<span flex></span>-->
+                                    <!--<div layout="column" layout-align="center center" ng-show="gaf.review_state != 0" ng-cloak>-->
+                                        <!--<ng-md-icon icon="{{gaf.review_state | header_icon}}" "fill: white" >-->
+                                            <!--<md-tooltip>-->
+                                                <!--{{gaf.review_state | review_state_to_english}}-->
+                                            <!--</md-tooltip>-->
+                                        <!--</ng-md-icon>-->
+                                    <!--</div>-->
                                 </md-card-header-text>
                             </md-card-header>
                             <md-card-content>
