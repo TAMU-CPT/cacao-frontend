@@ -1,4 +1,5 @@
 <div layout="column" class="md-padding">
+    <md-whiteframe class="md-whiteframe-1dp" layout layout-align="center center">
     <md-table-container>
         <table md-table md-progress="promise">
             <thead md-head md-order="ordering" md-on-reorder="updateData">
@@ -44,4 +45,5 @@
         md-total="{{data.meta.count}}"
         md-page-select="options.pageSelect"
         md-on-paginate="updateData"></md-table-pagination>
+    </md-whiteframe>
 </div>
