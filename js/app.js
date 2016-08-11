@@ -1026,6 +1026,7 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
 
 cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter',
     function($scope, CacaoBackend, $filter) {
+        $scope.show="false";
         $scope.gafs = [];
 
         CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
