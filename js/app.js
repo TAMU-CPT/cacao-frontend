@@ -854,17 +854,20 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         $scope.test = function() {
             if ($scope.gaf_current_index < $scope.gaf_set_list.length - 1) {
                 ++$scope.gaf_current_index;
-                $scope.current_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
+                //$scope.current_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
+                $scope.temp_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
 
-                if ($scope.current_gaf[0].challenge_gaf) {
-                    CacaoBackend.oneUrl(' ', $scope.current_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
+                if ($scope.temp_gaf[0].challenge_gaf) {
+                    CacaoBackend.oneUrl(' ', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
                         $scope.original_gaf = original;
                         $scope.original_gaf.show = true;
+                        $scope.current_gaf = $scope.temp_gaf;
                     });
                 } else {
                     if ($scope.original_gaf) {
                         $scope.original_gaf.show = false;
                     }
+                    $scope.current_gaf = $scope.temp_gaf;
                 }
 
             } else {
@@ -872,7 +875,14 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 if ($scope.original_gaf) {
                     $scope.original_gaf.show = false;
                 }
-                console.log('done');
+            }
+        };
+
+        $scope.plural = function() {
+            if ($scope.current_gaf.length == 1) {
+                return '';
+            } else {
+                return 's';
             }
         };
 
@@ -884,15 +894,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             $scope.saveAssessment();
             init();
         };
-
-        $scope.plural = function() {
-            if ($scope.num_left == 1) {
-                return '';
-            } else {
-                return 's';
-            }
-        };
-
 
         $scope.saveAssessment = function() {
             var notes = "Valid Annotation";

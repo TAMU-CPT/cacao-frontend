@@ -69,11 +69,10 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-if="!original_gaf.show" layout="row" layout-align="center start" ng-cloak>
+<div ng-if="original_gaf.show != true" ng-hide="remaining == false" layout="row" layout-align="center start">
     <div flex="30">
         <md-card>
-            <!--<md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">-->
-            <md-card-header>
+            <md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
                 <md-card-avatar>
                     <img gravatar-src="current_gaf[0].owner.email" style="border-radius: 50%">
                 </md-card-avatar>
@@ -137,8 +136,8 @@
         </md-card>
 
         <md-card>
-            <md-card-header>
-            <!--<md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">-->
+            <!--<md-card-header>-->
+            <md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
                 <md-card-header-text ng-hide="current_gaf[0] | anyFlagged">
                     <div layout="row" layout-align-sm="start center">
                         <div>
@@ -181,7 +180,7 @@
     </div>
 </div>
 
-<div ng-if="original_gaf.show">
+<div ng-if="original_gaf.show" ng-hide="remaining == false">
     <div layout="row" layout-align="center">
         <div layout="column">
             <md-card layout="row">
@@ -248,7 +247,7 @@
             <md-card layout="row">
                 <md-toolbar>
                     <div class="md-toolbar-tools">
-                        <span class="md-headline">Challenge Annotation</span>
+                        <span class="md-headline">Challenge Annotation{{plural()}}</span>
                     </div>
                 </md-toolbar>
             </md-card>
