@@ -192,7 +192,8 @@
             </md-card>
 
             <md-card>
-                <md-card-header>
+                <md-card-header style="background-color:{{(current_gaf | challenge_flagged) == 0 ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
+                <!--<md-card-header>-->
                     <md-card-avatar>
                         <img gravatar-src="original_gaf.owner.email" style="border-radius: 50%">
                     </md-card-avatar>
@@ -254,7 +255,8 @@
 
             <div layout="row">
                 <md-card ng-repeat="c_gaf in current_gaf" flex>
-                    <md-card-header>
+                    <md-card-header style="background-color:{{(c_gaf | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
+                    <!--<md-card-header>-->
                         <md-card-avatar>
                             <img gravatar-src="c_gaf.owner.email" style="border-radius: 50%">
                         </md-card-avatar>
@@ -312,8 +314,10 @@
             </div>
         </div>
     </div>
+
+    <div>
+        <md-button ng-disabled="(current_gaf | challenge_flagged) > 1" class="md-primary md-raised" ng-click="test()">chal test</md-button>
+    </div>
+
 </div>
 
-<div>
-    <md-button class="md-primary md-raised" ng-click="test()">Submit</md-button>
-</div>

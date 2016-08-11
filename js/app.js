@@ -738,15 +738,32 @@ cacaoApp.filter('goChartUrl', function() {
     };
 });
 
+var flagged_card = function (input) {
+    return Object.keys(input.flagged).map(function (key) {
+        return input.flagged[key] !== null;
+    }).some(function(val){
+        return val;
+    });
+};
+
 cacaoApp.filter('anyFlagged', function() {
     return function(input) {
         if (input) {
-            // Check if any of them are non-null
-            return Object.keys(input.flagged).map(function (key) {
-                return input.flagged[key] !== null;
-            }).some(function(val){
-                return val;
-            });
+            return flagged_card(input);
+        }
+    };
+});
+
+cacaoApp.filter('challenge_flagged', function() {
+    return function(input) {
+        if (input) {
+            var num = 0;
+            for (var i in input) {
+                if (flagged_card(input[i]) == false) {
+                    ++num;
+                }
+            }
+            return num;
         }
     };
 });
