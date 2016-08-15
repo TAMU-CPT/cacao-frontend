@@ -836,6 +836,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                             if (gaf.challenge_gaf) {
                                 CacaoBackend.oneUrl(' ', gaf.challenge_gaf.original_gaf).get().then(function(original) {
                                     $scope.original_gaf = original;
+                                    $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
                                     $scope.original_gaf.show = true;
                                     adjust_flags(gaf);
                                 });
@@ -888,6 +889,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 if ($scope.temp_gaf[0].challenge_gaf) {
                     CacaoBackend.oneUrl(' ', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
                         $scope.original_gaf = original;
+                        $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
                         $scope.original_gaf.show = true;
                         $scope.current_gaf = $scope.temp_gaf;
                     });
