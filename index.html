@@ -16,56 +16,35 @@
                     <span class="md-title"><a href="#/">CACAO</a></span>
                 </h2>
                 <span flex></span>
-                <md-button aria-label="show menu" class="md-icon-button" >
-                    <ng-md-icon icon="menu" ></ng-md-icon>
-                </md-button>
-                <md-button ng-if="nav.userData.email" aria-label="show menu">
-                    <img gravatar-src="nav.userData.email" style="border-radius: 50%">
-                    <!--<ng-md-icon icon="menu" ></ng-md-icon>-->
+                <script type="text/ng-template" id="popover">
+                    <div class="triangle"></div>
+                    <div class="ns-popover-tooltip">
+                        <div layout="column" flex>
+                            <md-button ng-click="go('/teams/')" class="md-raised md-secondary">
+                                a;sldkfja;sldkfja;lsdkf
+                            </md-button>
+                            <md-button ng-click="go('/teams/')" class="md-raised md-secondary">
+                                My Team
+                            </md-button>
+                            <md-button ng-click="go('/logout')" class="md-raised md-secondary">
+                                Log Out
+                            </md-button>
+                        </div>
+                    </div>
+                </script>
+                <md-button ng-if="nav.userData.email" class="md-icon-button" style="padding:0;">
+                    <img ns-popover
+                      ns-popover-theme="ns-popover-tooltip-theme"
+                      ns-popover-template="popover"
+                      ns-popover-trigger="click"
+                      ns-popover-placement="bottom|right"
+                      ng-if="nav.userData.email" gravatar-src="nav.userData.email" style="width:100%; border-radius: 50%">
                 </md-button>
                 <md-button ng-if="!nav.userData.email" ng-click="go('/login')" class="md-primary md-raised">
                     Login
                 </md-button>
-                <md-button ng-if="nav.userData.email" ng-click="go('/logout')" class="md-raised md-secondary">
-                    Log Out
-                </md-button>
             </div>
         </md-toolbar>
-        <!--<section layout="row" flex ng-cloak>-->
-            <!--<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">-->
-                <!--<md-card>-->
-                    <!--<md-card-title>-->
-                        <!--<md-card-title-media>-->
-                            <!--<div class="md-media-sm card-media" layout layout-align="center center">-->
-                                <!--<img gravatar-src="userData.email" style="border-radius: 50%">-->
-                            <!--</div>-->
-                        <!--</md-card-title-media>-->
-                        <!--<md-card-title-text style="padding-left: 1em">-->
-                            <!--<span class="md-headline" ng-bind="userData.username"></span>-->
-                            <!--<span class="md-subhead description" ng-bind="userData.email"></span>-->
-                        <!--</md-card-title-text>-->
-                    <!--</md-card-title>-->
-                <!--</md-card>-->
-                <!--<md-content>-->
-                    <!--<div ng-if="!userData.email">-->
-                        <!--<md-button ng-click="go('/login')" class="md-primary md-raised">-->
-                            <!--Login-->
-                        <!--</md-button>-->
-                    <!--</div>-->
-                    <!--<div ng-if="userData.email">-->
-                        <!--<md-button ng-click="go('/gaf')" class="md-raised md-primary">-->
-                            <!--Submit an Annotation-->
-                        <!--</md-button>-->
-                        <!--<md-button ng-click="go('/logout')" class="md-raised md-secondary">-->
-                            <!--Log Out-->
-                        <!--</md-button>-->
-                        <!--<md-button ng-click="go('/teams/')" class="md-raised md-secondary">-->
-                            <!--My Team-->
-                        <!--</md-button>-->
-                    <!--</div>-->
-                <!--</md-content>-->
-            <!--</md-sidenav>-->
-        <!--</section>-->
         <div class="view-container">
             <div ng-view class="view-frame"></div>
         </div>
