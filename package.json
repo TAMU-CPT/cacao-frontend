@@ -14,7 +14,7 @@
     "angular-aria": "1.5.5",
     "angular-gravatar": "^0.4.2",
     "angular-jwt": "0.0.9",
-    "angular-material": "^1.0.7",
+    "angular-material": "1.0.9",
     "angular-material-data-table": "^0.10.9",
     "angular-material-icons": "^0.7.1",
     "angular-messages": "1.5.5",
@@ -32,6 +32,7 @@
     "jquery": "^2.2.3",
     "jwt-decode": "^2.0.1",
     "lightbox2": "^2.8.2",
+    "lodash": "^4.14.1",
     "md5": "^2.0.0",
     "moment": "^2.10.6",
     "ng-admin": "~0.9.0",
@@ -49,9 +50,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Eleni Mijalis",
-  "license": "AGPLv3",
+  "license": "AGPL-3.0",
   "dependencies": {
-    "lodash": "^4.14.1",
-    "moment": "^2.14.1"
   }
 }
