@@ -22,208 +22,204 @@
     }
 </style>
 
-<div class="col-sm-6">
-    <md-content class="md-padding">
-        <div layout="row">
-            <div class="col" flex="45">
-                <md-card>
-                    <md-card-title>
+<div layout="row">
+    <div class="col" flex="45">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Create an Annotation</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <form name="GAFForm" ng-submit="saveData()" novalidate>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Gene ID</label>
+                            <input ng-disabled="{{disable_field}}" required name="db_object_id" ng-model="gafData.db_object_id" ng-model-options="{ updateOn: blur }" ng-blur="gaf_update(gafData.db_object_id)"/>
+                            <div ng-messages="GAFForm.db_object_id.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Qualifier</label>
+                            <md-select name="qualifier" ng-model="gafData.qualifier" placeholder="Qualifier">
+                                <md-option></md-option>
+                                <md-option ng-repeat="qualifier in qualifiers" ng-value="qualifier">{{qualifier | qualifier_to_text}}</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <!--</md-input-container>-->
+                        <!--<label>DB</label>-->
+                        <!--<input required name="db" ng-model="gafData.db" ng-disabled="true"/>-->
+                        <!--<div ng-messages="GAFForm.db.$error">-->
+                            <!--<div ng-message="required">This is required.</div>-->
+                        <!--</div>-->
+                    <!--</md-input-container>-->
+                    <div layout="row" layout-sm="column">
+                        <md-input-container class="md-block" flex>
+                            <label>GO ID</label>
+                            <input required name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
+                            <div ng-messages="GAFForm.go_id.$error" md-auto-hide="false" ng-show="GAFForm.go_id.$touched">
+                                <div ng-message="required">This is required.</div>
+                                <div ng-message="startwithGo">Must start with 'GO:'</div>
+                                <div ng-message="minlength">This is required.</div>
+                                <div ng-message="customRequired">Invalid GO ID</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <label>PMID (DB Reference)</label>
+                            <input required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>
+                            <div ng-messages="GAFForm.db_reference.$error" md-auto-hide="false" ng-show="GAFForm.db_reference.$touched">
+                                <div ng-message="required">This is required.</div>
+                                <div ng-message="pmidValid">Invalid PMID</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Evidence Code</label>
+                            <md-select name="evidence_code" ng-model="gafData.evidence_code" placeholder="Evidence Code" ng-required="true">
+                                <md-option ng-repeat="eco_code in eco_codes" ng-value="eco_code">{{eco_code}}: {{eco_code | eco_to_text}}</md-option>
+                            </md-select>
+                            <div ng-messages="GAFForm.evidence_code.$error" ng-show="GAFForm.evidence_code.$invalid">
+                                <div ng-message="required" ng-show="GAFForm.evidence_code.$touched">This is required.</div>
+                            </div>
+                            </md-input-container>
+                        <div layout="row" layout-sm="column" ng-if="GAFForm.evidence_code.$modelValue
+                                    && GAFForm.evidence_code.$modelValue != 'IDA'
+                                    && GAFForm.evidence_code.$modelValue != 'IMP'" flex="40">
+                            <md-input-container flex>
+                                <md-select name="with_from_db" ng-model="gafData.with_from_db" placeholder="DB" ng-required="true">
+                                    <md-option ng-repeat="w_f_db in with_from_db">{{w_f_db}}</md-option>
+                                </md-select>
+                                <div ng-messages="GAFForm.with_from_db.$error" ng-show="GAFForm.with_from_db.$invalid">
+                                    <div ng-message="required" ng-show="GAFForm.with_from_db.$touched">This is required.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>ID</label>
+                                <input required name="with_from_id" ng-model="gafData.with_from_id"/>
+                                <div ng-messages="GAFForm.with_from_id.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container class="md-block" flex>
+                            <label>Notes</label>
+                            <textarea required name="notes" ng-model="gafData.notes" rows="5"></textarea>
+                            <div ng-messages="GAFForm.notes.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>
+                </form>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="col" flex="55">
+        <md-card ng-show="pubmedData || bad_pmid" class="pop_up_card">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span ng-show="bad_pmid" class="md-headline">{{bad_pmid}} not found</span>
+                    <span ng-show="pubmedData.pmid" class="md-headline">PMID:{{pubmedData.pmid}}</span>
+                    <span flex></span>
+                    <md-button ng-show="pubmedData" ng-click="show_paper = !show_paper" aria-label="expand" class="md-icon-button">
+                        <ng-md-icon icon="{{show_paper ? 'expand_more' : 'expand_less'}}" "fill: white" ></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <div class="cssSlideUp" ng-show="pubmedData" ng-hide="show_paper">
+                <md-card-title ng-show="pubmedData">
+                    <md-card-title-text>
+                        <span class="md-subhead">
+                            <span ng-show="pubmedData.author"><b>{{pubmedData.author}}.</b></span>
+                            <span ng-show="pubmedData.pub_year">{{pubmedData.pub_year}}.</span>
+                            <span ng-show="pubmedData.title">{{pubmedData.title}}.</span>
+                            <span ng-show="pubmedData.journal">{{pubmedData.journal}}</span>
+                            <span ng-show="pubmedData.volume && !pubmedData.pages"><b>{{pubmedData.volume}}.</b></span>
+                            <span ng-show="pubmedData.pages"><b>{{pubmedData.volume}}:</b></span><!--
+                            --><span ng-show="pubmedData.pages">{{pubmedData.pages}}.</span>
+                        </span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content ng-show="pubmedData">
+                    <p ng-show="pubmedData.abstract">{{pubmedData.short_abstract}}</p>
+                    <md-button class="md-raised md-accent" href="#/pmid/{{pubmedData.pmid}}" TARGET="_blank">See More</md-button>
+                </md-card-content>
+            </div>
+        </md-card>
+        <md-card ng-show="goTermData || bad_go_id" class="pop_up_card">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span ng-show="bad_go_id" class="md-headline">{{bad_go_id}} not found</span>
+                    <span ng-show="goTermData.id" class="md-headline">{{goTermData.id}}</span>
+                    <span flex></span>
+                    <md-button ng-show="goTermData" ng-click="show_go = !show_go" aria-label="expand" class="md-icon-button">
+                        <ng-md-icon icon="{{show_go ? 'expand_more' : 'expand_less'}}" "fill: white" ></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <div class="cssSlideUp" ng-show="goTermData" ng-hide="show_go">
+                <md-card-title ng-show="goTermData" layout="row">
+                    <div layout="column" flex="80">
                         <md-card-title-text>
-                            <span class="md-headline">Create an Annotation</span>
+                            <span ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
+                            <span ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
                         </md-card-title-text>
-                    </md-card-title>
-                    <md-card-content>
-                        <form name="GAFForm" ng-submit="saveData()" novalidate>
-                            <div layout="row" layout-sm="column">
-                                <md-input-container flex>
-                                    <label>Gene ID</label>
-                                    <input ng-disabled="{{disable_field}}" required name="db_object_id" ng-model="gafData.db_object_id" ng-model-options="{ updateOn: blur }" ng-blur="gaf_update(gafData.db_object_id)"/>
-                                    <div ng-messages="GAFForm.db_object_id.$error">
-                                        <div ng-message="required">This is required.</div>
-                                    </div>
-                                </md-input-container>
-                                <md-input-container flex>
-                                    <label>Qualifier</label>
-                                    <md-select name="qualifier" ng-model="gafData.qualifier" placeholder="Qualifier">
-                                        <md-option></md-option>
-                                        <md-option ng-repeat="qualifier in qualifiers" ng-value="qualifier">{{qualifier | qualifier_to_text}}</md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </div>
-                            <!--</md-input-container>-->
-                                <!--<label>DB</label>-->
-                                <!--<input required name="db" ng-model="gafData.db" ng-disabled="true"/>-->
-                                <!--<div ng-messages="GAFForm.db.$error">-->
-                                    <!--<div ng-message="required">This is required.</div>-->
-                                <!--</div>-->
-                            <!--</md-input-container>-->
-                            <div layout="row" layout-sm="column">
-                                <md-input-container class="md-block" flex>
-                                    <label>GO ID</label>
-                                    <input required name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
-                                    <div ng-messages="GAFForm.go_id.$error" md-auto-hide="false" ng-show="GAFForm.go_id.$touched">
-                                        <div ng-message="required">This is required.</div>
-                                        <div ng-message="startwithGo">Must start with 'GO:'</div>
-                                        <div ng-message="minlength">This is required.</div>
-                                        <div ng-message="customRequired">Invalid GO ID</div>
-                                    </div>
-                                </md-input-container>
-                                <md-input-container class="md-block" flex>
-                                    <label>PMID (DB Reference)</label>
-                                    <input required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>
-                                    <div ng-messages="GAFForm.db_reference.$error" md-auto-hide="false" ng-show="GAFForm.db_reference.$touched">
-                                        <div ng-message="required">This is required.</div>
-                                        <div ng-message="pmidValid">Invalid PMID</div>
-                                    </div>
-                                </md-input-container>
-                            </div>
-                            <div layout="row" layout-sm="column">
-                                <md-input-container flex>
-                                    <label>Evidence Code</label>
-                                    <md-select name="evidence_code" ng-model="gafData.evidence_code" placeholder="Evidence Code" ng-required="true">
-                                        <md-option ng-repeat="eco_code in eco_codes" ng-value="eco_code">{{eco_code}}: {{eco_code | eco_to_text}}</md-option>
-                                    </md-select>
-                                    <div ng-messages="GAFForm.evidence_code.$error" ng-show="GAFForm.evidence_code.$invalid">
-                                        <div ng-message="required" ng-show="GAFForm.evidence_code.$touched">This is required.</div>
-                                    </div>
-                                    </md-input-container>
-                                <div layout="row" layout-sm="column" ng-if="GAFForm.evidence_code.$modelValue
-                                            && GAFForm.evidence_code.$modelValue != 'IDA'
-                                            && GAFForm.evidence_code.$modelValue != 'IMP'" flex="40">
-                                    <md-input-container flex>
-                                        <md-select name="with_from_db" ng-model="gafData.with_from_db" placeholder="DB" ng-required="true">
-                                            <md-option ng-repeat="w_f_db in with_from_db">{{w_f_db}}</md-option>
-                                        </md-select>
-                                        <div ng-messages="GAFForm.with_from_db.$error" ng-show="GAFForm.with_from_db.$invalid">
-                                            <div ng-message="required" ng-show="GAFForm.with_from_db.$touched">This is required.</div>
-                                        </div>
-                                    </md-input-container>
-                                    <md-input-container flex>
-                                        <label>ID</label>
-                                        <input required name="with_from_id" ng-model="gafData.with_from_id"/>
-                                        <div ng-messages="GAFForm.with_from_id.$error">
-                                            <div ng-message="required">This is required.</div>
-                                        </div>
-                                    </md-input-container>
-                                </div>
-                            </div>
-                            <div layout="row" layout-sm="column">
-                                <md-input-container class="md-block" flex>
-                                    <label>Notes</label>
-                                    <textarea required name="notes" ng-model="gafData.notes" rows="5"></textarea>
-                                    <div ng-messages="GAFForm.notes.$error">
-                                        <div ng-message="required">This is required.</div>
-                                    </div>
-                                </md-input-container>
-                            </div>
-                            <md-button ng-disabled="GAFForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Submit</md-button>
-                        </form>
-                    </md-card-content>
-                </md-card>
+                        <div>
+                            <md-button class="md-raised md-accent" href="#/goid/{{goTermData.id}}" TARGET="_blank">See More</md-button>
+                        </div>
+                    </div>
+                    <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
+                        <div class="md-media-lg">
+                            <a ng-href="{{ goTermData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{goTermData.id}}">
+                                <img ng-src="{{ goTermData.id | goChartUrl }}" />
+                            </a>
+                        </div>
+                    </md-card-title-media>
+                </md-card-title>
             </div>
-            <div class="col" flex="55">
-                <md-card ng-show="pubmedData || bad_pmid" class="pop_up_card">
-                    <md-toolbar>
-                        <div class="md-toolbar-tools">
-                            <span ng-show="bad_pmid" class="md-headline">{{bad_pmid}} not found</span>
-                            <span ng-show="pubmedData.pmid" class="md-headline">PMID:{{pubmedData.pmid}}</span>
-                            <span flex></span>
-                            <md-button ng-show="pubmedData" ng-click="show_paper = !show_paper" aria-label="expand" class="md-icon-button">
-                                <ng-md-icon icon="{{show_paper ? 'expand_more' : 'expand_less'}}" "fill: white" ></ng-md-icon>
-                            </md-button>
-                        </div>
-                    </md-toolbar>
-                    <div class="cssSlideUp" ng-show="pubmedData" ng-hide="show_paper">
-                        <md-card-title ng-show="pubmedData">
-                            <md-card-title-text>
-                                <span class="md-subhead">
-                                    <span ng-show="pubmedData.author"><b>{{pubmedData.author}}.</b></span>
-                                    <span ng-show="pubmedData.pub_year">{{pubmedData.pub_year}}.</span>
-                                    <span ng-show="pubmedData.title">{{pubmedData.title}}.</span>
-                                    <span ng-show="pubmedData.journal">{{pubmedData.journal}}</span>
-                                    <span ng-show="pubmedData.volume && !pubmedData.pages"><b>{{pubmedData.volume}}.</b></span>
-                                    <span ng-show="pubmedData.pages"><b>{{pubmedData.volume}}:</b></span><!--
-                                    --><span ng-show="pubmedData.pages">{{pubmedData.pages}}.</span>
-                                </span>
-                            </md-card-title-text>
-                        </md-card-title>
-                        <md-card-content ng-show="pubmedData">
-                            <p ng-show="pubmedData.abstract">{{pubmedData.short_abstract}}</p>
-                            <md-button class="md-raised md-accent" href="#/pmid/{{pubmedData.pmid}}" TARGET="_blank">See More</md-button>
-                        </md-card-content>
-                    </div>
-                </md-card>
-                <md-card ng-show="goTermData || bad_go_id" class="pop_up_card">
-                    <md-toolbar>
-                        <div class="md-toolbar-tools">
-                            <span ng-show="bad_go_id" class="md-headline">{{bad_go_id}} not found</span>
-                            <span ng-show="goTermData.id" class="md-headline">{{goTermData.id}}</span>
-                            <span flex></span>
-                            <md-button ng-show="goTermData" ng-click="show_go = !show_go" aria-label="expand" class="md-icon-button">
-                                <ng-md-icon icon="{{show_go ? 'expand_more' : 'expand_less'}}" "fill: white" ></ng-md-icon>
-                            </md-button>
-                        </div>
-                    </md-toolbar>
-                    <div class="cssSlideUp" ng-show="goTermData" ng-hide="show_go">
-                        <md-card-title ng-show="goTermData" layout="row">
-                            <div layout="column" flex="80">
-                                <md-card-title-text>
-                                    <span ng-show="goTermData.name" class="md-subhead" style="color:#666">{{goTermData.name}}</span>
-                                    <span ng-show="goTermData.def" class="md-subhead" style="color:#666">definition: {{goTermData.def}}</span>
-                                </md-card-title-text>
-                                <div>
-                                    <md-button class="md-raised md-accent" href="#/goid/{{goTermData.id}}" TARGET="_blank">See More</md-button>
-                                </div>
-                            </div>
-                            <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
-                                <div class="md-media-lg">
-                                    <a ng-href="{{ goTermData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{goTermData.id}}">
-                                        <img ng-src="{{ goTermData.id | goChartUrl }}" />
-                                    </a>
-                                </div>
-                            </md-card-title-media>
-                        </md-card-title>
-                    </div>
-                </md-card>
-                <md-card ng-show="prevAnnotData || bad_db_object_id" class="pop_up_card">
-                    <md-toolbar>
-                        <div class="md-toolbar-tools">
-                            <span ng-show="prevAnnotData" class="md-headline">{{prevAnnotData}} Annotations</span>
-                            <span ng-show="bad_db_object_id" class="md-headline">{{bad_db_object_id}} has had no Annotations</span>
-                            <span flex></span>
-                            <md-button ng-show="prevAnnotData" ng-click="show_gafs = !show_gafs" aria-label="expand" class="md-icon-button">
-                                <ng-md-icon icon="{{show_gafs ? 'expand_more' : 'expand_less'}}" "fill: white" ></ng-md-icon>
-                            </md-button>
-                        </div>
-                    </md-toolbar>
-                    <div class="cssSlideUp" ng-show="prevAnnotData" ng-hide="show_gafs">
-                        <md-card-content ng-show="prevAnnotData">
-                            <md-table-container>
-                                <table md-table>
-                                    <thead md-head>
-                                        <tr md-row>
-                                            <th md-column><span>GO ID</th>
-                                            <th md-column><span>Name</span></th>
-                                            <th md-column><span>Reference</span></th>
-                                            <th md-column><span>Evidence Code</span></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody md-body>
-                                        <tr md-row ng-repeat="d in prev_annotations">
-                                            <td md-cell>{{d.go_id}}</td>
-                                            <td md-cell>{{d.db_object_name}}</td>
-                                            <td md-cell>{{d.db_reference}}</td>
-                                            <td md-cell>{{d.evidence_code}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </md-table-container>
-                            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.meta.count}}" md-page-select="options.pageSelect" md-on-paginate="updateData"></md-table-pagination>
-                        </md-card-content>
-                    </div>
-                </md-card>
+        </md-card>
+        <md-card ng-show="prevAnnotData || bad_db_object_id" class="pop_up_card">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span ng-show="prevAnnotData" class="md-headline">{{prevAnnotData}} Annotations</span>
+                    <span ng-show="bad_db_object_id" class="md-headline">{{bad_db_object_id}} has had no Annotations</span>
+                    <span flex></span>
+                    <md-button ng-show="prevAnnotData" ng-click="show_gafs = !show_gafs" aria-label="expand" class="md-icon-button">
+                        <ng-md-icon icon="{{show_gafs ? 'expand_more' : 'expand_less'}}" "fill: white" ></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <div class="cssSlideUp" ng-show="prevAnnotData" ng-hide="show_gafs">
+                <md-card-content ng-show="prevAnnotData">
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column><span>GO ID</th>
+                                    <th md-column><span>Name</span></th>
+                                    <th md-column><span>Reference</span></th>
+                                    <th md-column><span>Evidence Code</span></th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="d in prev_annotations">
+                                    <td md-cell>{{d.go_id}}</td>
+                                    <td md-cell>{{d.db_object_name}}</td>
+                                    <td md-cell>{{d.db_reference}}</td>
+                                    <td md-cell>{{d.evidence_code}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                    <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.meta.count}}" md-page-select="options.pageSelect" md-on-paginate="updateData"></md-table-pagination>
+                </md-card-content>
             </div>
+        </md-card>
+    </div>
 
-        </div>
-    </md-content>
 </div>
