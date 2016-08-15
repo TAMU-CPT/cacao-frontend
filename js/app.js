@@ -478,9 +478,12 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$locat
 
         $scope.go = function(route){
             if (route == '/teams/') {
-                CacaoBackend.one('users', $scope.userData.user_id).get().then(function(data) {
+                CacaoBackend.one('users', $scope.nav.userData.user_id).get().then(function(data) {
                     $location.path(route + data.group[0].id);
                 });
+            }
+            else if (route == '/users/') {
+                $location.path(route + $scope.nav.userData.user_id);
             }
             else { $location.path(route); }
         };
