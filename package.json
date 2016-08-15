@@ -9,13 +9,13 @@
   },
   "devDependencies": {
     "admin-config": "^0.4.0",
-    "angular": "1.5.5",
+    "angular": "1.5.8",
     "angular-animate": "1.5.5",
     "angular-aria": "1.5.5",
     "angular-gravatar": "^0.4.2",
     "angular-jwt": "0.0.9",
-    "angular-material": "1.0.9",
-    "angular-material-data-table": "^0.10.9",
+    "angular-material": "1.1.0-rc.5",
+    "angular-material-data-table": "git+ssh://git@github.com/erasche/md-data-table.git",
     "angular-material-icons": "^0.7.1",
     "angular-messages": "1.5.5",
     "angular-resource": "1.5.5",
@@ -51,6 +51,5 @@
   },
   "author": "Eleni Mijalis",
   "license": "AGPL-3.0",
-  "dependencies": {
-  }
+  "dependencies": {}
 }
