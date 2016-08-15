@@ -16,6 +16,9 @@
                     <span class="md-title"><a href="#/">CACAO</a></span>
                 </h2>
                 <span flex></span>
+                <md-button ng-if="nav.userData.email" aria-label="show menu" class="md-icon-button" ng-click="toggleRight()">
+                    <ng-md-icon icon="notifications" ></ng-md-icon>
+                </md-button>
                 <script type="text/ng-template" id="popover">
                     <div class="triangle"></div>
                     <div class="ns-popover-tooltip">
