@@ -9,52 +9,63 @@
     </style>
 </head>
 <body>
-    <div ng-controller="NavCtrl" layout="column" style="height:500px;" ng-cloak="" class="sidenavdemoBasicUsage">
+    <div ng-controller="NavCtrl" layout="column" style="height:500px" ng-cloak>
         <md-toolbar id="navbar" class="md-whiteframe-2dp">
             <div class="md-toolbar-tools">
                 <h2>
                     <span class="md-title"><a href="#/">CACAO</a></span>
                 </h2>
                 <span flex></span>
-                <md-button aria-label="show menu" class="md-icon-button" ng-click="toggleRight()">
+                <md-button aria-label="show menu" class="md-icon-button" >
                     <ng-md-icon icon="menu" ></ng-md-icon>
+                </md-button>
+                <md-button ng-if="nav.userData.email" aria-label="show menu">
+                    <img gravatar-src="nav.userData.email" style="border-radius: 50%">
+                    <!--<ng-md-icon icon="menu" ></ng-md-icon>-->
+                </md-button>
+                <md-button ng-if="!nav.userData.email" ng-click="go('/login')" class="md-primary md-raised">
+                    Login
+                </md-button>
+                <md-button ng-if="nav.userData.email" ng-click="go('/logout')" class="md-raised md-secondary">
+                    Log Out
                 </md-button>
             </div>
         </md-toolbar>
-
-        <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
-            <md-card>
-                <md-card-title>
-                    <md-card-title-media>
-                        <div class="md-media-sm card-media" layout layout-align="center center">
-                            <img gravatar-src="userData.email" style="border-radius: 50%">
-                        </div>
-                    </md-card-title-media>
-                    <md-card-title-text style="padding-left: 1em">
-                        <span class="md-headline" ng-bind="userData.username"></span>
-                        <span class="md-subhead description" ng-bind="userData.email"></span>
-                    </md-card-title-text>
-                </md-card-title>
-            </md-card>
-            <md-content>
-                <div ng-if="!userData.email">
-                    <md-button ng-click="go('/login')" class="md-primary md-raised">
-                        Login
-                    </md-button>
-                </div>
-                <div ng-if="userData.email">
-                    <md-button ng-click="go('/gaf')" class="md-raised md-primary">
-                        Submit an Annotation
-                    </md-button>
-                    <md-button ng-click="go('/logout')" class="md-raised md-secondary">
-                        Log Out
-                    </md-button>
-                    <md-button ng-click="go('/teams/')" class="md-raised md-secondary">
-                        My Team
-                    </md-button>
-                </div>
-            </md-content>
-        </md-sidenav>
+        <!--<section layout="row" flex ng-cloak>-->
+            <!--<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">-->
+                <!--<md-card>-->
+                    <!--<md-card-title>-->
+                        <!--<md-card-title-media>-->
+                            <!--<div class="md-media-sm card-media" layout layout-align="center center">-->
+                                <!--<img gravatar-src="userData.email" style="border-radius: 50%">-->
+                            <!--</div>-->
+                        <!--</md-card-title-media>-->
+                        <!--<md-card-title-text style="padding-left: 1em">-->
+                            <!--<span class="md-headline" ng-bind="userData.username"></span>-->
+                            <!--<span class="md-subhead description" ng-bind="userData.email"></span>-->
+                        <!--</md-card-title-text>-->
+                    <!--</md-card-title>-->
+                <!--</md-card>-->
+                <!--<md-content>-->
+                    <!--<div ng-if="!userData.email">-->
+                        <!--<md-button ng-click="go('/login')" class="md-primary md-raised">-->
+                            <!--Login-->
+                        <!--</md-button>-->
+                    <!--</div>-->
+                    <!--<div ng-if="userData.email">-->
+                        <!--<md-button ng-click="go('/gaf')" class="md-raised md-primary">-->
+                            <!--Submit an Annotation-->
+                        <!--</md-button>-->
+                        <!--<md-button ng-click="go('/logout')" class="md-raised md-secondary">-->
+                            <!--Log Out-->
+                        <!--</md-button>-->
+                        <!--<md-button ng-click="go('/teams/')" class="md-raised md-secondary">-->
+                            <!--My Team-->
+                        <!--</md-button>-->
+                    <!--</div>-->
+                <!--</md-content>-->
+            <!--</md-sidenav>-->
+        <!--</section>-->
         <div class="view-container">
             <div ng-view class="view-frame"></div>
         </div>

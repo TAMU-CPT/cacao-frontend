@@ -470,8 +470,9 @@ cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
 // nav
 cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'CacaoBackend',
     function ($scope, $mdSidenav, $localStorage, $location, CacaoBackend) {
-        $scope.userData = {};
-        $scope.toggleRight = buildToggler('right');
+
+        $scope.nav = {}
+        $scope.nav.userData = $localStorage.jwtData;
 
         $scope.go = function(route){
             if (route == '/teams/') {
@@ -480,21 +481,15 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$locat
                 });
             }
             else { $location.path(route); }
-            $mdSidenav('right').toggle();
-        }
-
-        function buildToggler(navID) {
-            return function() {
-                $scope.userData = $localStorage.jwtData;
-                $mdSidenav(navID).toggle();
-            }
-        }
+        };
 }]);
 
 cacaoApp.controller('LogOutCtrl', ['$scope', '$http', '$localStorage', '$location',
     function($scope, $http, $localStorage, $location) {
+        console.log('lgoout');
         $localStorage.jwtToken = null;
         $localStorage.jwtData = {};
+        $scope.nav.userData = $localStorage.jwtData;
         $location.path('/');
     }
 ]);
@@ -509,6 +504,7 @@ cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location
                     .success(function(data) {
                         $localStorage.jwtToken = data.token;
                         $localStorage.jwtData = jwt_decode(data.token);
+                        $scope.nav.userData = $localStorage.jwtData;
                         $location.path('/');
                     })
                     .error(function() {
