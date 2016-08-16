@@ -809,7 +809,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
     function($scope, CacaoBackend, $timeout, $filter) {
         if ($scope.assessmentForm) {
             $scope.assessmentForm.$setUntouched();
-            $scope.assessment = {};
         }
 
         $scope.gaf_set_list = [];
@@ -822,6 +821,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             for(var currentPage = 0; currentPage < Math.ceil(outer_data.meta.count / pageSize); currentPage++) {
                 CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
                     data.map(function(gaf) {
+                        gaf.assessment_notes= null;
                         gaf.flagged = {
                             protein: null,
                             qualifier: null,
@@ -880,8 +880,38 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             });
         };
 
-        // make remaining false if no gafs on page load
-        $scope.test = function() {
+        $scope.submit_assessment= function(gaf, state) {
+            gaf.review_state=state;
+            gaf.put().then(function() {
+                $scope.saveAssessment(gaf);
+                $scope.next();
+            });
+        }
+
+        $scope.saveAssessment = function(gaf) {
+            var notes = "Valid Annotation";
+            var flagged = []
+
+            // only change notes/flags if gaf was bad aka review_state 3
+            if(gaf.review_state == 3) {
+                notes = gaf.assessment_notes;
+                for (var i in gaf.flagged) {
+                    if (gaf.flagged[i] != null) {
+                        flagged.push(gaf.flagged[i]);
+                    }
+                }
+            }
+
+            CacaoBackend.all('assessments').post({
+                gaf: 'http://localhost:8000/gafs/' + gaf.id + '/',
+                notes: notes,
+                challenge: gaf.challenge_gaf ? 'http://localhost:8000/challenges/' + gaf.challenge_gaf.id + '/' : null,
+                flagged: flagged.join(),
+            });
+        };
+
+        // TODO: make remaining false if no gafs on page load
+        $scope.next = function() {
             if ($scope.gaf_current_index < $scope.gaf_set_list.length - 1) {
                 ++$scope.gaf_current_index;
                 //$scope.current_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
@@ -915,37 +945,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             } else {
                 return 's';
             }
-        };
-
-        $scope.put_gaf= function(state) {
-            $scope.current_gaf.review_state=state;
-            $scope.current_gaf.put().then(function() {
-                next_gaf();
-            });
-            $scope.saveAssessment();
-            init();
-        };
-
-        $scope.saveAssessment = function() {
-            var notes = "Valid Annotation";
-            var flagged = []
-
-            // only change notes/flags if gaf was bad aka review_state 3
-            if($scope.current_gaf.review_state == 3) {
-                notes = $scope.assessment.notes;
-                for (var i in $scope.flagged) {
-                    if ($scope.flagged[i] != null) {
-                        flagged.push($scope.flagged[i]);
-                    }
-                }
-            }
-
-            CacaoBackend.all('assessments').post({
-                gaf: 'http://localhost:8000/gafs/' + $scope.current_gaf.id + '/',
-                notes: notes,
-                challenge: $scope.current_gaf.challenge_gaf ? 'http://localhost:8000/challenges/' + $scope.current_gaf.challenge_gaf.id + '/' : null,
-                flagged: flagged.join(),
-            });
         };
 }]);
 
@@ -1094,6 +1093,13 @@ cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter',
     function($scope, CacaoBackend, $filter) {
         $scope.show="false";
         $scope.gafs = [];
+        $scope.idk = {};
+        $scope.idk.with_from_id = '';
+        $scope.idk.with_from_db= '';
+        var myEl = angular.element( document.querySelector( '#idk2' ));
+        console.log(myEl);
+        myEl.removeClass("_md-placeholder");
+        console.log(myEl);
 
         CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
             var pageSize = 5;

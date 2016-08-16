@@ -73,7 +73,7 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-if="original_gaf.show != true" ng-hide="remaining == false" layout="row" layout-padding layout-wrap layout-fill  layout-align="center start">
+<div ng-if="original_gaf.show != true" ng-hide="remaining == false" layout="row" layout-align="center start">
     <div flex-gt-sm="30">
         <md-card>
             <md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
@@ -150,7 +150,7 @@
                         </div>
                         <span flex></span>
                         <div>
-                            <md-button class="md-primary md-raised" ng-click="test()">Submit</md-button>
+                            <md-button class="md-primary md-raised" ng-click="submit_assessment(current_gaf[0], 2)">Submit</md-button>
                         </div>
                     </div>
                 </md-card-header-text>
@@ -169,13 +169,13 @@
                         <div layout="row" layout-sm="column">
                             <md-input-container flex>
                                 <label>Review Comments</label>
-                                <textarea required name="notes" ng-model="assessment.notes" rows="5"></textarea>
+                                <textarea required name="notes" ng-model="current_gaf[0].assessment_notes" rows="5"></textarea>
                                 <div ng-messages="assessmentForm.notes.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                             </md-input-container>
                         </div>
-                        <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="test()">Submit</md-button>
+                        <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="submit_assessment(current_gaf[0], 3)">Submit</md-button>
                     </form>
                 </md-content>
             </div>
@@ -235,7 +235,7 @@
                         </div>
                     </md-card-content>
                 </md-card>
-                <md-button ng-disabled="(current_gaf | challenge_flagged) > 1" class="md-primary md-raised" ng-click="test()">
+                <md-button ng-disabled="(current_gaf | challenge_flagged) > 1" class="md-primary md-raised" ng-click="next()">
                     Submit Challenge Asssessment
                 </md-button>
             </div>
