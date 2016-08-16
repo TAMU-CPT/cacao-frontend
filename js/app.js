@@ -886,7 +886,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 $scope.saveAssessment(gaf);
                 $scope.next();
             });
-        }
+        };
 
         $scope.saveAssessment = function(gaf) {
             var notes = "Valid Annotation";
