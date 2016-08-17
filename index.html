@@ -23,19 +23,19 @@
                     <div class="triangle"></div>
                     <div class="ns-popover-tooltip">
                         <div layout="column" flex>
-                            <md-button ng-click="go('/users/'); hidePopover()" class="md-raised md-secondary">
+                            <md-button aria-label="My Profile" ng-click="go('/users/'); hidePopover()" class="md-raised md-secondary">
                                 My Profile
                             </md-button>
-                            <md-button ng-click="go('/teams/'); hidePopover()" class="md-raised md-secondary">
+                            <md-button aria-label="My Team" ng-click="go('/teams/'); hidePopover()" class="md-raised md-secondary">
                                 My Team
                             </md-button>
-                            <md-button ng-click="go('/logout'); hidePopover()" class="md-raised md-secondary">
-                                Log Out
+                            <md-button aria-label="Logout" ng-click="go('/logout'); hidePopover()" class="md-raised md-secondary">
+                                Logout
                             </md-button>
                         </div>
                     </div>
                 </script>
-                <md-button ng-if="nav.userData.email" class="md-icon-button" style="padding:0;">
+                <md-button aria-label="User menu" ng-if="nav.userData.email" class="md-icon-button" style="padding:0;">
                     <img ns-popover
                       ns-popover-theme="ns-popover-tooltip-theme"
                       ns-popover-template="popover"
@@ -43,7 +43,7 @@
                       ns-popover-placement="bottom|right"
                       ng-if="nav.userData.email" gravatar-src="nav.userData.email" style="width:100%; border-radius: 50%">
                 </md-button>
-                <md-button ng-if="!nav.userData.email" ng-click="go('/login')" class="md-primary md-raised">
+                <md-button aria-label="Login" ng-if="!nav.userData.email" ng-click="go('/login')" class="md-primary md-raised">
                     Login
                 </md-button>
             </div>
