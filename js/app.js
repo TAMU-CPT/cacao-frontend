@@ -811,6 +811,8 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             $scope.assessmentForm.$setUntouched();
         }
 
+        $scope.forms = {};
+
         $scope.gaf_set_list = [];
         $scope.gaf_current_index = 0;
         $scope.current_gaf = [];
@@ -880,7 +882,20 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             });
         };
 
-        $scope.submit_assessment= function(gaf, state) {
+        $scope.submit_challenge_assessment = function() {
+            for (var gaf in $scope.current_gaf) {
+                console.log($scope.forms.challengeNotesForm['notes' + gaf].$modelValue);
+            }
+            $scope.next();
+        };
+
+        $scope.print = function(index) {
+            console.log(index);
+            console.log($scope);
+
+        };
+
+        $scope.submit_assessment_no_challenge = function(gaf, state) {
             gaf.review_state=state;
             gaf.put().then(function() {
                 $scope.saveAssessment(gaf);

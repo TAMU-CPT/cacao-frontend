@@ -148,7 +148,7 @@
                         </div>
                         <span flex></span>
                         <div>
-                            <md-button class="md-primary md-raised" ng-click="submit_assessment(current_gaf[0], 2)">Submit</md-button>
+                            <md-button class="md-primary md-raised" ng-click="submit_assessment_no_challenge(current_gaf[0], 2)">Submit</md-button>
                         </div>
                     </div>
                 </md-card-header-text>
@@ -173,7 +173,7 @@
                                 </div>
                             </md-input-container>
                         </div>
-                        <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="submit_assessment(current_gaf[0], 3)">Submit</md-button>
+                        <md-button ng-disabled="assessmentForm.$invalid" class="md-primary md-raised" ng-click="submit_assessment_no_challenge(current_gaf[0], 3)">Submit</md-button>
                     </form>
                 </md-content>
             </div>
@@ -233,7 +233,7 @@
                         </div>
                     </md-card-content>
                 </md-card>
-                <md-button ng-disabled="((current_gaf | challenge_flagged) > 1) || challengeNotesForm.$invalid" class="md-primary md-raised" ng-click="next()">
+                <md-button ng-disabled="((current_gaf | challenge_flagged) > 1) || forms.challengeNotesForm.$invalid" class="md-primary md-raised" ng-click="submit_challenge_assessment()">
                     Submit Challenge Asssessment
                 </md-button>
             </div>
@@ -241,11 +241,11 @@
 
         <div flex-gt-sm="{{current_gaf.length > 1 ? 60 : 30}}">
             <div layout="column">
-                <form name="challengeNotesForm" layout="row" layout-xs="column">
+                <form name="forms.challengeNotesForm" layout="row" layout-xs="column">
                     <div ng-repeat="c_gaf in current_gaf" flex>
                         <md-card>
-                            <md-card-header style="background-color:{{(c_gaf | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
-                            <!--<md-card-header>-->
+                            <!--<md-card-header style="background-color:{{(c_gaf | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">-->
+                            <md-card-header>
                                 <md-card-header-text>
                                     <div layout="row" layout-align="center center">
                                         <div>
@@ -335,17 +335,17 @@
                             </md-card-header>
                             <div class="cssSlideUp" ng-hide="!(c_gaf | anyFlagged)">
                                 <md-content class="md-padding">
-                                    <ng-form name="challengeNotes">
+                                    <!--<ng-form name="challengeNotes">-->
                                         <div layout="row" layout-sm="column">
                                             <md-input-container flex>
                                                 <label>Review Comments</label>
-                                                <textarea ng-required="c_gaf | anyFlagged" name="notes" ng-model="c_gaf.assessment_notes"></textarea>
-                                                <div ng-messages="challengeNotes.notes.$error">
+                                                <textarea ng-required="c_gaf | anyFlagged" name="notes{{$index}}" ng-model="c_gaf.assessment_notes"></textarea>
+                                                <div ng-messages="forms.challengeNotes['notes'+$index].$error">
                                                     <div ng-message="required">This is required.</div>
                                                 </div>
                                             </md-input-container>
                                         </div>
-                                    </ng-form>
+                                    <!--</ng-form>-->
                                 </md-content>
                             </div>
                         </md-card>
