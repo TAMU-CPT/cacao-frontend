@@ -805,8 +805,9 @@ cacaoApp.filter('flags_to_text', function() {
     };
 });
 
-cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter',
-    function($scope, CacaoBackend, $timeout, $filter) {
+cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter', '$q',
+    function($scope, CacaoBackend, $timeout, $filter, $q) {
+
         if ($scope.assessmentForm) {
             $scope.assessmentForm.$setUntouched();
         }
@@ -817,40 +818,23 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         $scope.original_gaf = null;
 
         CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
-            if (outer_data.plain().length == 0) {
-                $scope.remaining = false;
-            }
             var pageSize = 5;
+            var requests = [];
             for(var currentPage = 0; currentPage < Math.ceil(outer_data.meta.count / pageSize); currentPage++) {
-                CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
-                    data.map(function(gaf) {
-                        gaf.assessment_notes= null;
-                        gaf.flagged = {
-                            protein: null,
-                            qualifier: null,
-                            go_id: null,
-                            publication: null,
-                            evidence: null,
-                            notes: null,
-                        }
-
-                        gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
-
-                        if ($scope.gaf_set_list.length == 0 ) {
-                            if (gaf.challenge_gaf) {
-                                CacaoBackend.oneUrl('gafs', gaf.challenge_gaf.original_gaf).get().then(function(original) {
-                                    $scope.original_gaf = original;
-                                    $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
-                                    $scope.original_gaf.show = true;
-                                    adjust_flags(gaf);
-                                });
+                requests.push(
+                    CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
+                        data.map(function(gaf) {
+                            gaf.assessment_notes= null;
+                            gaf.flagged = {
+                                protein: null,
+                                qualifier: null,
+                                go_id: null,
+                                publication: null,
+                                evidence: null,
+                                notes: null,
                             }
-                            $scope.gaf_set_list.push([gaf]);
-                            $scope.current_gaf = $scope.gaf_set_list[0];
-                            $scope.remaining = true;
-                        } else if (!gaf.challenge_gaf) {
-                            $scope.gaf_set_list.push([gaf]);
-                        } else {
+                            gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
+
                             var unique_gaf = true;
                             $scope.gaf_set_list.map(function(gaf_set) {
                                 if(gaf_set[0].challenge_gaf){
@@ -864,13 +848,20 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                                 $scope.gaf_set_list.push([gaf]);
                             }
                             adjust_flags(gaf);
-                        }
-                    });
-                });
+                        });
+                    })
+                )
             }
+            $q.all(requests).then(
+                function(data){
+                    $scope.next();
+                });
         });
 
         var adjust_flags = function(gaf) {
+            if (!gaf.challenge_gaf) {
+                return;
+            }
             CacaoBackend.oneUrl('gafs', gaf.challenge_gaf.original_gaf).get().then(function(original) {
                 for (var field in gaf.plain()) {
                     if (original[field] != gaf[field]) {
@@ -931,34 +922,49 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         };
 
         $scope.next = function() {
-            if ($scope.gaf_current_index < $scope.gaf_set_list.length) {
-                console.log($scope.gaf_current_index);
-                console.log($scope.gaf_set_list.length);
-                ++$scope.gaf_current_index;
-                //$scope.current_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
-                $scope.temp_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
-
-                if ($scope.temp_gaf[0].challenge_gaf) {
-                    CacaoBackend.oneUrl('gafs', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
-                        $scope.original_gaf = original;
-                        $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
-                        $scope.original_gaf.show = true;
-                        $scope.current_gaf = $scope.temp_gaf;
-                    });
-                } else {
-                    if ($scope.original_gaf) {
-                        $scope.original_gaf.show = false;
-                    }
-                    $scope.current_gaf = $scope.temp_gaf;
-                }
-
-            } else {
-                $scope.remaining = false;
-                if ($scope.original_gaf) {
-                    $scope.original_gaf.show = false;
-                }
-            }
+            console.log($scope.gaf_set_list.length);
         };
+        //$scope.next = function() {
+            //console.log($scope.gaf_set_list.length);
+
+            //if (gaf.challenge_gaf) {
+                //CacaoBackend.oneUrl('gafs', gaf.challenge_gaf.original_gaf).get().then(function(original) {
+                    //$scope.original_gaf = original;
+                    //$scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
+                    //$scope.original_gaf.show = true;
+                    //adjust_flags(gaf);
+                //});
+            //}
+            //$scope.current_gaf = $scope.gaf_set_list[0];
+            //$scope.remaining = true;
+            //
+            //if ($scope.gaf_current_index < $scope.gaf_set_list.length) {
+                //console.log($scope.gaf_current_index);
+                //console.log($scope.gaf_set_list.length);
+                //++$scope.gaf_current_index;
+                //$scope.temp_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
+
+                //if ($scope.temp_gaf[0].challenge_gaf) {
+                    //CacaoBackend.oneUrl('gafs', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
+                        //$scope.original_gaf = original;
+                        //$scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
+                        //$scope.original_gaf.show = true;
+                        //$scope.current_gaf = $scope.temp_gaf;
+                    //});
+                //} else {
+                    //if ($scope.original_gaf) {
+                        //$scope.original_gaf.show = false;
+                    //}
+                    //$scope.current_gaf = $scope.temp_gaf;
+                //}
+
+            //} else {
+                //$scope.remaining = false;
+                //if ($scope.original_gaf) {
+                    //$scope.original_gaf.show = false;
+                //}
+            //}
+        //};
 
         $scope.plural = function() {
             if ($scope.current_gaf.length == 1) {
