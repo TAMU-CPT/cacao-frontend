@@ -233,7 +233,7 @@
                         </div>
                     </md-card-content>
                 </md-card>
-                <md-button ng-disabled="((current_gaf | challenge_flagged) > 1) || challengeNotesForm.$invalid" class="md-primary md-raised" ng-click="next()">
+                <md-button ng-disabled="((current_gaf | challenge_flagged) > 1) || challengeNotesForm.$invalid" class="md-primary md-raised" ng-click="submit_challenge_assessment()">
                     Submit Challenge Asssessment
                 </md-button>
             </div>
@@ -355,3 +355,4 @@
         </div>
     </div>
 </div>
+route{{original_gaf.route}}

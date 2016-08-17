@@ -835,7 +835,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
 
                         if ($scope.gaf_set_list.length == 0 ) {
                             if (gaf.challenge_gaf) {
-                                CacaoBackend.oneUrl(' ', gaf.challenge_gaf.original_gaf).get().then(function(original) {
+                                CacaoBackend.oneUrl('gafs', gaf.challenge_gaf.original_gaf).get().then(function(original) {
                                     $scope.original_gaf = original;
                                     $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
                                     $scope.original_gaf.show = true;
@@ -868,7 +868,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         });
 
         var adjust_flags = function(gaf) {
-            CacaoBackend.oneUrl(' ', gaf.challenge_gaf.original_gaf).get().then(function(original) {
+            CacaoBackend.oneUrl('gafs', gaf.challenge_gaf.original_gaf).get().then(function(original) {
                 for (var field in gaf.plain()) {
                     if (original[field] != gaf[field]) {
                         var diff_field = $filter('field_to_flagged')(field);
@@ -880,8 +880,22 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             });
         };
 
-        $scope.submit_assessment= function(gaf, state) {
-            gaf.review_state=state;
+        $scope.submit_challenge_assessment = function() {
+            for (var gaf in $scope.current_gaf) {
+                if ($filter('anyFlagged')($scope.current_gaf[gaf])) {
+                    $scope.submit_assessment($scope.current_gaf[gaf], 3);
+                } else {
+                    $scope.original_gaf.review_state = 3;
+                    $scope.original_gaf.superseded = 'http://localhost:8000/gafs/' + $scope.current_gaf[gaf].id + '/';
+                    $scope.original_gaf.put().then(function() {
+                        $scope.submit_assessment($scope.current_gaf[gaf], 2);
+                    });
+                }
+            }
+        };
+
+        $scope.submit_assessment = function(gaf, state) {
+            gaf.review_state = state;
             gaf.put().then(function() {
                 $scope.saveAssessment(gaf);
                 $scope.next();
@@ -900,6 +914,8 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                         flagged.push(gaf.flagged[i]);
                     }
                 }
+            } else {
+                 console.log(gaf);
             }
 
             CacaoBackend.all('assessments').post({
@@ -918,7 +934,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 $scope.temp_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
 
                 if ($scope.temp_gaf[0].challenge_gaf) {
-                    CacaoBackend.oneUrl(' ', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
+                    CacaoBackend.oneUrl('gafs', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
                         $scope.original_gaf = original;
                         $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
                         $scope.original_gaf.show = true;
