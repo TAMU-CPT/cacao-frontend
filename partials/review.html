@@ -66,6 +66,12 @@
     }
 </style>
 
+<div>
+original_gaf {{original_gaf.show}}
+</div>
+<div>
+original_gaf not true {{original_gaf.show != true}}
+</div>
 <md-card ng-hide="remaining != false" ng-hide>
     <md-card-title>
         </md-card-title-text>
@@ -73,7 +79,7 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-if="original_gaf.show && original_gaf.show != true" ng-hide="remaining == false" layout="row" layout-align="center start">
+<div ng-if="original_gaf.show != true" ng-hide="remaining != true" layout="row" layout-align="center start">
     <div flex-gt-sm="30">
         <md-card>
             <md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
@@ -181,7 +187,7 @@
     </div>
 </div>
 
-<div ng-if="original_gaf.show" ng-hide="remaining == false" ng-cloak>
+<div ng-if="original_gaf.show == true" ng-hide="remaining != true" ng-cloak>
     <div layout="row" layout-align="center" layout-xs="column">
         <div flex-gt-sm="30">
             <div layout="column">
@@ -355,4 +361,3 @@
         </div>
     </div>
 </div>
-route{{original_gaf.route}}

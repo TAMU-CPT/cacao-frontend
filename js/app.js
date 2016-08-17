@@ -817,6 +817,9 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         $scope.original_gaf = null;
 
         CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
+            if (outer_data.plain().length == 0) {
+                $scope.remaining = false;
+            }
             var pageSize = 5;
             for(var currentPage = 0; currentPage < Math.ceil(outer_data.meta.count / pageSize); currentPage++) {
                 CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
@@ -892,13 +895,16 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                     });
                 }
             }
+            $scope.next();
         };
 
         $scope.submit_assessment = function(gaf, state) {
             gaf.review_state = state;
             gaf.put().then(function() {
                 $scope.saveAssessment(gaf);
-                $scope.next();
+                if ($scope.current_gaf.length < 2) {
+                    $scope.next();
+                }
             });
         };
 
@@ -914,8 +920,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                         flagged.push(gaf.flagged[i]);
                     }
                 }
-            } else {
-                 console.log(gaf);
             }
 
             CacaoBackend.all('assessments').post({
@@ -926,9 +930,10 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             });
         };
 
-        // TODO: make remaining false if no gafs on page load
         $scope.next = function() {
-            if ($scope.gaf_current_index < $scope.gaf_set_list.length - 1) {
+            if ($scope.gaf_current_index < $scope.gaf_set_list.length) {
+                console.log($scope.gaf_current_index);
+                console.log($scope.gaf_set_list.length);
                 ++$scope.gaf_current_index;
                 //$scope.current_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
                 $scope.temp_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
