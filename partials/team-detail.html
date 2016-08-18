@@ -53,10 +53,7 @@
                                     {{d.review_state | review_state_to_english}}
                                 </td>
                                 <td md-cell>
-                                    <img gravatar-src="d.owner.email" gravatar-size="30" style="border-radius: 50%">
-                                    <a href="#/users/{{d.owner.id}}">
-                                        {{ d.owner.username }}
-                                    </a>
+                                    <user-icon user="{{d.owner}}"></user-icon>
                                 </td>
                                 <td md-cell>{{d.db_object_id}}</td>
                                 <td md-cell>{{d.db_object_name}}</td>
