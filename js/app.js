@@ -837,7 +837,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
 
                             var unique_gaf = true;
                             $scope.gaf_set_list.map(function(gaf_set) {
-                                if(gaf_set[0].challenge_gaf){
+                                if(gaf_set[0].challenge_gaf && gaf.challenge_gaf){
                                     if(gaf_set[0].challenge_gaf.original_gaf == gaf.challenge_gaf.original_gaf) {
                                         gaf_set.push(gaf);
                                         unique_gaf = false;
@@ -854,6 +854,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             }
             $q.all(requests).then(
                 function(data){
+                    console.log('calling next from q');
                     $scope.next();
                 });
         });
@@ -875,25 +876,32 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         };
 
         $scope.submit_challenge_assessment = function() {
+            var requests = [];
             for (var gaf in $scope.current_gaf) {
                 if ($filter('anyFlagged')($scope.current_gaf[gaf])) {
-                    $scope.submit_assessment($scope.current_gaf[gaf], 3);
+                    var x = $scope.submit_assessment($scope.current_gaf[gaf], 3, false);
+                    requests.push(x);
                 } else {
                     $scope.original_gaf.review_state = 3;
                     $scope.original_gaf.superseded = 'http://localhost:8000/gafs/' + $scope.current_gaf[gaf].id + '/';
-                    $scope.original_gaf.put().then(function() {
-                        $scope.submit_assessment($scope.current_gaf[gaf], 2);
-                    });
+                    var x = $scope.original_gaf.put();
+                    requests.push(x);
+                    var y = $scope.submit_assessment($scope.current_gaf[gaf], 2, false);
+                    requests.push(y);
                 }
             }
-            $scope.next();
+
+            console.log('calling next submit chal');
+            $q.all(requests).then(function(data){
+                $scope.next();
+            })
         };
 
-        $scope.submit_assessment = function(gaf, state) {
+        $scope.submit_assessment = function(gaf, state, auto_next) {
             gaf.review_state = state;
-            gaf.put().then(function() {
+            return gaf.put().then(function() {
                 $scope.saveAssessment(gaf);
-                if ($scope.current_gaf.length < 2) {
+                if(auto_next){
                     $scope.next();
                 }
             });
@@ -922,48 +930,45 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         };
 
         $scope.next = function() {
+            console.log($scope.gaf_current_index);
             console.log($scope.gaf_set_list.length);
+            if ($scope.gaf_current_index < $scope.gaf_set_list.length) {
+                $scope.remaining = true;
+                $scope.temp_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
+
+                if ($scope.temp_gaf[0].challenge_gaf) {
+                    CacaoBackend.oneUrl('gafs', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
+                        $scope.original_gaf = original;
+                        $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
+                        $scope.original_gaf_show = true;
+                        $scope.current_gaf = $scope.temp_gaf;
+                    });
+                } else {
+                    $scope.original_gaf_show = false;
+                    $scope.current_gaf = $scope.temp_gaf;
+                }
+
+                ++$scope.gaf_current_index;
+
+            } else {
+                $scope.remaining = false;
+                if ($scope.original_gaf) {
+                    $scope.original_gaf_show = false;
+                }
+            }
         };
         //$scope.next = function() {
-            //console.log($scope.gaf_set_list.length);
-
             //if (gaf.challenge_gaf) {
                 //CacaoBackend.oneUrl('gafs', gaf.challenge_gaf.original_gaf).get().then(function(original) {
                     //$scope.original_gaf = original;
                     //$scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
-                    //$scope.original_gaf.show = true;
+                    //$scope.original_gaf_show = true;
                     //adjust_flags(gaf);
                 //});
             //}
             //$scope.current_gaf = $scope.gaf_set_list[0];
             //$scope.remaining = true;
             //
-            //if ($scope.gaf_current_index < $scope.gaf_set_list.length) {
-                //console.log($scope.gaf_current_index);
-                //console.log($scope.gaf_set_list.length);
-                //++$scope.gaf_current_index;
-                //$scope.temp_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
-
-                //if ($scope.temp_gaf[0].challenge_gaf) {
-                    //CacaoBackend.oneUrl('gafs', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
-                        //$scope.original_gaf = original;
-                        //$scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
-                        //$scope.original_gaf.show = true;
-                        //$scope.current_gaf = $scope.temp_gaf;
-                    //});
-                //} else {
-                    //if ($scope.original_gaf) {
-                        //$scope.original_gaf.show = false;
-                    //}
-                    //$scope.current_gaf = $scope.temp_gaf;
-                //}
-
-            //} else {
-                //$scope.remaining = false;
-                //if ($scope.original_gaf) {
-                    //$scope.original_gaf.show = false;
-                //}
-            //}
         //};
 
         $scope.plural = function() {
