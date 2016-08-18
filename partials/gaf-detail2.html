@@ -91,7 +91,7 @@
             <div layout="row" layout-xs="column">
                 <md-input-container class="md-block" flex>
                     <label>Notes</label>
-                    <textarea disabled name="notes" ng-model="gaf.notes" rows="5"></textarea>
+                    <textarea disabled name="notes" ng-model="gaf.notes"></textarea>
                 </md-input-container>
             </div>
             <div layout="row" layout-align="center center">
@@ -123,32 +123,20 @@
         </md-card-header>
         <md-card-content>
             <md-table-container>
-                <table md-table>
-                    <thead md-head>
+                <table md-table md-progress="promise">
+                    <thead md-head md-order="query.order" md-on-reorder="logOrder">
                         <tr md-row>
-                            <!--<th md-column flex="15" style="overflow:hidden"><span>Event</th>-->
-                            <!--<th md-column flex="15" style="overflow:hidden"><span>User</span></th>-->
-                            <!--<th md-column flex="55" style="overflow:hidden"><span>Notes</span></th>-->
-                            <!--<th md-column flex="15" style="overflow:hidden"><span>Date</span></th>-->
-                            <th md-column><span>Event</th>
+                            <th md-column md-order-by="event"><span>Event</th>
                             <th md-column><span>User</span></th>
                             <th md-column><span>Notes</span></th>
-                            <th md-column><span>Date</span></th>
+                            <th md-column md-order-by="date"><span>Date</span></th>
                         </tr>
                     </thead>
                     <tbody md-body>
-                        <tr md-row ng-repeat="i in event_info">
-
+                        <tr md-row ng-repeat="i in event_info | orderBy: query.order">
                             <td md-cell><div>{{i.event}}</div</td>
                             <td md-cell>
-                                <div>
-                                    <a href="#/users/{{i.user.id}}">
-                                        <img gravatar-src="i.user.email" style="border-radius: 50%">
-                                    </a>
-                                    <md-tooltip>
-                                    {{i.user.username}}
-                                    </md-tooltip>
-                                </div>
+                                <user-icon user="{{i.user}}"></user-icon>
                             </td>
                             <td md-cell><div>{{i.notes}}</div></td>
                             <td md-cell class="row4"style="white-space: nowrap">
@@ -163,6 +151,12 @@
                     </tbody>
                 </table>
             </md-table-container>
+            <md-table-pagination
+                md-limit="query.limit"
+                md-page="query.page"
+                md-total="{{event_info.length}}"
+                md-page-select="options.pageSelect">
+            </md-table-pagination>
         </md-card-content>
     </md-card>
 </div>

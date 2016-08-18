@@ -1193,7 +1193,18 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
         $scope.current_user = $localStorage.jwtData.username;
         $scope.challenge = false;
 
-        CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(gaf) {
+        $scope.options = {
+            limitSelect: true,
+            pageSelect: true
+        };
+
+        $scope.query = {
+            limit: 5,
+            page: 1,
+            order: '-date',
+        };
+
+        $scope.promise = CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(gaf) {
             $scope.gaf = gaf;
             $scope.gaf.show_qualifier = $filter('qualifier_to_text')($scope.gaf.qualifier);
             $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
@@ -1217,6 +1228,7 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
                     date: gaf.assessment.date,
                 }))
             }
+            console.log(gaf.original_gaf);
             for (var chal in gaf.original_gaf) {
                 $scope.event_info.push(formatEntry({
                     event: 'Challenge',
