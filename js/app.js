@@ -106,8 +106,8 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 controller: 'GAFListCtrl'
             }).
             when('/gaf/:gafID', {
-                templateUrl: 'partials/gaf-detail2.html',
-                controller: 'GAFDetailCtrl2'
+                templateUrl: 'partials/gaf-detail.html',
+                controller: 'GAFDetailCtrl'
             }).
             when('/pmid/:PMID', {
                 templateUrl: 'partials/pmid.html',
@@ -948,7 +948,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
 
                 ++$scope.gaf_current_index;
                 $timeout(function () {
-                    console.log('turning off disable');
+                    $scope.isDisabled = false;
                 }, 500);
 
             } else {
@@ -958,19 +958,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 }
             }
         };
-        //$scope.next = function() {
-            //if (gaf.challenge_gaf) {
-                //CacaoBackend.oneUrl('gafs', gaf.challenge_gaf.original_gaf).get().then(function(original) {
-                    //$scope.original_gaf = original;
-                    //$scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
-                    //$scope.original_gaf_show = true;
-                    //adjust_flags(gaf);
-                //});
-            //}
-            //$scope.current_gaf = $scope.gaf_set_list[0];
-            //$scope.remaining = true;
-            //
-        //};
 
         $scope.plural = function() {
             if ($scope.current_gaf.length == 1) {
@@ -1062,67 +1049,6 @@ cacaoApp.controller('GAFListCtrl', ['$scope', 'CacaoBackend',
         $scope.updateData(1);
 }]);
 
-cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter',
-    function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter) {
-        $scope.current_user = $localStorage.jwtData.username;
-        $scope.challenge = false;
-
-        $scope.reveal_gaf_form = function() {
-            $scope.challenge = true;
-            $scope.eco_codes = eco_codes;
-            $scope.qualifiers = qualifiers;
-            $scope.with_from_db = with_from_db;
-
-            $scope.gafData = angular.copy($scope.gaf);
-            $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
-            $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
-        }
-
-        CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(data) {
-            $scope.gaf = data;
-            $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
-        });
-
-        $scope.saveData = function() {
-            function with_or_from() {
-                if ($scope.gafData.evidence_code != 'IDA' && $scope.gafData.evidence_code != 'IMP') {
-                    return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
-                } else {
-                    return '';
-                }
-            };
-
-            CacaoBackend.all('gafs').post({
-                db: $scope.gafData.db,
-                review_state: 1,
-                db_object_id: $scope.gafData.db_object_id,
-                db_object_symbol: $scope.gafData.db_object_symbol,
-                qualifier: $scope.gafData.qualifier,
-                go_id: $scope.gafData.go_id,
-                db_reference: 'PMID:' + $scope.gafData.db_reference,
-                evidence_code: $scope.gafData.evidence_code,
-                with_or_from: with_or_from(),
-                aspect: $scope.gafData.aspect,
-                db_object_type: $scope.gafData.db_object_type,
-                taxon: $scope.gafData.taxon,
-                assigned_by: $scope.gafData.assigned_by,
-                notes: $scope.gafData.notes,
-            })
-            .then(function(gaf) {
-                CacaoBackend.all('challenges').post({
-                    challenge_gaf: 'http://localhost:8000/gafs/' + gaf.id + '/',
-                    original_gaf: 'http://localhost:8000/gafs/' + $scope.gaf.id + '/',
-                    reason: $scope.challenge_data.notes,
-                })
-                .then(function() {
-                    $location.path('/review');
-                });
-            }, function() {
-                console.log("there was an error");
-            });
-        };
-}]);
-
 cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter',
     function($scope, CacaoBackend, $filter) {
         $scope.show="false";
@@ -1190,9 +1116,9 @@ cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter',
         //});
 }]);
 
-cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter',
+cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter',
     function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter) {
-        $scope.current_user = $localStorage.jwtData.username;
+        $scope.current_user = $localStorage.jwtData;
         $scope.challenge = false;
 
         $scope.reveal_gaf_form = function() {
@@ -1202,6 +1128,7 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
             $scope.with_from_db = with_from_db;
 
             $scope.gafData = angular.copy($scope.gaf);
+            $scope.gafData.notes = null;
             $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
             $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
         };
@@ -1212,6 +1139,45 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
 
         $scope.query = {
             limit: 5,
+        };
+
+        $scope.saveData = function() {
+            function with_or_from() {
+                if ($scope.gafData.evidence_code != 'IDA' && $scope.gafData.evidence_code != 'IMP') {
+                    return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
+                } else {
+                    return '';
+                }
+            };
+
+            CacaoBackend.all('gafs').post({
+                db: $scope.gafData.db,
+                review_state: 1,
+                db_object_id: $scope.gafData.db_object_id,
+                db_object_symbol: $scope.gafData.db_object_symbol,
+                qualifier: $scope.gafData.qualifier,
+                go_id: $scope.gafData.go_id,
+                db_reference: 'PMID:' + $scope.gafData.db_reference,
+                evidence_code: $scope.gafData.evidence_code,
+                with_or_from: with_or_from(),
+                aspect: $scope.gafData.aspect,
+                db_object_type: $scope.gafData.db_object_type,
+                taxon: $scope.gafData.taxon,
+                assigned_by: $scope.gafData.assigned_by,
+                notes: $scope.gafData.notes,
+            })
+            .then(function(gaf) {
+                CacaoBackend.all('challenges').post({
+                    challenge_gaf: 'http://localhost:8000/gafs/' + gaf.id + '/',
+                    original_gaf: 'http://localhost:8000/gafs/' + $scope.gaf.id + '/',
+                    reason: $scope.challenge_data.notes,
+                })
+                .then(function() {
+                    $location.path('/review');
+                });
+            }, function() {
+                console.log("there was an error");
+            });
         };
 
         $scope.promise = CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(gaf) {

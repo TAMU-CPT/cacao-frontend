@@ -78,19 +78,19 @@
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>Evidence Code</label>
-                            <md-select required name="evidence_code" ng-model="gafData.evidence_code">
+                            <md-select md-no-asterisk required name="evidence_code" ng-model="gafData.evidence_code">
                                 <md-option ng-repeat="eco_code in eco_codes" ng-value="eco_code">{{eco_code}}: {{eco_code | eco_to_text}}</md-option>
                             </md-select>
                             <div ng-messages="GAFForm.evidence_code.$error" ng-show="GAFForm.evidence_code.$invalid">
                                 <div ng-message="required" ng-show="GAFForm.evidence_code.$touched">This is required.</div>
                             </div>
-                            </md-input-container>
+                        </md-input-container>
                         <div layout="row" layout-sm="column" ng-if="GAFForm.evidence_code.$modelValue
                                     && GAFForm.evidence_code.$modelValue != 'IDA'
                                     && GAFForm.evidence_code.$modelValue != 'IMP'" flex="40">
                             <md-input-container flex>
-                                <label>Db</label>
-                                <md-select required name="with_from_db" ng-model="gafData.with_from_db">
+                                <label>DB</label>
+                                <md-select md-no-asterisk required name="with_from_db" ng-model="gafData.with_from_db">
                                     <md-option ng-repeat="w_f_db in with_from_db">{{w_f_db}}</md-option>
                                 </md-select>
                                 <div ng-messages="GAFForm.with_from_db.$error" ng-show="GAFForm.with_from_db.$invalid">
