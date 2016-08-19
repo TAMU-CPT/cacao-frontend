@@ -854,7 +854,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
             }
             $q.all(requests).then(
                 function(data){
-                    console.log('calling next from q');
                     $scope.next();
                 });
         });
@@ -876,6 +875,7 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         };
 
         $scope.submit_challenge_assessment = function() {
+            $scope.isDisabled = true;
             var requests = [];
             for (var gaf in $scope.current_gaf) {
                 if ($filter('anyFlagged')($scope.current_gaf[gaf])) {
@@ -891,13 +891,13 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 }
             }
 
-            console.log('calling next submit chal');
             $q.all(requests).then(function(data){
                 $scope.next();
             })
         };
 
         $scope.submit_assessment = function(gaf, state, auto_next) {
+            $scope.isDisabled = true;
             gaf.review_state = state;
             return gaf.put().then(function() {
                 $scope.saveAssessment(gaf);
@@ -930,8 +930,6 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         };
 
         $scope.next = function() {
-            console.log($scope.gaf_current_index);
-            console.log($scope.gaf_set_list.length);
             if ($scope.gaf_current_index < $scope.gaf_set_list.length) {
                 $scope.remaining = true;
                 $scope.temp_gaf = $scope.gaf_set_list[$scope.gaf_current_index];
@@ -949,6 +947,9 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
                 }
 
                 ++$scope.gaf_current_index;
+                $timeout(function () {
+                    console.log('turning off disable');
+                }, 500);
 
             } else {
                 $scope.remaining = false;
@@ -1067,6 +1068,7 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
         $scope.challenge = false;
 
         $scope.reveal_gaf_form = function() {
+            $scope.challenge = true;
             $scope.eco_codes = eco_codes;
             $scope.qualifiers = qualifiers;
             $scope.with_from_db = with_from_db;
@@ -1193,6 +1195,17 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
         $scope.current_user = $localStorage.jwtData.username;
         $scope.challenge = false;
 
+        $scope.reveal_gaf_form = function() {
+            $scope.challenge = true;
+            $scope.eco_codes = eco_codes;
+            $scope.qualifiers = qualifiers;
+            $scope.with_from_db = with_from_db;
+
+            $scope.gafData = angular.copy($scope.gaf);
+            $scope.gafData.with_from_db = $scope.gaf.with_or_from.split(':')[0];
+            $scope.gafData.with_from_id = $scope.gaf.with_or_from.split(':')[1];
+        };
+
         $scope.options = {
             limitSelect: true,
         };
@@ -1226,15 +1239,14 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
                     notes: gaf.assessment.notes,
                     date: gaf.assessment.date,
                 }));
-                $scope.event_info.push(formatEntry({
+                $scope.event_info.push({
                     star: null,
                     event: null,
                     user: null,
                     notes: null,
                     date: null,
-                }));
+                });
             }
-            console.log(gaf.original_gaf);
             for (var chal in gaf.original_gaf) {
                 $scope.event_info.push(formatEntry({
                     star: 'Challenge',
@@ -1252,22 +1264,22 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
                          date: gaf.original_gaf[chal].assessment.date,
                     }));
 
-                    $scope.event_info.push(formatEntry({
+                    $scope.event_info.push({
                         star: null,
                         event: null,
                         user: null,
                         notes: null,
                         date: null,
-                    }));
+                    });
                 }
                 else {
-                    $scope.event_info.push(formatEntry({
+                    $scope.event_info.push({
                         star: null,
                         event: null,
                         user: null,
                         notes: null,
                         date: null,
-                    }));
+                    });
                 }
             }
         });
