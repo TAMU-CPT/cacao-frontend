@@ -124,23 +124,27 @@
         <md-card-content>
             <md-table-container>
                 <table md-table md-progress="promise">
-                    <thead md-head md-order="query.order" md-on-reorder="logOrder">
+                    <thead md-head>
                         <tr md-row>
                             <th md-column md-order-by="event"><span>Event</th>
+                            <th md-column><span></th>
                             <th md-column><span>User</span></th>
                             <th md-column><span>Notes</span></th>
                             <th md-column md-order-by="date"><span>Date</span></th>
                         </tr>
                     </thead>
                     <tbody md-body>
-                        <tr md-row ng-repeat="i in event_info | orderBy: query.order">
+                        <tr md-row ng-repeat="i in event_info | orderBy: query.order" ng-style="!i.star && {'height':'2em'}"  ng-if="$index != event_info.length-1" >
+                            <td md-cell>
+                                <b>{{i.star}}</b>
+                            </td>
                             <td md-cell><div>{{i.event}}</div</td>
                             <td md-cell>
-                                <user-icon user="{{i.user}}"></user-icon>
+                                <user-icon ng-if="i.user"user="{{i.user}}"></user-icon>
                             </td>
                             <td md-cell><div>{{i.notes}}</div></td>
                             <td md-cell class="row4"style="white-space: nowrap">
-                                <div>
+                                <div ng-if="i.date != 'Invalid date'">
                                 {{i.date}}
                                     <md-tooltip md-direction="left">
                                     {{i.date_real}}
@@ -151,12 +155,6 @@
                     </tbody>
                 </table>
             </md-table-container>
-            <md-table-pagination
-                md-limit="query.limit"
-                md-page="query.page"
-                md-total="{{event_info.length}}"
-                md-page-select="options.pageSelect">
-            </md-table-pagination>
         </md-card-content>
     </md-card>
 </div>

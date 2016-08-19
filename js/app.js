@@ -1195,13 +1195,10 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
 
         $scope.options = {
             limitSelect: true,
-            pageSelect: true
         };
 
         $scope.query = {
             limit: 5,
-            page: 1,
-            order: '-date',
         };
 
         $scope.promise = CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(gaf) {
@@ -1211,6 +1208,7 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
 
             function formatEntry(obj){
                 return {
+                    star: obj.star,
                     event: obj.event,
                     user: obj.user,
                     notes: obj.notes,
@@ -1222,27 +1220,54 @@ cacaoApp.controller('GAFDetailCtrl2', ['$scope', '$routeParams', 'CacaoBackend',
             $scope.event_info = []
             if (gaf.assessment) {
                 $scope.event_info.push(formatEntry({
-                    event: 'Initial Review',
+                    star: 'Initial Review',
+                    event: 'Assessment',
                     user: gaf.assessment.owner,
                     notes: gaf.assessment.notes,
                     date: gaf.assessment.date,
-                }))
+                }));
+                $scope.event_info.push(formatEntry({
+                    star: null,
+                    event: null,
+                    user: null,
+                    notes: null,
+                    date: null,
+                }));
             }
             console.log(gaf.original_gaf);
             for (var chal in gaf.original_gaf) {
                 $scope.event_info.push(formatEntry({
-                    event: 'Challenge',
+                    star: 'Challenge',
+                    event: 'Proposed Annotation',
                     user: gaf.original_gaf[chal].owner,
                     notes: gaf.original_gaf[chal].reason,
                     date: gaf.original_gaf[chal].date,
-                }))
+                }));
                 if (gaf.original_gaf[chal].assessment) {
                     $scope.event_info.push(formatEntry({
-                         event: 'Challenge Assessment',
+                         star: '',
+                         event: 'Assessment',
                          user: gaf.original_gaf[chal].assessment.owner,
                          notes: gaf.original_gaf[chal].assessment.notes,
                          date: gaf.original_gaf[chal].assessment.date,
-                    }))
+                    }));
+
+                    $scope.event_info.push(formatEntry({
+                        star: null,
+                        event: null,
+                        user: null,
+                        notes: null,
+                        date: null,
+                    }));
+                }
+                else {
+                    $scope.event_info.push(formatEntry({
+                        star: null,
+                        event: null,
+                        user: null,
+                        notes: null,
+                        date: null,
+                    }));
                 }
             }
         });
