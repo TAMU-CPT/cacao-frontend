@@ -16,7 +16,7 @@
                     <span class="md-title"><a href="#/">CACAO</a></span>
                 </h2>
                 <span flex></span>
-                <md-button ng-if="nav.userData.email" aria-label="show menu" class="md-icon-button" ng-click="toggleRight()">
+                <md-button ng-if="nav.userData.email" aria-label="show menu" class="md-icon-button" ng-click="go('/notifications')">
                     <ng-md-icon icon="notifications" ></ng-md-icon>
                 </md-button>
                 <script type="text/ng-template" id="popover">
@@ -31,9 +31,6 @@
                             </md-button>
                             <md-button aria-label="Logout" ng-click="go('/logout'); hidePopover()" class="md-raised md-secondary">
                                 Logout
-                            </md-button>
-                            <md-button aria-label="Notifications" ng-click="go('/notifications'); hidePopover()" class="md-raised md-secondary">
-                                Notifications
                             </md-button>
                         </div>
                     </div>
