@@ -481,8 +481,8 @@ cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
 }]);
 
 // nav
-cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'CacaoBackend',
-    function ($scope, $mdSidenav, $localStorage, $location, CacaoBackend) {
+cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'CacaoBackend', 'NotificationBackend',
+    function ($scope, $mdSidenav, $localStorage, $location, CacaoBackend, NotificationBackend) {
 
         $scope.nav = {}
         $scope.nav.userData = $localStorage.jwtData;
@@ -497,6 +497,16 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$locat
                 $location.path(route + $scope.nav.userData.user_id);
             }
             else { $location.path(route); }
+        };
+
+        $scope.get_notifications = function() {
+            NotificationBackend.all('inbox').getList().then(function(data) {
+                if (data.plain().length > 0) {
+                    $scope.nav.notifications = data;
+                } else {
+                    $scope.nav.notifications = null;
+                }
+            });
         };
 }]);
 
@@ -1265,6 +1275,11 @@ cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend','$http'
     function($scope, NotificationBackend, $http) {
         NotificationBackend.all('inbox').getList().then(function(data) {
             $scope.notifications = data;
+            if (data.plain().length > 0) {
+                $scope.nav.notifications = data;
+            } else {
+                $scope.nav.notifications = null;
+            }
         });
 
         $scope.markRead = function(index) {
@@ -1272,6 +1287,9 @@ cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend','$http'
             NotificationBackend.all(url).post({})
             .then(function(idk) {
                 $scope.notifications.splice(index, 1);
+                if ($scope.notifications.length == 0) {
+                    $scope.nav.notifications = null;
+                }
             }, function() {
                 console.log("there was an error");
             });
@@ -1281,6 +1299,7 @@ cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend','$http'
             $http.post('http://localhost:8000/mark_all_read/', '')
                 .success(function(data) {
                     $scope.notifications.splice(0, $scope.notifications.length);
+                    $scope.nav.notifications = null;
                 })
                 .error(function() {
                 });
