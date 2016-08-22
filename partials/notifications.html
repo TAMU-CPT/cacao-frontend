@@ -1,3 +1,5 @@
-<div>
-hey
+<div ng-repeat="n in notifications">
+    {{n.message}}
+    <md-button class="md-primary md-raised" ng-click="markRead($index)">Mark as read</md-button>
 </div>
+<md-button class="md-primary md-raised" ng-click="markAllRead()">Mark all as read</md-button>

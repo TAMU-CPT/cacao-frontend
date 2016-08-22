@@ -1265,9 +1265,25 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
 cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend',
     function($scope, NotificationBackend) {
         NotificationBackend.all('inbox').getList().then(function(data) {
-            console.log(data.plain());
-            for (var m in data.plain()) {
-                 console.log(data.plain()[m].message);
-            }
+            $scope.notifications = data;
         });
+
+        $scope.markRead = function(index) {
+            var url = "inbox/" + $scope.notifications[index].id + "/read";
+            NotificationBackend.all(url).post({})
+            .then(function(idk) {
+                $scope.notifications.splice(index, 1);
+            }, function() {
+                console.log("there was an error");
+            });
+        };
+
+        $scope.markAllRead = function() {
+            NotificationBackend.all('mark_all_read').post({})
+            .then(function(idk) {
+                $scope.notifications.splice(0, $scope.notifications.length);
+            }, function() {
+                console.log("there was an error");
+            });
+        };
 }]);
