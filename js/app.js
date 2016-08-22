@@ -132,6 +132,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 templateUrl: 'partials/login.html',
                 controller: 'LogOutCtrl'
             }).
+            when('/notifications', {
+                templateUrl: 'partials/notifications.html',
+                controller: 'NotificationCtrl'
+            }).
             when('/', {
                 templateUrl: 'partials/home.html',
                 controller: 'HomeCtrl'
@@ -319,6 +323,13 @@ cacaoApp.factory('CacaoBackend', function(Restangular) {
             }
             return extractedData;
         });
+    });
+});
+
+cacaoApp.factory('NotificationBackend', function(Restangular) {
+    return Restangular.withConfig(function(RestangularConfigurer) {
+        RestangularConfigurer.setBaseUrl('http://localhost:8000/api');
+        RestangularConfigurer.setRequestSuffix('/');
     });
 });
 
@@ -1247,6 +1258,16 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
                         date: null,
                     });
                 }
+            }
+        });
+}]);
+
+cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend',
+    function($scope, NotificationBackend) {
+        NotificationBackend.all('inbox').getList().then(function(data) {
+            console.log(data.plain());
+            for (var m in data.plain()) {
+                 console.log(data.plain()[m].message);
             }
         });
 }]);
