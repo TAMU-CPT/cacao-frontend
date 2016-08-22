@@ -502,7 +502,6 @@ cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$locat
 
 cacaoApp.controller('LogOutCtrl', ['$scope', '$http', '$localStorage', '$location',
     function($scope, $http, $localStorage, $location) {
-        console.log('lgoout');
         $localStorage.jwtToken = null;
         $localStorage.jwtData = {};
         $scope.nav.userData = $localStorage.jwtData;
@@ -1262,8 +1261,8 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
         });
 }]);
 
-cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend',
-    function($scope, NotificationBackend) {
+cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend','$http',
+    function($scope, NotificationBackend, $http) {
         NotificationBackend.all('inbox').getList().then(function(data) {
             $scope.notifications = data;
         });
@@ -1279,11 +1278,11 @@ cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend',
         };
 
         $scope.markAllRead = function() {
-            NotificationBackend.all('mark_all_read').post({})
-            .then(function(idk) {
-                $scope.notifications.splice(0, $scope.notifications.length);
-            }, function() {
-                console.log("there was an error");
-            });
+            $http.post('http://localhost:8000/mark_all_read/', '')
+                .success(function(data) {
+                    $scope.notifications.splice(0, $scope.notifications.length);
+                })
+                .error(function() {
+                });
         };
 }]);
