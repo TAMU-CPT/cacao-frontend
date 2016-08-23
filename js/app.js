@@ -825,8 +825,8 @@ cacaoApp.filter('flags_to_text', function() {
     };
 });
 
-cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter', '$q',
-    function($scope, CacaoBackend, $timeout, $filter, $q) {
+cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter', '$q', '$mdDialog',
+    function($scope, CacaoBackend, $timeout, $filter, $q, $mdDialog) {
 
         if ($scope.assessmentForm) {
             $scope.assessmentForm.$setUntouched();
@@ -836,6 +836,52 @@ cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filte
         $scope.gaf_current_index = 0;
         $scope.current_gaf = [];
         $scope.original_gaf = null;
+
+        $scope.get_go_data = function(go_id) {
+            var go_id_url = 'https://cpt.tamu.edu/onto_api/' + go_id + '.json'
+            return CacaoBackend.oneUrl(' ', go_id_url).get().$object;
+        };
+
+        $scope.get_pmid_data = function(pmid) {
+            function trim_abstract(a) {
+                a = a.replace(/^(.{250}[^\s]*).*/, "$1");
+                if (a.endsWith('.')) {
+                    a = a.concat('..');
+                }
+                else {
+                    a = a.concat('...');
+                }
+                return a
+            };
+            var paper = CacaoBackend.one('papers', pmid).get().$object;
+            if (paper.abstract) {
+                paper.short_abstract = trim_abstract(paper.abstract);
+            }
+            return paper;
+        };
+
+        $scope.showGOIDPopup = function(ev, go_id) {
+            console.log(go_id);
+            $scope.prevGOIDData = $scope.get_go_data(go_id);
+            $mdDialog.show({
+                contentElement: '#goid',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true
+            });
+        };
+
+        $scope.showPMIDPopup = function(ev, pmid) {
+            $scope.prevPMIDData = $scope.get_pmid_data(pmid);
+            $mdDialog.show({
+                contentElement: '#pmid',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true
+            });
+        };
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
 
         CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
             var pageSize = 5;
@@ -1132,8 +1178,8 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             return paper;
         };
 
-        $scope.showGOIDPopup = function(ev) {
-            $scope.prevGOIDData = $scope.get_go_data($scope.gaf.go_id);
+        $scope.showGOIDPopup = function(ev, go_id) {
+            $scope.prevGOIDData = $scope.get_go_data(go_id);
             $mdDialog.show({
                 contentElement: '#goid',
                 parent: angular.element(document.body),
@@ -1141,8 +1187,8 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
             });
         };
 
-        $scope.showPMIDPopup = function(ev) {
-            $scope.prevPMIDData = $scope.get_pmid_data($scope.gaf.db_reference);
+        $scope.showPMIDPopup = function(ev, pmid) {
+            $scope.prevPMIDData = $scope.get_pmid_data(pmid);
             $mdDialog.show({
                 contentElement: '#pmid',
                 parent: angular.element(document.body),

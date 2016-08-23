@@ -84,24 +84,34 @@
                     </md-input-container>
                 </div>
                 <div layout="row" layout-sm="column">
-                    <md-input-container class="md-block" flex>
-                        <label>GO ID</label>
-                        <input md-no-asterisk required name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
-                        <div ng-messages="GAFForm.go_id.$error" md-auto-hide="false" ng-show="GAFForm.go_id.$touched">
-                            <div ng-message="required">This is required.</div>
-                            <div ng-message="startwithGo">Must start with 'GO:'</div>
-                            <div ng-message="minlength">This is required.</div>
-                            <div ng-message="customRequired">Invalid GO ID</div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container class="md-block" flex>
-                        <label>PMID (DB Reference)</label>
-                        <input md-no-asterisk required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>
-                        <div ng-messages="GAFForm.db_reference.$error" md-auto-hide="false" ng-show="GAFForm.db_reference.$touched">
-                            <div ng-message="required">This is required.</div>
-                            <div ng-message="pmidValid">Invalid PMID</div>
-                        </div>
-                    </md-input-container>
+                    <div layout="row" layout-align="center center">
+                        <md-input-container class="md-block" flex>
+                            <label>GO ID</label>
+                            <input md-no-asterisk required name="go_id" minlength=4 goid-customdir ng-model="gafData.go_id" ng-model-options="{ updateOn: 'blur' }"/>
+                            <div ng-messages="GAFForm.go_id.$error" md-auto-hide="false" ng-show="GAFForm.go_id.$touched">
+                                <div ng-message="required">This is required.</div>
+                                <div ng-message="startwithGo">Must start with 'GO:'</div>
+                                <div ng-message="minlength">This is required.</div>
+                                <div ng-message="customRequired">Invalid GO ID</div>
+                            </div>
+                        </md-input-container>
+                        <md-button ng-disabled="GAFForm.go_id.$invalid" class="md-icon-button" ng-click="showGOIDPopup($event, gafData.go_id)">
+                            <ng-md-icon icon="open_in_new"></ng-md-icon>
+                        </md-button>
+                    </div>
+                    <div layout="row" layout-align="center center">
+                        <md-input-container class="md-block" flex>
+                            <label>PMID (DB Reference)</label>
+                            <input md-no-asterisk required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>
+                            <div ng-messages="GAFForm.db_reference.$error" md-auto-hide="false" ng-show="GAFForm.db_reference.$touched">
+                                <div ng-message="required">This is required.</div>
+                                <div ng-message="pmidValid">Invalid PMID</div>
+                            </div>
+                        </md-input-container>
+                        <md-button ng-disabled="GAFForm.db_reference.$invalid" class="md-icon-button" ng-click="showPMIDPopup($event, gafData.db_reference)">
+                            <ng-md-icon icon="open_in_new"></ng-md-icon>
+                        </md-button>
+                    </div>
                 </div>
                 <div layout="row" layout-sm="column">
                     <md-input-container flex>
@@ -192,7 +202,7 @@
                     <label>GO ID</label>
                     <input disabled ng-model="gaf.go_id"/>
                 </md-input-container>
-                <md-button class="md-icon-button" ng-click="showGOIDPopup($event)">
+                <md-button class="md-icon-button" ng-click="showGOIDPopup($event, gaf.go_id)">
                     <ng-md-icon icon="open_in_new"></ng-md-icon>
                 </md-button>
             </div>
@@ -201,7 +211,7 @@
                     <label>PMID (DB Reference)</label>
                     <input disabled name="db_reference" ng-model="gaf.db_reference"/>
                 </md-input-container>
-                <md-button class="md-icon-button" ng-click="showPMIDPopup($event)">
+                <md-button class="md-icon-button" ng-click="showPMIDPopup($event, gaf.db_reference)">
                     <ng-md-icon icon="open_in_new"></ng-md-icon>
                 </md-button>
             </div>
