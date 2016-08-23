@@ -39,6 +39,11 @@
     md-card md-card-header md-card-avatar+md-card-header-text {
         max-height:100px;
     }
+    .md-button.md-icon-button {
+        margin:0;
+        padding:0;
+        height:inherit;
+    }
 </style>
 <md-card ng-show="no_gaf == true">
     <md-card-title>
@@ -175,31 +180,37 @@
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
-            <div layout="row" layout-xs="column">
+            <div layout="row">
                 <md-input-container flex>
                     <label>Gene ID</label>
                     <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
                 </md-input-container>
             </div>
-            <div layout="row" layout-xs="column">
+            <div layout="row">
                 <md-input-container flex>
                     <label>Qualifier</label>
                     <input disabled name="qualifier" ng-model="gaf.show_qualifier"/>
                 </md-input-container>
             </div>
-            <div layout="row" layout-xs="column">
+            <div layout="row">
                 <md-input-container class="md-block" flex>
                     <label>GO ID</label>
                     <input disabled ng-model="gaf.go_id"/>
                 </md-input-container>
+                <md-button class="md-icon-button" ng-click="showGOIDPopup($event)">
+                    <ng-md-icon icon="open_in_new"></ng-md-icon>
+                </md-button>
             </div>
-            <div layout="row" layout-xs="column">
+            <div layout="row">
                 <md-input-container class="md-block" flex>
                     <label>PMID (DB Reference)</label>
                     <input disabled name="db_reference" ng-model="gaf.db_reference"/>
                 </md-input-container>
+                <md-button class="md-icon-button" ng-click="showPMIDPopup($event)">
+                    <ng-md-icon icon="open_in_new"></ng-md-icon>
+                </md-button>
             </div>
-            <div layout="row" layout-xs="column">
+            <div layout="row">
                 <md-input-container flex>
                     <label>Evidence Code</label>
                     <input disabled name="evidence_code" ng-model="gaf.evidence_code"/>
@@ -212,7 +223,7 @@
                     <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
                 </md-input-container>
             </div>
-            <div layout="row" layout-xs="column">
+            <div layout="row">
                 <md-input-container class="md-block" flex>
                     <label>Notes</label>
                     <textarea disabled name="notes" ng-model="gaf.notes"></textarea>
@@ -273,4 +284,21 @@
             </md-table-container>
         </md-card-content>
     </md-card>
+</div>
+
+<div style="visibility: hidden">
+  <div class="md-dialog-container" id="goid">
+    <md-dialog layout-padding="">
+      GOID
+      <md-button class="md-primary md-raised" ng-click="cancel()">Submit</md-button>
+    </md-dialog>
+  </div>
+</div>
+<div style="visibility: hidden">
+  <div class="md-dialog-container" id="pmid">
+    <md-dialog layout-padding="">
+        PMID
+      <md-button class="md-primary md-raised" ng-click="cancel()">Submit</md-button>
+    </md-dialog>
+  </div>
 </div>

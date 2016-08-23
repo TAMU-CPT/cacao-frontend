@@ -1069,75 +1069,23 @@ cacaoApp.controller('GAFListCtrl', ['$scope', 'CacaoBackend',
         $scope.updateData(1);
 }]);
 
-cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter',
-    function($scope, CacaoBackend, $filter) {
-        $scope.show="false";
-        $scope.gafs = [];
-        $scope.idk = {};
-        $scope.idk.with_from_id = '';
-        $scope.idk.with_from_db= '';
-        var myEl = angular.element( document.querySelector( '#idk2' ));
-        console.log(myEl);
-        myEl.removeClass("_md-placeholder");
-        console.log(myEl);
-
-        CacaoBackend.all('gafs').getList({review_state: 1, page: 1, limit: 1}).then(function(outer_data) {
-            var pageSize = 5;
-            for(var currentPage = 0; currentPage < Math.ceil(outer_data.meta.count / pageSize); currentPage++) {
-                CacaoBackend.all('gafs').getList({review_state: 1, page: currentPage + 1, limit: pageSize}).then(function(data) {
-                    data.map(function(gaf) {
-                        gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
-                        gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
-                        $scope.gafs.push(gaf);
-                    });
-                });
-            }
-        });
-
-
-        $scope.test = function() {
-            var set_list = [];
-            for (var i in $scope.gafs) {
-                if (set_list.length == 0 || !$scope.gafs[i].challenge_gaf) {
-                    set_list.push([$scope.gafs[i]]);
-                }
-                else {
-                    set_list.map(function(gaf_set) {
-                        if(gaf_set[0].challenge_gaf){
-                            if(gaf_set[0].challenge_gaf.original_gaf == $scope.gafs[i].challenge_gaf.original_gaf)
-                                gaf_set.push($scope.gafs[i])
-                        }
-                        else {
-                            set_list.push([$scope.gafs[i]])
-                        }
-                    });
-                }
-            }
-            console.log(set_list);
+cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter', '$mdDialog',
+    function($scope, CacaoBackend, $filter, $mdDialog) {
+        $scope.showPrerenderedDialog = function(ev) {
+            $mdDialog.show({
+                contentElement: '#myStaticDialog',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true
+            });
         };
 
-
-
-        //CacaoBackend.all('gafs').getList({page: page}).then(function(data) {
-            //console.log(data.meta.count);
-            //data.map(function(gaf){
-                //console.log(gaf);
-            //});
-            //for (var gaf in data) {
-                //data[gaf]
-                //console.log(data[gaf]);
-                //gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
-                //gaf.show_qualifier = $filter('qualifier_to_text')(gaf.qualifier);
-                //$scope.gafs.push(gaf);
-            //}
-            //if (!data.meta.next) {
-                //next = false;
-            //}
-        //});
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
 }]);
 
-cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter',
-    function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter) {
+cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter', '$mdDialog',
+    function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter, $mdDialog) {
         $scope.current_user = $localStorage.jwtData;
         $scope.challenge = false;
 
@@ -1159,6 +1107,26 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
 
         $scope.query = {
             limit: 5,
+        };
+
+        $scope.showGOIDPopup = function(ev) {
+            $mdDialog.show({
+                contentElement: '#goid',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true
+            });
+        };
+
+        $scope.showPMIDPopup = function(ev) {
+            $mdDialog.show({
+                contentElement: '#pmid',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true
+            });
+        };
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
         };
 
         $scope.saveData = function() {
