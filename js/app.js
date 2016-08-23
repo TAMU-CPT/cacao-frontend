@@ -1268,6 +1268,8 @@ cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', 
                     });
                 }
             }
+        }, function() {
+                $scope.no_gaf = true;
         });
 }]);
 
