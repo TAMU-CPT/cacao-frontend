@@ -39,11 +39,6 @@
     md-card md-card-header md-card-avatar+md-card-header-text {
         max-height:100px;
     }
-    .md-button.md-icon-button {
-        margin:0;
-        padding:0;
-        height:inherit;
-    }
 </style>
 <md-card ng-show="no_gaf == true">
     <md-card-title>
@@ -192,7 +187,7 @@
                     <input disabled name="qualifier" ng-model="gaf.show_qualifier"/>
                 </md-input-container>
             </div>
-            <div layout="row">
+            <div layout="row" layout-align="center center">
                 <md-input-container class="md-block" flex>
                     <label>GO ID</label>
                     <input disabled ng-model="gaf.go_id"/>
@@ -201,7 +196,7 @@
                     <ng-md-icon icon="open_in_new"></ng-md-icon>
                 </md-button>
             </div>
-            <div layout="row">
+            <div layout="row" layout-align="center center">
                 <md-input-container class="md-block" flex>
                     <label>PMID (DB Reference)</label>
                     <input disabled name="db_reference" ng-model="gaf.db_reference"/>
@@ -288,17 +283,72 @@
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="goid">
-    <md-dialog layout-padding="">
-      GOID
-      <md-button class="md-primary md-raised" ng-click="cancel()">Submit</md-button>
+    <md-dialog>
+        <md-card style="margin:0">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span class="md-headline">{{prevGOIDData.id}}</span>
+                    <span flex></span>
+                    <md-button ng-show="prevGOIDData" ng-click="cancel()" aria-label="close" class="md-icon-button">
+                        <ng-md-icon icon="close" "fill: white" ></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-card-title layout="row">
+                <div layout="column" flex="80">
+                    <md-card-title-text>
+                        <span class="md-subhead" style="color:#666">{{prevGOIDData.name}}</span>
+                        <md-divider></md-divider>
+                        <span ng-show="prevGOIDData.def" class="md-subhead" style="color:#666">definition: {{prevGOIDData.def}}</span>
+                    </md-card-title-text>
+                    <div>
+                        <md-button class="md-raised md-accent" href="#/goid/{{prevGOIDData.id}}" TARGET="_blank">See More</md-button>
+                    </div>
+                </div>
+                <md-card-title-media ng-show="prevGOIDData.def" style="overflow:hidden">
+                    <div class="md-media-lg">
+                        <a ng-href="{{ prevGOIDData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{prevGOIDData.id}}">
+                            <img ng-src="{{ prevGOIDData.id | goChartUrl }}" />
+                        </a>
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+        </md-card>
     </md-dialog>
   </div>
 </div>
+
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="pmid">
-    <md-dialog layout-padding="">
-        PMID
-      <md-button class="md-primary md-raised" ng-click="cancel()">Submit</md-button>
+    <md-dialog>
+        <md-card style="margin:0">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span ng-show="prevPMIDData.pmid" class="md-headline">PMID:{{prevPMIDData.pmid}}</span>
+                    <span flex></span>
+                    <md-button ng-show="prevPMIDData" ng-click="cancel()" aria-label="close" class="md-icon-button">
+                        <ng-md-icon icon="close" "fill: white" ></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-subhead">
+                        <span ng-show="prevPMIDData.author"><b>{{prevPMIDData.author}}.</b></span>
+                        <span ng-show="prevPMIDData.pub_year">{{prevPMIDData.pub_year}}.</span>
+                        <span ng-show="prevPMIDData.title">{{prevPMIDData.title}}.</span>
+                        <span ng-show="prevPMIDData.journal">{{prevPMIDData.journal}}</span>
+                        <span ng-show="prevPMIDData.volume && !prevPMIDData.pages"><b>{{prevPMIDData.volume}}.</b></span>
+                        <span ng-show="prevPMIDData.pages"><b>{{prevPMIDData.volume}}:</b></span><!--
+                        --><span ng-show="prevPMIDData.pages">{{prevPMIDData.pages}}.</span>
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <p ng-show="prevPMIDData.abstract">{{prevPMIDData.short_abstract}}</p>
+                <md-button class="md-raised md-accent" href="#/pmid/{{prevPMIDData.pmid}}" TARGET="_blank">See More</md-button>
+            </md-card-content>
+        </md-card>
     </md-dialog>
   </div>
 </div>
