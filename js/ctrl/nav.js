@@ -1,6 +1,6 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'CacaoBackend', 'NotificationBackend',
-        function ($scope, $mdSidenav, $localStorage, $location, CacaoBackend, NotificationBackend) {
+    cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'CacaoBackend', 'NotificationBackend', '$interval',
+        function ($scope, $mdSidenav, $localStorage, $location, CacaoBackend, NotificationBackend, $interval) {
 
             $scope.nav = {}
             $scope.nav.userData = $localStorage.jwtData;
@@ -25,6 +25,11 @@ export default function(cacaoApp) {
                         $scope.nav.notifications = null;
                     }
                 });
+            };
+
+            $scope.get_notifications_wrapper = function() {
+                $scope.get_notifications();
+                $interval($scope.get_notifications, 5000);
             };
     }]);
 }

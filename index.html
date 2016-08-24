@@ -16,7 +16,7 @@
                     <span class="md-title"><a href="#/">CACAO</a></span>
                 </h2>
                 <span flex></span>
-                <md-button ng-init="get_notifications()" ng-if="nav.userData.email" aria-label="show notifications" class="md-icon-button" ng-click="go('/notifications')">
+                <md-button ng-init="get_notifications_wrapper()" ng-if="nav.userData.email" aria-label="show notifications" class="md-icon-button" ng-click="go('/notifications')">
                     <ng-md-icon icon="{{nav.notifications ? 'notifications_active':'notifications'}}"></ng-md-icon>
                 </md-button>
                 <script type="text/ng-template" id="popover">

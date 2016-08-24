@@ -1,3 +1,5 @@
+var jwt_decode = require('jwt-decode');
+
 export default function(cacaoApp) {
     cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location',
         function($scope, $http, $localStorage, $location) {

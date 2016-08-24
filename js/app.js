@@ -16,7 +16,6 @@ require('angular-jwt');
 require('ns-popover');
 require('lightbox2');
 var moment = require('moment');
-var jwt_decode = require('jwt-decode');
 /* App Module */
 
 var cacaoApp = angular.module('cacaoApp', [
@@ -162,7 +161,6 @@ cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter', '$mdDialog
             $mdDialog.cancel();
         };
 }]);
-
 
 require('./directives.js')(cacaoApp);
 require('./factory.js')(cacaoApp);
