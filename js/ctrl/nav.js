@@ -1,9 +1,14 @@
 export default function(cacaoApp) {
     cacaoApp.controller('NavCtrl', ['$scope', '$mdSidenav', '$localStorage', '$location', 'CacaoBackend', 'NotificationBackend', '$interval',
         function ($scope, $mdSidenav, $localStorage, $location, CacaoBackend, NotificationBackend, $interval) {
-
             $scope.nav = {}
             $scope.nav.userData = $localStorage.jwtData;
+
+            $scope.$on('$locationChangeStart', function(event) {
+                if ($location.path() == '/login') {
+                    $scope.nav.show_login_button = false;
+                } else { $scope.nav.show_login_button = true; }
+            });
 
             $scope.go = function(route){
                 if (route == '/teams/') {

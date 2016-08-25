@@ -1,31 +1,29 @@
-<div class="col-sm-6">
-    <md-content layout-padding>
-        <form name="loginForm" ng-submit="saveData()" novalidate>
-            <div layout="col" flex="50">
+<div layout="row" layout-align="center center">
+    <div flex-gt-sm="30">
+        <md-card>
+            <md-card-content>
                 <div layout="row">
-                    <md-input-container class="md-block">
+                    <md-input-container flex>
                         <label>Username</label>
-                            <input required name="name" ng-model="userData.username" />
-                            <div ng-messages="username.$error">
-                                <div ng-message="required">This is required.</div>
-                            </div>
+                        <input md-no-asterisk required name="name" ng-model="userData.username"/>
+                        <div ng-messages="username.$error">
+                            <div ng-message="required">This is required.</div>
                         </div>
                     </md-input-container>
                 </div>
                 <div layout="row">
-                    <md-input-container class="md-block">
+                    <md-input-container flex>
                         <label>Password</label>
-                            <input type="password" required name="name" ng-model="userData.password" />
-                            <div ng-messages="password.$error">
-                                <div ng-message="required">This is required.</div>
-                            </div>
+                        <input md-no-asterisk type="password" required name="name" ng-model="userData.password" />
+                        <div ng-messages="password.$error">
+                            <div ng-message="required">This is required.</div>
                         </div>
                     </md-input-container>
                 </div>
-                <div layout="row">
-                    <md-button ng-disabled="loginForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Log in</md-button>
-                </div>
-            </div>
-        </form>
-    </md-content>
+                <md-button ng-disabled="loginForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Log in</md-button>
+                <!--<div layout="row">-->
+                <!--</div>-->
+            </md-card-content>
+        </md-card>
+    </div>
 </div>
