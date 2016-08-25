@@ -194,7 +194,7 @@
                     <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
                         <div class="md-media-lg">
                             <md-button aria-label="GO chart" ng-click="picture_popup()">
-                                <img src="{{ goTermData.id | goChartUrl }}">
+                                <img ng-src="{{ goTermData.id | goChartUrl }}">
                             </md-button>
                         </div>
                     </md-card-title-media>
@@ -256,7 +256,7 @@
             </md-toolbar>
             <md-card-content>
                 <div class="md-media-lg">
-                    <img src="{{ goTermData.id | goChartUrl }}">
+                    <img ng-src="{{ goTermData.id | goChartUrl }}">
                 </div>
             </md-card-content>
         </md-card>

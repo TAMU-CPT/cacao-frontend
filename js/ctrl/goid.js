@@ -42,7 +42,7 @@ export default function(cacaoApp) {
 
             $scope.query.page = 1;
 
-            CacaoBackend.all('gafs').getList({go_id: $routeParams.GOID}).then(function(data) {
+            $scope.promise = CacaoBackend.all('gafs').getList({go_id: $routeParams.GOID}).then(function(data) {
                 $scope.prev_annotations = data;
             });
     }]);
