@@ -1,12 +1,17 @@
 <div class="container-fluid" layout="row" layout-align="center">
     <md-card flex="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Users<span>
+            </md-card-title-text>
+        </md-card-title>
         <md-card-content>
             <md-table-container>
                 <table md-table md-progress="promise">
                     <thead md-head md-order="ordering" md-on-reorder="updateData">
                         <tr md-row>
                             <th md-column><span>User</span></th>
-                            <th md-column md-order-by="username"><span>Username</span></th>
+                            <th md-column md-order-by="username"><span>Name</span></th>
                         </tr>
                     </thead>
                     <tbody md-body>
