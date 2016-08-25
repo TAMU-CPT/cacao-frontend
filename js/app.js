@@ -165,6 +165,7 @@ cacaoApp.controller('TestCtrl', ['$scope', 'CacaoBackend', '$filter', '$mdDialog
 require('./directives.js')(cacaoApp);
 require('./factory.js')(cacaoApp);
 require('./filter.js')(cacaoApp);
+require('./service.js')(cacaoApp);
 require('./const.js')(cacaoApp);
 require('./ctrl/notification.js')(cacaoApp);
 require('./ctrl/home.js')(cacaoApp);

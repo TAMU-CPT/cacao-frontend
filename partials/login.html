@@ -1,29 +1,29 @@
 <div layout="row" layout-align="center center" style="padding:2em">
     <div flex-gt-sm="30">
-        <md-card>
-            <md-card-content>
-                <div layout="row">
-                    <md-input-container flex>
-                        <label>Username</label>
-                        <input md-no-asterisk required name="name" ng-model="userData.username"/>
-                        <div ng-messages="username.$error">
-                            <div ng-message="required">This is required.</div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <div layout="row">
-                    <md-input-container flex>
-                        <label>Password</label>
-                        <input md-no-asterisk type="password" required name="name" ng-model="userData.password" />
-                        <div ng-messages="password.$error">
-                            <div ng-message="required">This is required.</div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <md-button ng-disabled="loginForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Log in</md-button>
-                <!--<div layout="row">-->
-                <!--</div>-->
-            </md-card-content>
-        </md-card>
+        <form name="loginForm">
+            <md-card>
+                <md-card-content>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label>Username</label>
+                            <input md-no-asterisk required name="name" ng-model="userData.username"/>
+                            <div ng-messages="username.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label>Password</label>
+                            <input md-no-asterisk type="password" required name="name" ng-model="userData.password" />
+                            <div ng-messages="password.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <md-button ng-disabled="loginForm.$invalid" class="md-primary md-raised" ng-click="saveData()">Log in</md-button>
+                </md-card-content>
+            </md-card>
+        </form>
     </div>
 </div>
