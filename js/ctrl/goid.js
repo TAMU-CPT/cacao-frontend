@@ -23,7 +23,7 @@ export default function(cacaoApp) {
                 $mdDialog.cancel();
             };
 
-            $scope.ordering = "-date";
+            $scope.ordering = "db_reference";
 
             $scope.updateData = function(page) {
                 if(!isNaN(parseInt(page))){
@@ -31,7 +31,7 @@ export default function(cacaoApp) {
                 }
                 $scope.query.ordering = $scope.ordering;
 
-                $scope.promise = CacaoBackend.all('gafs').getList({go_id: $routeParams.GOID}).then(function(data) {
+                $scope.promise = CacaoBackend.all('gafs').getList($scope.query).then(function(data) {
                     $scope.prev_annotations = data;
                 });
             };
@@ -42,6 +42,7 @@ export default function(cacaoApp) {
             };
 
             $scope.query = {
+                go_id: $routeParams.GOID,
                 limit: 5,
                 page: 1,
                 ordering: $scope.ordering,
