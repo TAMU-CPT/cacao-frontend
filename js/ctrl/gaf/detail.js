@@ -125,7 +125,8 @@ export default function(cacaoApp) {
                 function formatEntry(obj){
                     return {
                         star: obj.star,
-                        event: obj.event,
+                        event_name: obj.event_name,
+                        event_type: obj.event_type,
                         user: obj.user,
                         notes: obj.notes,
                         date: moment(obj.date).fromNow(),
@@ -134,55 +135,48 @@ export default function(cacaoApp) {
                 };
 
                 $scope.event_info = []
+                var null_event = {
+                    star: true,
+                    event_name: null,
+                    event_type: null,
+                    user: null,
+                    notes: null,
+                    date: null,
+                }
                 if (gaf.assessment) {
                     $scope.event_info.push(formatEntry({
-                        star: 'Initial Review',
-                        event: 'Assessment',
+                        star: null,
+                        event_name: 'Initial Review',
+                        event_type: 'Assessment',
                         user: gaf.assessment.owner,
                         notes: gaf.assessment.notes,
                         date: gaf.assessment.date,
                     }));
-                    $scope.event_info.push({
-                        star: null,
-                        event: null,
-                        user: null,
-                        notes: null,
-                        date: null,
-                    });
+                    $scope.event_info.push(_.clone(null_event));
                 }
                 for (var chal in gaf.original_gaf) {
                     $scope.event_info.push(formatEntry({
-                        star: 'Challenge',
-                        event: 'Proposed Annotation',
+                        star: null,
+                        event_name: 'Challenge',
+                        event_type: 'Proposed Annotation',
                         user: gaf.original_gaf[chal].owner,
                         notes: gaf.original_gaf[chal].reason,
                         date: gaf.original_gaf[chal].date,
                     }));
                     if (gaf.original_gaf[chal].assessment) {
                         $scope.event_info.push(formatEntry({
-                             star: '',
-                             event: 'Assessment',
+                             star: null,
+                             event_name: '',
+                             event_type: 'Assessment',
                              user: gaf.original_gaf[chal].assessment.owner,
                              notes: gaf.original_gaf[chal].assessment.notes,
                              date: gaf.original_gaf[chal].assessment.date,
                         }));
 
-                        $scope.event_info.push({
-                            star: null,
-                            event: null,
-                            user: null,
-                            notes: null,
-                            date: null,
-                        });
+                        $scope.event_info.push(_.clone(null_event));
                     }
                     else {
-                        $scope.event_info.push({
-                            star: null,
-                            event: null,
-                            user: null,
-                            notes: null,
-                            date: null,
-                        });
+                        $scope.event_info.push(_.clone(null_event));
                     }
                 }
             }, function() {

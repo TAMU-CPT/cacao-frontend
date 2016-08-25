@@ -258,19 +258,20 @@
                 <table md-table md-progress="promise">
                     <thead md-head>
                         <tr md-row>
-                            <th md-column md-order-by="event"><span>Event</th>
+                            <th md-column><span>Event</th>
                             <th md-column><span></th>
                             <th md-column><span>User</span></th>
                             <th md-column><span>Notes</span></th>
-                            <th md-column md-order-by="date"><span>Date</span></th>
+                            <th md-column><span>Date</span></th>
                         </tr>
                     </thead>
                     <tbody md-body>
-                        <tr md-row ng-repeat="i in event_info | orderBy: query.order" ng-style="!i.star && {'height':'2em'}"  ng-if="$index != event_info.length-1" >
+                        <!--<tr md-row ng-repeat="i in event_info"   ng-if="$index != event_info.length-1" >-->
+                        <tr md-row ng-repeat="i in event_info" ng-style="i.star && {'height':'2em'}"  ng-if="$index != event_info.length-1" >
                             <td md-cell>
-                                <b>{{i.star}}</b>
+                                <b>{{i.event_name}}</b>
                             </td>
-                            <td md-cell><div>{{i.event}}</div</td>
+                            <td md-cell><div>{{i.event_type}}</div</td>
                             <td md-cell>
                                 <user-icon ng-if="i.user" user="{{i.user}}"></user-icon>
                             </td>
