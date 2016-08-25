@@ -1,10 +1,14 @@
 export default function(cacaoApp) {
     cacaoApp.controller('TeamDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
         function($scope, $routeParams, CacaoBackend) {
-            var team_usernames = [];
+            $scope.ordering="date";
 
-            $scope.updateData = function(page) {
-                $scope.query.page = page;
+            $scope.promise = $scope.updateData = function(page) {
+                if(!isNaN(parseInt(page))){
+                    $scope.query.page = page;
+                }
+                    console.log(page);
+                $scope.query.ordering = $scope.ordering;
                 CacaoBackend.all('gafs').getList($scope.query).then(function(data) {
                     $scope.data = data;
                 });
@@ -16,17 +20,15 @@ export default function(cacaoApp) {
                 pageSelect: true
             };
 
-
             CacaoBackend.one('groups', $routeParams.teamID).get().then(function(data) {
                 $scope.team = data;
-
                 $scope.query = {
                     limit: 5,
                     page: 1,
                     team: data.id,
+                    ordering: $scope.ordering,
                 };
-
-                $scope.updateData(1);
+                $scope.updateData($scope.query.ordering);
             });
     }]);
 }

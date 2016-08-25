@@ -57,16 +57,16 @@
             </md-card-title>
             <md-card-content ng-show="data">
                 <md-table-container>
-                    <table md-table>
-                        <thead md-head>
+                    <table md-table md-progress="promise">
+                        <thead md-head md-order="ordering" md-on-reorder="updateData">
                             <tr md-row>
-                                <th md-column><span>Status</span></th>
-                                <th md-column><span>User</span></th>
-                                <th md-column><span>Gene ID</span></th>
-                                <th md-column><span>Name</span></th>
-                                <th md-column><span>Reference</span></th>
-                                <th md-column><span>Evidence Code</span></th>
-                                <th md-column><span>Date</span></th>
+                                <th md-column md-order-by="review_state"><span>Status</span></th>
+                                <th md-column md-order-by="owner__username"><span>User</span></th>
+                                <th md-column md-order-by="db_object_id"><span>Gene ID</span></th>
+                                <th md-column md-order-by="db_object_name"><span>Name</span></th>
+                                <th md-column md-order-by="db_reference"><span>Reference</span></th>
+                                <th md-column md-order-by="evidence_code"><span>Evidence Code</span></th>
+                                <th md-column md-order-by="date"><span>Date</span></th>
                             </tr>
                         </thead>
                         <tbody md-body>
@@ -98,7 +98,8 @@
                     md-page="query.page"
                     md-total="{{data.meta.count}}"
                     md-page-select="options.pageSelect"
-                    md-on-paginate="updateData"></md-table-pagination>
+                    md-on-paginate="updateData">
+                </md-table-pagination>
             </md-card-content>
         </md-card>
     </div>
