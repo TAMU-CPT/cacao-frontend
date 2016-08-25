@@ -67,9 +67,12 @@ export default function(cacaoApp) {
                 }
             }
 
+            $scope.ordering = "go_id";
+
             $scope.query = {
                 limit: 5,
-                page: 1
+                page: 1,
+                ordering: $scope.ordering
             };
 
             $scope.picture_popup = function(ev) {
@@ -85,7 +88,11 @@ export default function(cacaoApp) {
             };
 
             $scope.updateData = function(page) {
-                CacaoBackend.all('gafs').getList({db_object_id: $scope.prevAnnotData, page: page}).then(function(data) {
+                if(!isNaN(parseInt(page))){
+                    $scope.query.page = page;
+                }
+                $scope.query.ordering = $scope.ordering;
+                $scope.promise = CacaoBackend.all('gafs').getList({db_object_id: $scope.prevAnnotData, page: $scope.query.page, ordering: $scope.query.ordering}).then(function(data) {
                     $scope.prev_annotations = data;
                 });
             };
@@ -98,9 +105,10 @@ export default function(cacaoApp) {
                 };
 
                 $scope.query.page = 1;
+                $scope.query.ordering = $scope.ordering;
 
                 if (g) {
-                    CacaoBackend.all('gafs').getList({db_object_id: g}).then(function(data) {
+                    $scope.promise = CacaoBackend.all('gafs').getList({db_object_id: g, ordering: $scope.query.ordering}).then(function(data) {
                         $scope.prev_annotations = data;
                         $scope.prevAnnotData = g;
                         $scope.bad_db_object_id = null;
