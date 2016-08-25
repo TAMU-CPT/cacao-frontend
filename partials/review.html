@@ -77,9 +77,6 @@
     <div flex-gt-sm="30">
         <md-card>
             <md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
-                <md-card-avatar>
-                    <img gravatar-src="current_gaf[0].owner.email" style="border-radius: 50%">
-                </md-card-avatar>
                 <md-card-header-text>
                     <span class="md-title">{{current_gaf[0].owner.username}}</span>
                     <span flex class="md-subhead">{{current_gaf[0].date}}</span>
