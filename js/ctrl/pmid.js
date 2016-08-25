@@ -10,27 +10,31 @@ export default function(cacaoApp) {
                 }
             );
 
-            $scope.query = {
-                limit: 5,
-                page: 1
-            };
+            $scope.ordering = "go_id";
 
             $scope.updateData = function(page) {
-                CacaoBackend.all('gafs').getList({db_reference : 'PMID:'+$routeParams.PMID, page: page}).then(function(data) {
+                if(!isNaN(parseInt(page))){
+                    $scope.query.page = page;
+                }
+                $scope.query.ordering = $scope.ordering;
+
+                $scope.promise = CacaoBackend.all('gafs').getList($scope.query).then(function(data) {
                     $scope.prev_annotations = data;
                 });
             };
 
-            // previous annotations with same pmid
             $scope.options = {
                 limitSelect: true,
                 pageSelect: true
             };
 
-            $scope.query.page = 1;
+            $scope.query = {
+                db_reference: 'PMID:'+$routeParams.PMID,
+                limit: 5,
+                page: 1,
+                ordering: $scope.ordering,
+            };
 
-            CacaoBackend.all('gafs').getList({db_reference: 'PMID:'+$routeParams.PMID}).then(function(data) {
-                $scope.prev_annotations = data;
-            });
+            $scope.updateData(1);
     }]);
 }
