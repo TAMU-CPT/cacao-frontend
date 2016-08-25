@@ -1,3 +1,5 @@
+var moment = require('moment');
+
 export default function(cacaoApp) {
     cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter', '$q', '$mdDialog',
         function($scope, CacaoBackend, $timeout, $filter, $q, $mdDialog) {
@@ -74,6 +76,7 @@ export default function(cacaoApp) {
                                     notes: null,
                                 }
                                 gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
+                                gaf.show_date = moment(gaf.date).fromNow();
 
                                 var unique_gaf = true;
                                 $scope.gaf_set_list.map(function(gaf_set) {
@@ -178,6 +181,7 @@ export default function(cacaoApp) {
                         CacaoBackend.oneUrl('gafs', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
                             $scope.original_gaf = original;
                             $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
+                            $scope.original_gaf.show_date = moment(original.date).fromNow();
                             $scope.original_gaf_show = true;
                             $scope.current_gaf = $scope.temp_gaf;
                         });

@@ -73,13 +73,13 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
-<div ng-if="original_gaf_show== false" ng-hide="remaining != true" layout="row" layout-align="center start">
+<div ng-if="original_gaf_show == false" ng-hide="remaining != true" layout="row" layout-align="center start">
     <div flex-gt-sm="30">
         <md-card>
             <md-card-header style="background-color:{{(current_gaf[0] | anyFlagged) ? 'rgba(244, 67, 54, 0.38)' : 'rgba(105, 197, 82, 0.18)'}};">
                 <md-card-header-text>
                     <span class="md-title">{{current_gaf[0].owner.username}}</span>
-                    <span flex class="md-subhead">{{current_gaf[0].date}}</span>
+                    <span flex class="md-subhead">{{current_gaf[0].show_date}}</span>
                 </md-card-header-text>
             </md-card-header>
             <md-card-content>
@@ -184,7 +184,7 @@
     </div>
 </div>
 
-<div ng-if="original_gaf_show== true" ng-hide="remaining != true" ng-cloak>
+<div ng-if="original_gaf_show == true" ng-hide="remaining != true" ng-cloak>
     <div layout="row" layout-align="center" layout-xs="column">
         <div flex-gt-sm="30">
             <div layout="column">
@@ -192,8 +192,8 @@
                     <md-card-header style="background-color:{{(current_gaf | challenge_flagged) == 0 ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
                     <!--<md-card-header>-->
                         <md-card-header-text>
-                            <span class="md-title">{{original_gaf.db_object_id}}</span>
-                            <span flex class="md-subhead">Original Annotation</span>
+                            <span class="md-title">{{original_gaf.db_object_id}}: Original Annotation</span>
+                            <span flex class="md-subhead">{{original_gaf.show_date}}</span>
                         </md-card-header-text>
                     </md-card-header>
                     <md-card-content>
@@ -258,8 +258,9 @@
                                 <md-card-header-text>
                                     <div layout="row" layout-align="center center">
                                         <div>
-                                            <div flex class="md-title">{{original_gaf.db_object_id}}</div>
-                                            <div flex class="md-subhead">Challenge {{$index + 1}} of {{current_gaf.length}}</div>
+                                            <!--<div flex class="md-title">{{original_gaf.db_object_id}}</div>-->
+                                            <div flex class="md-title">Challenge {{$index + 1}} of {{current_gaf.length}}</div>
+                                            <div flex class="md-subhead">{{c_gaf.show_date}}</div>
                                         </div>
                                         <span flex></span>
                                         <div layout="column" layout-align="center center" ng-cloak>
