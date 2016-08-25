@@ -55,6 +55,14 @@ export default function(cacaoApp) {
                 });
             };
 
+            $scope.picture_popup = function(ev) {
+                $mdDialog.show({
+                    contentElement: '#go_term_pic',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true
+                });
+            };
+
             $scope.cancel = function() {
                 $mdDialog.cancel();
             };

@@ -292,6 +292,29 @@
 </div>
 
 <div style="visibility: hidden">
+  <div class="md-dialog-container" id="go_term_pic">
+    <md-dialog>
+        <md-card style="margin:0">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span class="md-headline">{{prevGOIDData.id}}</span>
+                    <span flex></span>
+                    <md-button ng-click="cancel()" aria-label="close" class="md-icon-button">
+                        <ng-md-icon icon="close" "fill: white" ></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-card-content>
+                <div class="md-media-lg">
+                    <img src="{{ prevGOIDData.id | goChartUrl }}">
+                </div>
+            </md-card-content>
+        </md-card>
+    </md-dialog>
+  </div>
+</div>
+
+<div style="visibility: hidden">
   <div class="md-dialog-container" id="goid">
     <md-dialog>
         <md-card style="margin:0">
@@ -317,9 +340,9 @@
                 </div>
                 <md-card-title-media ng-show="prevGOIDData.def" style="overflow:hidden">
                     <div class="md-media-lg">
-                        <a ng-href="{{ prevGOIDData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{prevGOIDData.id}}">
-                            <img ng-src="{{ prevGOIDData.id | goChartUrl }}" />
-                        </a>
+                        <md-button aria-label="GO chart" ng-click="picture_popup()">
+                            <img src="{{ prevGOIDData.id | goChartUrl }}">
+                        </md-button>
                     </div>
                 </md-card-title-media>
             </md-card-title>

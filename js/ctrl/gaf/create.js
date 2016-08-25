@@ -1,6 +1,6 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout', '$routeParams', 'ECO_CODES', 'QUALIFIERS', 'WITH_FROM_DB',
-        function($scope, CacaoBackend, $location, $timeout, $routeParams, ECO_CODES, QUALIFIERS, WITH_FROM_DB) {
+    cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout', '$routeParams', 'ECO_CODES', 'QUALIFIERS', 'WITH_FROM_DB', '$mdDialog',
+        function($scope, CacaoBackend, $location, $timeout, $routeParams, ECO_CODES, QUALIFIERS, WITH_FROM_DB, $mdDialog) {
 
             // collapses other cards if new gene id entered
             $scope.$watch('prevAnnotData', function(newValue, oldValue) {
@@ -70,6 +70,18 @@ export default function(cacaoApp) {
             $scope.query = {
                 limit: 5,
                 page: 1
+            };
+
+            $scope.picture_popup = function(ev) {
+                $mdDialog.show({
+                    contentElement: '#go_term_pic',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true
+                });
+            };
+
+            $scope.cancel = function() {
+                $mdDialog.cancel();
             };
 
             $scope.updateData = function(page) {

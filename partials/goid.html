@@ -11,11 +11,11 @@
                 </span>
             </span>
         </md-card-title-text>
-        <md-card-title-media ng-show="goTermData.def" style="overflow:hidden">
+        <md-card-title-media ng-show="goTermData.def" style="overflow:hidden" ng-cloak>
             <div class="md-media-lg">
-                <a href="{{ goTermData.id | goChartUrl }}" data-lightbox="image-1" data-title="{{goTermData.id}}">
-                    <img src="{{ goTermData.id | goChartUrl }}" />
-                </a>
+                <md-button aria-label="GO chart" ng-click="picture_popup()">
+                    <img src="{{ goTermData.id | goChartUrl }}">
+                </md-button>
             </div>
         </md-card-title-media>
     </md-card-title>
@@ -51,3 +51,26 @@
         <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.meta.count}}" md-page-select="options.pageSelect" md-on-paginate="updateData"></md-table-pagination>
     </md-card-content>
 </md-card>
+
+<div style="visibility: hidden">
+  <div class="md-dialog-container" id="go_term_pic">
+    <md-dialog>
+        <md-card style="margin:0">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span class="md-headline">{{goTermData.id}}</span>
+                    <span flex></span>
+                    <md-button ng-click="cancel()" aria-label="close" class="md-icon-button">
+                        <ng-md-icon icon="close" "fill: white" ></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-card-content>
+                <div class="md-media-lg">
+                    <img src="{{ goTermData.id | goChartUrl }}">
+                </div>
+            </md-card-content>
+        </md-card>
+    </md-dialog>
+  </div>
+</div>

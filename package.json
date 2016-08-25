@@ -31,7 +31,6 @@
     "html-loader": "^0.3.0",
     "jquery": "^2.2.3",
     "jwt-decode": "^2.0.1",
-    "lightbox2": "^2.8.2",
     "lodash": "^4.14.1",
     "md5": "^2.0.0",
     "moment": "^2.10.6",

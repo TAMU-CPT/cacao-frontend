@@ -48,6 +48,14 @@ export default function(cacaoApp) {
                 return paper;
             };
 
+            $scope.picture_popup = function(ev) {
+                $mdDialog.show({
+                    contentElement: '#go_term_pic',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true
+                });
+            };
+
             $scope.showGOIDPopup = function(ev, go_id) {
                 $scope.prevGOIDData = $scope.get_go_data(go_id);
                 $mdDialog.show({

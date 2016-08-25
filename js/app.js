@@ -14,7 +14,6 @@ require('jquery');
 require('ngstorage');
 require('angular-jwt');
 require('ns-popover');
-require('lightbox2');
 var moment = require('moment');
 /* App Module */
 
