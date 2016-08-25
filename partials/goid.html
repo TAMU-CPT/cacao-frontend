@@ -30,12 +30,12 @@
     <md-card-content ng-show="prev_annotations.length">
         <md-table-container>
             <table md-table md-progress="promise">
-                <thead md-head>
+                <thead md-head md-order="ordering" md-on-reorder="updateData">
                     <tr md-row>
-                        <th md-column><span>Gene ID</span></th>
-                        <th md-column><span>Name</span></th>
-                        <th md-column><span>Reference</span></th>
-                        <th md-column><span>Evidence Code</span></th>
+                        <th md-column md-order-by="db_object_id"><span>Gene ID</span></th>
+                        <th md-column md-order-by="db_object_symbol"><span>Name</span></th>
+                        <th md-column md-order-by="db_reference"><span>Reference</span></th>
+                        <th md-column md-order-by="evidence_code"><span>Evidence Code</span></th>
                     </tr>
                 </thead>
                 <tbody md-body>
@@ -43,12 +43,25 @@
                         <td md-cell>{{d.db_object_id}}</td>
                         <td md-cell>{{d.db_object_name}}</td>
                         <td md-cell>{{d.db_reference}}</td>
-                        <td md-cell>{{d.evidence_code}}</td>
+                        <td md-cell>
+                            <span>
+                                {{ d.evidence_code }}
+                                <md-tooltip md-direction="bottom">
+                                    {{d.evidence_code | eco_to_text}}
+                                </md-tooltip>
+                            </span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </md-table-container>
-        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{prev_annotations.meta.count}}" md-page-select="options.pageSelect" md-on-paginate="updateData"></md-table-pagination>
+        <md-table-pagination
+            md-limit="query.limit"
+            md-page="query.page"
+            md-total="{{prev_annotations.meta.count}}"
+            md-page-select="options.pageSelect"
+            md-on-paginate="updateData">
+        </md-table-pagination>
     </md-card-content>
 </md-card>
 

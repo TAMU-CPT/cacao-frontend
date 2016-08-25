@@ -23,27 +23,30 @@ export default function(cacaoApp) {
                 $mdDialog.cancel();
             };
 
-            $scope.query = {
-                limit: 5,
-                page: 1
-            };
+            $scope.ordering = "-date";
 
             $scope.updateData = function(page) {
-                CacaoBackend.all('gafs').getList({go_id: $routeParams.GOID, page: page}).then(function(data) {
+                if(!isNaN(parseInt(page))){
+                    $scope.query.page = page;
+                }
+                $scope.query.ordering = $scope.ordering;
+
+                $scope.promise = CacaoBackend.all('gafs').getList({go_id: $routeParams.GOID}).then(function(data) {
                     $scope.prev_annotations = data;
                 });
             };
 
-            // previous annotations with same go id
             $scope.options = {
                 limitSelect: true,
                 pageSelect: true
             };
 
-            $scope.query.page = 1;
+            $scope.query = {
+                limit: 5,
+                page: 1,
+                ordering: $scope.ordering,
+            };
 
-            $scope.promise = CacaoBackend.all('gafs').getList({go_id: $routeParams.GOID}).then(function(data) {
-                $scope.prev_annotations = data;
-            });
+            $scope.updateData(1);
     }]);
 }
