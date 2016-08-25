@@ -8,12 +8,10 @@
             </md-toolbar>
             <md-content>
                 <md-list>
-                    <md-list-item  ng-repeat="user in team.users">
-                        <div layout="row" layout-align="center center" style="padding:1em">
+                    <md-list-item  ng-repeat="user in team.users" ng-href="#/users/{{user.id}}">
+                        <div layout="row" layout-align="center center">
                             <div style="padding-right:1em">
-                                <a href="#/users/{{user.id}}">
-                                    <img gravatar-src="user.email" gravatar-size="50" style="border-radius: 50%">
-                                </a>
+                                <img gravatar-src="user.email" gravatar-size="50" style="border-radius: 50%">
                             </div>
                             <div class="md-list-item-text">
                                 <p>{{user.username}}</p>
