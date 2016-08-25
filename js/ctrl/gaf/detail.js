@@ -145,7 +145,6 @@ export default function(cacaoApp) {
                 }
                 if (gaf.assessment) {
                     $scope.event_info.push(formatEntry({
-                        star: null,
                         event_name: 'Initial Review',
                         event_type: 'Assessment',
                         user: gaf.assessment.owner,
@@ -156,7 +155,6 @@ export default function(cacaoApp) {
                 }
                 for (var chal in gaf.original_gaf) {
                     $scope.event_info.push(formatEntry({
-                        star: null,
                         event_name: 'Challenge',
                         event_type: 'Proposed Annotation',
                         user: gaf.original_gaf[chal].owner,
@@ -165,7 +163,6 @@ export default function(cacaoApp) {
                     }));
                     if (gaf.original_gaf[chal].assessment) {
                         $scope.event_info.push(formatEntry({
-                             star: null,
                              event_name: '',
                              event_type: 'Assessment',
                              user: gaf.original_gaf[chal].assessment.owner,
