@@ -169,13 +169,13 @@ export default function(cacaoApp) {
                              notes: gaf.original_gaf[chal].assessment.notes,
                              date: gaf.original_gaf[chal].assessment.date,
                         }));
-
-                        $scope.event_info.push(_.clone(null_event));
                     }
-                    else {
-                        $scope.event_info.push(_.clone(null_event));
-                    }
+                    $scope.event_info.push(_.clone(null_event));
                 }
+
+                var event_info_copy = _.clone($scope.event_info);
+                event_info_copy.pop();
+                $scope.last_date = event_info_copy.pop().date;
             }, function() {
                     $scope.no_gaf = true;
             });

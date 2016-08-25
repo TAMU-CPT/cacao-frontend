@@ -249,8 +249,12 @@
     <md-card flex-gt-xs="75" ng-hide="challenge" class="cssSlideLeft">
         <md-card-header style="background-color: {{gaf.review_state | header_color}}">
             <md-card-header-text>
-                <div flex class="md-title">History</div>
-                <div flex class="md-subhead">last updated: {{gaf.date}}</div>
+
+                <div layout="row" layout-align="center center">
+                    <div flex class="md-title">History</div>
+                    <span flex></span>
+                </div>
+                <div flex class="md-subhead">last updated: {{last_date}}</div>
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
