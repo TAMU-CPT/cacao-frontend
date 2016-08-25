@@ -15,7 +15,7 @@
     "angular-gravatar": "^0.4.2",
     "angular-jwt": "0.0.9",
     "angular-material": "1.1.0-rc.5",
-    "angular-material-data-table": "git+ssh://git@github.com/erasche/md-data-table.git",
+    "angular-material-data-table": "git+https://github.com/erasche/md-data-table.git",
     "angular-material-icons": "^0.7.1",
     "angular-messages": "1.5.5",
     "angular-resource": "1.5.5",
