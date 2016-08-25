@@ -1,6 +1,12 @@
+var moment = require('moment');
 export default function(cacaoApp) {
     cacaoApp.controller('GAFListCtrl', ['$scope', 'CacaoBackend',
         function($scope, CacaoBackend) {
+
+            $scope.date_process = function(date) {
+                return moment(date).fromNow();
+            };
+
             $scope.ordering = "-date";
 
             $scope.updateData = function(page) {
