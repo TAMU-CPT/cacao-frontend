@@ -1,5 +1,5 @@
+var moment = require('moment');
 export default function(cacaoApp) {
-
     cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter', '$mdDialog', 'ECO_CODES', 'QUALIFIERS', 'WITH_FROM_DB',
         function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter, $mdDialog, ECO_CODES, QUALIFIERS, WITH_FROM_DB) {
             $scope.current_user = $localStorage.jwtData;
