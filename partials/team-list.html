@@ -1,16 +1,38 @@
 <div class="container-fluid" layout="row" layout-align="center">
     <md-card flex="50">
-        <md-toolbar class="md-accent">
-            <div class="md-toolbar-tools">
-                Teams
-            </div>
-        </md-toolbar>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Teams<span>
+            </md-card-title-text>
+        </md-card-title>
         <md-card-content>
-            <ul>
-                <li ng-repeat="team in teams">
-                    <a href="#/teams/{{team.id}}">{{team.name}}</a>
-                </li>
-            </ul>
+            <md-table-container>
+                <table md-table md-progress="promise">
+                    <thead md-head md-order="ordering" md-on-reorder="updateData">
+                        <tr md-row>
+                            <th md-column md-order-by="name"><span>Team Name</span></th>
+                            <th md-column><span>Users</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row ng-repeat="team in teams">
+                            <td md-cell><a href="#/teams/{{team.id}}">{{team.name}}</a></td>
+                            <td md-cell>
+                                <span>
+                                    <user-icon ng-repeat="user in team.users" user="{{user}}"></user-icon>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination
+                md-limit="query.limit"
+                md-page="query.page"
+                md-total="{{teams.meta.count}}"
+                md-page-select="options.pageSelect"
+                md-on-paginate="updateData">
+            </md-table-pagination>
         </md-card-content>
     </md-card>
 </div>

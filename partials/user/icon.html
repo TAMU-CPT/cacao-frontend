@@ -1,6 +1,8 @@
-<a href="#/users/{{user.id}}">
-    <img gravatar-src="user.email" gravatar-size="30" style="border-radius: 50%">
-</a>
-<md-tooltip>
-    {{ user.username || "External" }}
-</md-tooltip>
+<span>
+    <a href="#/users/{{user.id}}">
+        <img gravatar-src="user.email" gravatar-size="30" style="border-radius: 50%">
+    </a>
+    <md-tooltip>
+        {{ user.username || "External" }}
+    </md-tooltip>
+</span>

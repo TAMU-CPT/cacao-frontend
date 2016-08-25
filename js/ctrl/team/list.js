@@ -1,8 +1,29 @@
 export default function(cacaoApp) {
     cacaoApp.controller('TeamListCtrl', ['$scope', 'CacaoBackend',
         function($scope, CacaoBackend) {
-            CacaoBackend.all('groups').getList().then(function(data) {
-                $scope.teams = data;
-            });
+            $scope.ordering="name";
+
+            $scope.updateData = function(page) {
+                if(!isNaN(parseInt(page))){
+                    $scope.query.page = page;
+                }
+                $scope.query.ordering = $scope.ordering;
+                $scope.promise = CacaoBackend.all('groups').getList($scope.query).then(function(data) {
+                    $scope.teams = data;
+                });
+            };
+
+            $scope.options = {
+                limitSelect: true,
+                pageSelect: true
+            };
+
+            $scope.query = {
+                limit: 5,
+                page: 1,
+                ordering: $scope.ordering,
+            };
+
+            $scope.updateData(1);
     }]);
 }

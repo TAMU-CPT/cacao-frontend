@@ -1,36 +1,60 @@
 <div layout="row" class="md-padding">
     <div class="container-fluid" layout="column" flex="25">
         <md-card>
-            <md-toolbar class="md-primary">
-                <div class="md-toolbar-tools">
-                    <span class="md-headline">{{ team.name }}</span>
-                </div>
+            <md-toolbar class="md-theme-light">
+                <h2 class="md-toolbar-tools">
+                    <span>{{team.name}}</span>
+                </h2>
             </md-toolbar>
-            <md-card-content>
-                <h3>Members</h3>
-                <div ng-repeat="user in team.users">
-                    <a ng-href="#/users/{{ user.id }}">
-                    <md-card-title>
-                        <md-card-title-media>
-                            <div class="md-media-sm card-media" layout layout-align="center center">
-                                <img gravatar-src="user.email" style="border-radius: 50%">
+            <md-content>
+                <md-list>
+                    <md-list-item  ng-repeat="user in team.users">
+                        <div layout="row" layout-align="center center" style="padding:1em">
+                            <div style="padding-right:1em">
+                                <a href="#/users/{{user.id}}">
+                                    <img gravatar-src="user.email" gravatar-size="50" style="border-radius: 50%">
+                                </a>
                             </div>
-                        </md-card-title-media>
-                        <md-card-title-text style="padding-left: 1em">
-                            <span class="md-headline" ng-bind="user.username"></span>
-                            <span class="md-subhead description" ng-bind=""></span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    </a>
-                </div>
-            </md-card-content>
+                            <div class="md-list-item-text">
+                                <p>{{user.username}}</p>
+                            </div>
+                        </div>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
+            </md-content>
         </md-card>
+        <!--<md-toolbar class="md-primary">-->
+            <!--<div class="md-toolbar-tools">-->
+                <!--<span class="md-headline">{{ team.name }}</span>-->
+            <!--</div>-->
+        <!--</md-toolbar>-->
+        <!--<md-card ng-repeat="user in team.users">-->
+            <!--<md-card-content>-->
+                <!--<div>-->
+                <!--[><div ng-repeat="user in team.users"><]-->
+                    <!--<a ng-href="#/users/{{ user.id }}">-->
+                    <!--<md-card-title>-->
+                        <!--<md-card-title-media>-->
+                            <!--<div class="md-media-sm card-media" layout layout-align="center center">-->
+                                <!--<img gravatar-src="user.email" style="border-radius: 50%">-->
+                            <!--</div>-->
+                        <!--</md-card-title-media>-->
+                        <!--<md-card-title-text style="padding-left: 1em">-->
+                            <!--<span class="md-headline" ng-bind="user.username"></span>-->
+                            <!--<span class="md-subhead description" ng-bind=""></span>-->
+                        <!--</md-card-title-text>-->
+                    <!--</md-card-title>-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</md-card-content>-->
+        <!--</md-card>-->
     </div>
     <div flex="75">
         <md-card>
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">{{ team.name }}'s Submitted Annotations</span>
+                    <span class="md-headline">Submitted Annotations from team {{team.name}}</span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content ng-show="data">
