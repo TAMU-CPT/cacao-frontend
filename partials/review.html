@@ -397,8 +397,10 @@
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="goid">
-    <md-dialog>
-        <md-card style="margin:0">
+
+    <md-dialog layout="row" layout-align="center center">
+        <md-progress-circular ng-if="!prevGOIDData.id" md-mode="indeterminate" ng-disabled="prevGOIDData.id" class="md-accent md-hue-1"></md-progress-circular>
+        <md-card style="margin:0" ng-if="prevGOIDData.id">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <span class="md-headline">{{prevGOIDData.id}}</span>
@@ -434,8 +436,9 @@
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="pmid">
-    <md-dialog>
-        <md-card style="margin:0">
+    <md-dialog layout="row" layout-align="center center">
+        <md-progress-circular ng-if="!prevPMIDData.author" md-mode="indeterminate" ng-disabled="prevPMIDData.author" class="md-accent md-hue-1"></md-progress-circular>
+        <md-card style="margin:0" ng-if="prevPMIDData.author">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <span ng-show="prevPMIDData.pmid" class="md-headline">PMID:{{prevPMIDData.pmid}}</span>
