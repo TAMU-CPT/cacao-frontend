@@ -29,7 +29,7 @@
                     </thead>
                     <tbody md-body>
                         <tr md-row ng-repeat="team in teams" ng-click="go(team.id)">
-                            <td md-cell><a href="#/teams/{{team.id}}">{{team.name}}</a></td>
+                            <td md-cell>{{team.name}}</td>
                             <td md-cell>
                                 <span ng-repeat="user in team.users">
                                     <img gravatar-src="user.email" gravatar-size="30" style="border-radius: 50%">
