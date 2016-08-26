@@ -1,7 +1,7 @@
 var moment = require('moment');
 export default function(cacaoApp) {
-    cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter', '$mdDialog', 'ECO_CODES', 'QUALIFIERS', 'WITH_FROM_DB',
-        function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter, $mdDialog, ECO_CODES, QUALIFIERS, WITH_FROM_DB) {
+    cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter', '$mdDialog', 'ECO_CODES', 'QUALIFIERS', 'WITH_FROM_DB','$timeout',
+        function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter, $mdDialog, ECO_CODES, QUALIFIERS, WITH_FROM_DB, $timeout) {
             $scope.current_user = $localStorage.jwtData;
             $scope.challenge = false;
 
@@ -57,6 +57,10 @@ export default function(cacaoApp) {
             };
 
             $scope.showGOIDPopup = function(ev, go_id) {
+                // use to test spinner
+                //$timeout(function() {
+                    //$scope.prevGOIDData = $scope.get_go_data(go_id);
+                //}, 3000);
                 $scope.prevGOIDData = $scope.get_go_data(go_id);
                 $mdDialog.show({
                     contentElement: '#goid',
@@ -66,6 +70,10 @@ export default function(cacaoApp) {
             };
 
             $scope.showPMIDPopup = function(ev, pmid) {
+                // use to test spinner
+                //$timeout(function() {
+                    //$scope.prevPMIDData = $scope.get_pmid_data(pmid);
+                //}, 3000);
                 $scope.prevPMIDData = $scope.get_pmid_data(pmid);
                 $mdDialog.show({
                     contentElement: '#pmid',

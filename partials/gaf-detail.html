@@ -249,7 +249,6 @@
     <md-card flex-gt-xs="75" ng-hide="challenge" class="cssSlideLeft">
         <md-card-header style="background-color: {{gaf.review_state | header_color}}">
             <md-card-header-text>
-
                 <div layout="row" layout-align="center center">
                     <div flex class="md-title">History</div>
                     <span flex></span>
@@ -321,8 +320,9 @@
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="goid">
-    <md-dialog>
-        <md-card style="margin:0">
+    <md-dialog layout="row" layout-align="center center">
+        <md-progress-circular ng-if="!prevGOIDData.id" md-mode="indeterminate" ng-disabled="prevGOIDData.id" class="md-accent md-hue-1"></md-progress-circular>
+        <md-card style="margin:0" ng-if="prevGOIDData.id">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <span class="md-headline">{{prevGOIDData.id}}</span>
@@ -333,6 +333,8 @@
                 </div>
             </md-toolbar>
             <md-card-title layout="row">
+
+                <!--<md-progress-circular md-mode="indeterminate"></md-progress-circular>-->
                 <div layout="column" flex="80">
                     <md-card-title-text>
                         <span class="md-subhead" style="color:#666">{{prevGOIDData.name}}</span>
@@ -358,8 +360,9 @@
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="pmid">
-    <md-dialog>
-        <md-card style="margin:0">
+    <md-dialog layout="row" layout-align="center center">
+        <md-progress-circular ng-if="!prevPMIDData.author" md-mode="indeterminate" ng-disabled="prevPMIDData.author" class="md-accent md-hue-1"></md-progress-circular>
+        <md-card style="margin:0" ng-if="prevPMIDData.author">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <span ng-show="prevPMIDData.pmid" class="md-headline">PMID:{{prevPMIDData.pmid}}</span>
