@@ -1,6 +1,11 @@
+var moment = require('moment');
 export default function(cacaoApp) {
     cacaoApp.controller('TeamDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
         function($scope, $routeParams, CacaoBackend) {
+            $scope.date_process = function(date) {
+                return moment(date).fromNow();
+            };
+
             $scope.ordering="date";
 
             $scope.promise = $scope.updateData = function(page) {
