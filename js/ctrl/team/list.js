@@ -1,6 +1,11 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('TeamListCtrl', ['$scope', 'CacaoBackend',
-        function($scope, CacaoBackend) {
+    cacaoApp.controller('TeamListCtrl', ['$scope', 'CacaoBackend', '$location',
+        function($scope, CacaoBackend, $location) {
+            $scope.go = function(id) {
+                console.log(id);
+                $location.path('/teams/' + id);;
+            };
+
             $scope.ordering="name";
 
             $scope.updateData = function(page) {

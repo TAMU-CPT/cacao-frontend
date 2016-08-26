@@ -1,3 +1,16 @@
+<style>
+    tbody .md-row:hover {
+        background-color: #fafafa;
+    }
+    tbody .md-row:focus {
+        outline:none;
+    }
+    [ng-click],
+    [data-ng-click],
+    [x-ng-click] {
+        cursor: pointer;
+    }
+</style>
 <div class="container-fluid" layout="row" layout-align="center">
     <md-card flex="50">
         <md-card-title>
@@ -15,11 +28,14 @@
                         </tr>
                     </thead>
                     <tbody md-body>
-                        <tr md-row ng-repeat="team in teams">
+                        <tr md-row ng-repeat="team in teams" ng-click="go(team.id)">
                             <td md-cell><a href="#/teams/{{team.id}}">{{team.name}}</a></td>
                             <td md-cell>
-                                <span>
-                                    <user-icon ng-repeat="user in team.users" user="{{user}}"></user-icon>
+                                <span ng-repeat="user in team.users">
+                                    <img gravatar-src="user.email" gravatar-size="30" style="border-radius: 50%">
+                                    <md-tooltip>
+                                        {{ user.username || "External" }}
+                                    </md-tooltip>
                                 </span>
                             </td>
                         </tr>
