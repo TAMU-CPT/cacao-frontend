@@ -130,6 +130,18 @@ export default function(cacaoApp) {
                 $scope.gaf.show_qualifier = $filter('qualifier_to_text')($scope.gaf.qualifier);
                 $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
 
+                if (gaf.superseded) {
+                    $scope.superseded = gaf.superseded;
+                    var url = true;
+                    while (url) {
+                        CacaoBackend.oneUrl(' ', $scope.superseded).get().then(function(success) {
+                            if (success.superseded) {
+                                $scope.superseded = success.superseded;
+                            } else { url = false; }
+                        });
+                    }
+                }
+
                 function formatEntry(obj){
                     return {
                         star: obj.star,
@@ -181,9 +193,11 @@ export default function(cacaoApp) {
                     $scope.event_info.push(_.clone(null_event));
                 }
 
-                var event_info_copy = _.clone($scope.event_info);
-                event_info_copy.pop();
-                $scope.last_date = event_info_copy.pop().date;
+                if ($scope.event_info.length > 1) {
+                    var event_info_copy = _.clone($scope.event_info);
+                    event_info_copy.pop();
+                    $scope.last_date = event_info_copy.pop().date;
+                }
             }, function() {
                     $scope.no_gaf = true;
             });

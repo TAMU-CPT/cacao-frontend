@@ -47,6 +47,14 @@
         </md-card-title-text>
     </md-card-title>
 </md-card>
+<md-card ng-show="gaf.superseded.id">
+    <md-card-title>
+        </md-card-title-text>
+        <span class="md-headline">This annotation was challenged and overthrown.</span>
+            <md-button class="md-primary md-raised" ng-click="">View updated annotation</md-button>
+        </md-card-title-text>
+    </md-card-title>
+</md-card>
 <div ng-show="gaf" layout="row" layout-xs="column" layout-align-gt-xs="center start" layout-align-xs="center center">
     <md-card flex-gt-xs="40" ng-show="challenge" class="cssSlideLeft">
         <md-card-header style="background-color: rgba(33, 150, 243, 0.33)">
