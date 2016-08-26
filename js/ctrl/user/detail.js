@@ -12,7 +12,6 @@ export default function(cacaoApp) {
                 if(!isNaN(parseInt(page))){
                     $scope.query.page = page;
                 }
-                    console.log(page);
                 $scope.query.ordering = $scope.ordering;
                 CacaoBackend.all('gafs').getList($scope.query).then(function(data) {
                     $scope.data = data;

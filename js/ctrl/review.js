@@ -37,7 +37,6 @@ export default function(cacaoApp) {
             };
 
             $scope.showGOIDPopup = function(ev, go_id) {
-                console.log(go_id);
                 $scope.prevGOIDData = $scope.get_go_data(go_id);
                 $mdDialog.show({
                     contentElement: '#goid',

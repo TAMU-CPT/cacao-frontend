@@ -2,7 +2,6 @@ export default function(cacaoApp) {
     cacaoApp.controller('TeamListCtrl', ['$scope', 'CacaoBackend', '$location',
         function($scope, CacaoBackend, $location) {
             $scope.go = function(id) {
-                console.log(id);
                 $location.path('/teams/' + id);;
             };
 
