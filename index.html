@@ -70,6 +70,7 @@
                       ns-popover-template="popover"
                       ns-popover-trigger="click"
                       ns-popover-placement="bottom|right"
+                      ns-popover-hide-on-inside-click = "true"
                       ng-if="nav.userData.email" gravatar-src="nav.userData.email" style="width:100%; border-radius: 50%">
                 </md-button>
                 <md-button aria-label="Login" ng-if="!nav.userData.email" ng-hide="nav.show_login_button == false" ng-click="go('/login/')" class="md-primary md-raised">
