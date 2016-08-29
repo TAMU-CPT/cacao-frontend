@@ -49,19 +49,61 @@
     <!--</md-list-item>-->
 <!--</md-list>-->
 
-<div>
-    <md-card flex="30" style="padding:0px">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                Spring 2016 Competition
-            </div>
-        </md-toolbar>
-        <md-card-content>
-            {{ homeItem.description }}
-            <br/>
-            <md-button class="md-primary md-raised" ng-href="{{ homeItem.url }}">
-                {{ homeItem.button_title || "Go" }}
-            </md-button>
-        </md-card-content>
-    </md-card>
+<!--<div>-->
+    <!--<md-card flex="30" style="padding:0px">-->
+        <!--<md-toolbar>-->
+            <!--<div class="md-toolbar-tools">-->
+                <!--Spring 2016 Competition-->
+            <!--</div>-->
+        <!--</md-toolbar>-->
+        <!--<md-card-content>-->
+            <!--{{ homeItem.description }}-->
+            <!--<br/>-->
+            <!--<md-button class="md-primary md-raised" ng-href="{{ homeItem.url }}">-->
+                <!--{{ homeItem.button_title || "Go" }}-->
+            <!--</md-button>-->
+        <!--</md-card-content>-->
+    <!--</md-card>-->
+<!--</div>-->
+
+<div ng-cloak>
+  <md-grid-list
+        md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6"
+        md-row-height-gt-md="1:1" md-row-height="2:2"
+        md-gutter="12px" md-gutter-gt-sm="8px" >
+    <md-grid-tile style="background: gray"
+        md-rowspan="2" md-colspan-sm="1" md-colspan-xs="1">
+        <md-grid-tile-footer>
+            <h3>Spring 2017 Competition</h3>
+        </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile style="background: green">
+        <md-grid-tile-footer>
+            <h3>#2: (1r x 1c)</h3>
+        </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile style="background: yellow">
+      <md-grid-tile-footer>
+        <h3>#3: (1r x 1c)</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile style="background: blue"
+        md-rowspan="2">
+        <md-grid-tile-footer>
+            <h3>Newsfeed</h3>
+        </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile style="background: red"
+        md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
+      <md-grid-tile-footer>
+        <h3>#5: (2r x 2c)</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile style="background: green"
+        md-rowspan="2" >
+      <md-grid-tile-footer>
+        <h3>#6: (2r x 1c)</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+  </md-grid-list>
 </div>
