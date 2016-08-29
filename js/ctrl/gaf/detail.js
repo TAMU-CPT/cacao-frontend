@@ -86,6 +86,15 @@ export default function(cacaoApp) {
                 $mdDialog.cancel();
             };
 
+            $scope.get_superseded = function() {
+                // don't know if url will always have trailing slash
+                var u = $scope.gaf.superseded.split('/');
+                if (u.pop()) {
+                    var id = u.pop();
+                } else { id = u.pop(); }
+                $location.path('/gaf/' + id);
+            };
+
             $scope.saveData = function() {
                 function with_or_from() {
                     if ($scope.gafData.evidence_code != 'IDA' && $scope.gafData.evidence_code != 'IMP') {
@@ -127,20 +136,17 @@ export default function(cacaoApp) {
 
             $scope.promise = CacaoBackend.one('gafs', $routeParams.gafID).get().then(function(gaf) {
                 $scope.gaf = gaf;
+
+                if ($scope.gaf.challenge_gaf && $scope.gaf.review_state != 2) {
+                    var u = $scope.gaf.challenge_gaf.original_gaf.split('/');
+                    if (u.pop()) {
+                        var id = u.pop();
+                    } else { id = u.pop(); }
+                    $location.path('/gaf/' + id);
+                }
+
                 $scope.gaf.show_qualifier = $filter('qualifier_to_text')($scope.gaf.qualifier);
                 $scope.gaf.db_reference = parseInt($scope.gaf.db_reference.replace('PMID:', ''));
-
-                if (gaf.superseded) {
-                    $scope.superseded = gaf.superseded;
-                    var url = true;
-                    while (url) {
-                        CacaoBackend.oneUrl(' ', $scope.superseded).get().then(function(success) {
-                            if (success.superseded) {
-                                $scope.superseded = success.superseded;
-                            } else { url = false; }
-                        });
-                    }
-                }
 
                 function formatEntry(obj){
                     return {
@@ -201,5 +207,6 @@ export default function(cacaoApp) {
             }, function() {
                     $scope.no_gaf = true;
             });
+            console.log('hey');
     }]);
 }
