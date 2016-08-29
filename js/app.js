@@ -94,6 +94,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 templateUrl: 'partials/test.html',
                 controller: 'TestCtrl'
             }).
+            when('/help', {
+                templateUrl: 'partials/help.html',
+                controller: 'HelpCtrl'
+            }).
             when('/logout', {
                 templateUrl: 'partials/login.html',
                 controller: 'LogOutCtrl'
@@ -181,3 +185,4 @@ require('./ctrl/review.js')(cacaoApp);
 require('./ctrl/gaf/create.js')(cacaoApp);
 require('./ctrl/gaf/list.js')(cacaoApp);
 require('./ctrl/gaf/detail.js')(cacaoApp);
+require('./ctrl/help.js')(cacaoApp);
