@@ -1,6 +1,6 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('HomeCtrl', ['$scope',
-        function($scope) {
+    cacaoApp.controller('HomeCtrl', ['$scope','$mdDialog',
+        function($scope, $mdDialog) {
             $scope.home = [
                 {
                     title: "CACAO",
@@ -49,5 +49,17 @@ export default function(cacaoApp) {
                     button_title: "I have been warned",
                 },
             ];
+
+            $scope.choice_popup = function(ev) {
+                $mdDialog.show({
+                    contentElement: '#search_by',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true
+                });
+            };
+
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
     }]);
 }

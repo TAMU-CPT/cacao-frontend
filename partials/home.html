@@ -1,19 +1,23 @@
-<!--<div class="container-fluid"  layout="row" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;" ng-cloak>-->
-    <!--<md-card flex="20" ng-repeat="homeItem in home" class="homeItem" style="padding:0px">-->
-        <!--<md-toolbar class="md-accent">-->
-            <!--<div class="md-toolbar-tools">-->
-                <!--{{ homeItem.title }}-->
-            <!--</div>-->
-        <!--</md-toolbar>-->
-        <!--<md-card-content>-->
-            <!--{{ homeItem.description }}-->
-            <!--<br/>-->
-            <!--<md-button class="md-primary md-raised" ng-href="{{ homeItem.url }}">-->
-                <!--{{ homeItem.button_title || "Go" }}-->
-            <!--</md-button>-->
-        <!--</md-card-content>-->
-    <!--</md-card>-->
-<!--</div>-->
+<div class="container-fluid"  layout="row" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;" ng-cloak>
+    <md-card flex="20" ng-repeat="homeItem in home" class="homeItem" style="padding:0px">
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                {{ homeItem.title }}
+            </div>
+        </md-toolbar>
+        <md-card-content>
+            {{ homeItem.description }}
+            <br/>
+            <md-button class="md-primary md-raised" ng-href="{{ homeItem.url }}">
+                {{ homeItem.button_title || "Go" }}
+            </md-button>
+        </md-card-content>
+    </md-card>
+</div>
+<md-button class="md-primary md-raised" ng-click="choice_popup()">
+    Create an annotation
+</md-button>
+
 <!--<md-list>-->
     <!--<md-list-item ng-href="" ng-click="go('/teams/');">-->
         <!--<div layout="row" layout-align="center center">-->
@@ -42,7 +46,7 @@
     <!--<md-list-item ng-href="" ng-click="go('/logout');">-->
         <!--<div layout="row" layout-align="center center">-->
             <!--<div class="md-list-item-text">-->
-                <!--<p>Logout</p>-->
+            <!--<p>Logout</p>-->
             <!--</div>-->
         <!--</div>-->
         <!--<md-divider></md-divider>-->
@@ -66,44 +70,72 @@
     <!--</md-card>-->
 <!--</div>-->
 
-<div ng-cloak>
-  <md-grid-list
-        md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6"
-        md-row-height-gt-md="1:1" md-row-height="2:2"
-        md-gutter="12px" md-gutter-gt-sm="8px" >
-    <md-grid-tile style="background: gray"
-        md-rowspan="2" md-colspan-sm="1" md-colspan-xs="1">
-        <md-grid-tile-footer>
-            <h3>Spring 2017 Competition</h3>
-        </md-grid-tile-footer>
-    </md-grid-tile>
-    <md-grid-tile style="background: green">
-        <md-grid-tile-footer>
-            <h3>#2: (1r x 1c)</h3>
-        </md-grid-tile-footer>
-    </md-grid-tile>
-    <md-grid-tile style="background: yellow">
-      <md-grid-tile-footer>
-        <h3>#3: (1r x 1c)</h3>
-      </md-grid-tile-footer>
-    </md-grid-tile>
-    <md-grid-tile style="background: blue"
-        md-rowspan="2">
-        <md-grid-tile-footer>
-            <h3>Newsfeed</h3>
-        </md-grid-tile-footer>
-    </md-grid-tile>
-    <md-grid-tile style="background: red"
-        md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
-      <md-grid-tile-footer>
-        <h3>#5: (2r x 2c)</h3>
-      </md-grid-tile-footer>
-    </md-grid-tile>
-    <md-grid-tile style="background: green"
-        md-rowspan="2" >
-      <md-grid-tile-footer>
-        <h3>#6: (2r x 1c)</h3>
-      </md-grid-tile-footer>
-    </md-grid-tile>
-  </md-grid-list>
+<!--<div ng-cloak>-->
+  <!--<md-grid-list-->
+        <!--md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6"-->
+        <!--md-row-height-gt-md="1:1" md-row-height="2:2"-->
+        <!--md-gutter="12px" md-gutter-gt-sm="8px" >-->
+    <!--<md-grid-tile style="background: gray"-->
+        <!--md-rowspan="2" md-colspan-sm="1" md-colspan-xs="1">-->
+        <!--<md-card>-->
+            <!--<md-card-content>-->
+                <!--'asdfklaj;sdlfkja;sdlkjf'-->
+            <!--</md-card-content>-->
+        <!--</md-card>-->
+        <!--<md-grid-tile-footer>-->
+            <!--<h3>Spring 2017 Competition</h3>-->
+        <!--</md-grid-tile-footer>-->
+    <!--</md-grid-tile>-->
+    <!--<md-grid-tile style="background: green">-->
+        <!--<md-grid-tile-footer>-->
+            <!--<h3>#2: (1r x 1c)</h3>-->
+        <!--</md-grid-tile-footer>-->
+    <!--</md-grid-tile>-->
+    <!--<md-grid-tile style="background: yellow">-->
+      <!--<md-grid-tile-footer>-->
+        <!--<h3>#3: (1r x 1c)</h3>-->
+      <!--</md-grid-tile-footer>-->
+    <!--</md-grid-tile>-->
+    <!--<md-grid-tile style="background: blue"-->
+        <!--md-rowspan="2">-->
+        <!--<md-grid-tile-footer>-->
+            <!--<h3>Newsfeed</h3>-->
+        <!--</md-grid-tile-footer>-->
+    <!--</md-grid-tile>-->
+    <!--<md-grid-tile style="background: red"-->
+        <!--md-rowspan="2" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">-->
+      <!--<md-grid-tile-footer>-->
+        <!--<h3>#5: (2r x 2c)</h3>-->
+      <!--</md-grid-tile-footer>-->
+    <!--</md-grid-tile>-->
+    <!--<md-grid-tile style="background: green"-->
+        <!--md-rowspan="2" >-->
+      <!--<md-grid-tile-footer>-->
+        <!--<h3>#6: (2r x 1c)</h3>-->
+      <!--</md-grid-tile-footer>-->
+    <!--</md-grid-tile>-->
+  <!--</md-grid-list>-->
+<!--</div>-->
+
+<div style="visibility: hidden">
+  <div class="md-dialog-container" id="search_by">
+    <md-dialog>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span class="md-headline">Create an annotation</span>
+                    <span flex></span>
+                    <md-button ng-click="cancel()" aria-label="close" class="md-icon-button">
+                        <ng-md-icon icon="close" "fill: white" ></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+        <md-card style="margin:0">
+            <md-card-content layout="column" layout-align="center center">
+                <md-button class="md-primary">Search by gene</md-button>
+                <p>or</p>
+                <md-button class="md-primary">Search by organism</md-button>
+            </md-card-content>
+        </md-card>
+    </md-dialog>
+  </div>
 </div>
