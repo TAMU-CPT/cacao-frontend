@@ -8,6 +8,10 @@
     <style>
         a { text-decoration: none; }
         .ns-popover-tooltip-theme .ns-popover-tooltip {padding: 0;}
+        md-list-item, md-list-item .md-list-item-inner {
+            min-height: 20px;
+            height: 25px;
+        }
     </style>
 </head>
 <body>
@@ -24,45 +28,46 @@
                 <script type="text/ng-template" id="popover">
                     <div class="triangle"></div>
                     <div class="ns-popover-tooltip">
-                      <ul>
-                        <li>
-                            <a href="" ng-click="go('/users/')">My Profile</a>
-                        </li>
-                        <li>
-                            <a href="" ng-click="go('/teams/')">My Team</a>
-                        </li>
-                        <li>
-                            <a href="" ng-click="go('/logout')">Logout</a>
-                        </li>
-                      </ul>
+                        <md-list>
+                            <md-list-item ng-href="" ng-click="go('/users/');">
+                                <div layout="row" layout-align="center center">
+                                    <div class="md-list-item-text">
+                                        <p>My Profile</p>
+                                    </div>
+                                </div>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item ng-href="" ng-click="go('/teams/');">
+                                <div layout="row" layout-align="center center">
+                                    <div class="md-list-item-text">
+                                        <p>My Team</p>
+                                    </div>
+                                </div>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item ng-href="" ng-click="go('/logout');">
+                                <div layout="row" layout-align="center center">
+                                    <div class="md-list-item-text">
+                                        <p>Logout</p>
+                                    </div>
+                                </div>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                        </md-list>
                     </div>
                 </script>
-                        <!--<md-list style="padding:0">-->
-                            <!--<md-list-item ng-href="" ng-click="go('/users/');">-->
-                                <!--<div layout="row" layout-align="center center">-->
-                                    <!--<div class="md-list-item-text">-->
-                                        <!--<p>My Profile</p>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<md-divider></md-divider>-->
-                            <!--</md-list-item>-->
-                            <!--<md-list-item ng-href="" ng-click="go('/teams/');">-->
-                                <!--<div layout="row" layout-align="center center">-->
-                                    <!--<div class="md-list-item-text">-->
-                                        <!--<p>My Team</p>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<md-divider></md-divider>-->
-                            <!--</md-list-item>-->
-                            <!--<md-list-item ng-href="" ng-click="go('/logout');">-->
-                                <!--<div layout="row" layout-align="center center">-->
-                                    <!--<div class="md-list-item-text">-->
-                                        <!--<p>Logout</p>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<md-divider></md-divider>-->
-                            <!--</md-list-item>-->
-                        <!--</md-list>-->
+
+                      <!--<ul>-->
+                        <!--<li>-->
+                            <!--<a href="" ng-click="go('/users/')">My Profile</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<a href="" ng-click="go('/teams/')">My Team</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<a href="" ng-click="go('/logout')">Logout</a>-->
+                        <!--</li>-->
+                      <!--</ul>-->
                 <md-button aria-label="User menu" ng-if="nav.userData.email" class="md-icon-button" style="padding:0;">
                     <img ns-popover
                       ns-popover-theme="ns-popover-tooltip-theme"
