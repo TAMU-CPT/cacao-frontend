@@ -1,8 +1,8 @@
 var jwt_decode = require('jwt-decode');
 
 export default function(cacaoApp) {
-    cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location', '$mdLoginToast',
-        function($scope, $http, $localStorage, $location, $mdLoginToast) {
+    cacaoApp.controller('LoginCtrl', ['$scope', '$http', '$localStorage', '$location', '$mdLoginToast', 'DRF_URL',
+        function($scope, $http, $localStorage, $location, $mdLoginToast, DRF_URL) {
             $scope.userData = {};
 
             //$scope.show = function() {
@@ -10,7 +10,7 @@ export default function(cacaoApp) {
 
             $scope.saveData = function() {
                 if ($scope.loginForm.$valid) {
-                    $http.post('http://localhost:8000/api-token-auth/', $scope.userData)
+                    $http.post(DRF_URL + 'api-token-auth/', $scope.userData)
                         .success(function(data) {
                             $localStorage.jwtToken = data.token;
                             $localStorage.jwtData = jwt_decode(data.token);

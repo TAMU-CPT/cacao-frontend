@@ -1,8 +1,8 @@
 var moment = require('moment');
 
 export default function(cacaoApp) {
-    cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter', '$q', '$mdDialog',
-        function($scope, CacaoBackend, $timeout, $filter, $q, $mdDialog) {
+    cacaoApp.controller('ReviewCtrl', ['$scope', 'CacaoBackend', '$timeout', '$filter', '$q', '$mdDialog', 'DRF_URL',
+        function($scope, CacaoBackend, $timeout, $filter, $q, $mdDialog, DRF_URL) {
 
             if ($scope.assessmentForm) {
                 $scope.assessmentForm.$setUntouched();
@@ -133,7 +133,7 @@ export default function(cacaoApp) {
                         requests.push(x);
                     } else {
                         $scope.original_gaf.review_state = 3;
-                        $scope.original_gaf.superseded = 'http://localhost:8000/gafs/' + $scope.current_gaf[gaf].id + '/';
+                        $scope.original_gaf.superseded = DRF_URL + 'gafs/' + $scope.current_gaf[gaf].id + '/';
                         var x = $scope.original_gaf.put();
                         requests.push(x);
                         var y = $scope.submit_assessment($scope.current_gaf[gaf], 2, false);
@@ -172,9 +172,9 @@ export default function(cacaoApp) {
                 }
 
                 CacaoBackend.all('assessments').post({
-                    gaf: 'http://localhost:8000/gafs/' + gaf.id + '/',
+                    gaf: DRF_URL + 'gafs/' + gaf.id + '/',
                     notes: notes,
-                    challenge: gaf.challenge_gaf ? 'http://localhost:8000/challenges/' + gaf.challenge_gaf.id + '/' : null,
+                    challenge: gaf.challenge_gaf ? DRF_URL + 'challenges/' + gaf.challenge_gaf.id + '/' : null,
                     flagged: flagged.join(),
                 });
             };

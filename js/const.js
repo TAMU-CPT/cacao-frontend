@@ -29,4 +29,6 @@ export default function(cacaoApp){
          'WB',
          'Zfin',
     ]);
+
+    cacaoApp.constant('DRF_URL', 'http://localhost:8000/');
 }

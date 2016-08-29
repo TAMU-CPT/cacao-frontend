@@ -1,6 +1,6 @@
 export default function(cacaoApp){
-    cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend','$http',
-        function($scope, NotificationBackend, $http) {
+    cacaoApp.controller('NotificationCtrl', ['$scope', 'NotificationBackend', '$http', 'DRF_URL',
+        function($scope, NotificationBackend, $http, DRF_URL) {
             NotificationBackend.all('inbox').getList().then(function(data) {
                 $scope.notifications = data;
                 if (data.plain().length > 0) {
@@ -24,7 +24,7 @@ export default function(cacaoApp){
             };
 
             $scope.markAllRead = function() {
-                $http.post('http://localhost:8000/mark_all_read/', '')
+                $http.post(DRF_URL + 'mark_all_read/', '')
                     .success(function(data) {
                         $scope.notifications.splice(0, $scope.notifications.length);
                         $scope.nav.notifications = null;

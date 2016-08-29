@@ -1,7 +1,7 @@
 var moment = require('moment');
 export default function(cacaoApp) {
-    cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter', '$mdDialog', 'ECO_CODES', 'QUALIFIERS', 'WITH_FROM_DB','$timeout',
-        function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter, $mdDialog, ECO_CODES, QUALIFIERS, WITH_FROM_DB, $timeout) {
+    cacaoApp.controller('GAFDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location', '$localStorage', '$filter', '$mdDialog', 'ECO_CODES', 'QUALIFIERS', 'WITH_FROM_DB', '$timeout', 'DRF_URL',
+        function($scope, $routeParams, CacaoBackend, $location, $localStorage, $filter, $mdDialog, ECO_CODES, QUALIFIERS, WITH_FROM_DB, $timeout, DRF_URL) {
             $scope.current_user = $localStorage.jwtData;
             $scope.challenge = false;
 
@@ -122,8 +122,8 @@ export default function(cacaoApp) {
                 })
                 .then(function(gaf) {
                     CacaoBackend.all('challenges').post({
-                        challenge_gaf: 'http://localhost:8000/gafs/' + gaf.id + '/',
-                        original_gaf: 'http://localhost:8000/gafs/' + $scope.gaf.id + '/',
+                        challenge_gaf: DRF_URL + 'gafs/' + gaf.id + '/',
+                        original_gaf: DRF_URL + 'gafs/' + $scope.gaf.id + '/',
                         reason: $scope.challenge_data.notes,
                     })
                     .then(function() {
