@@ -1,4 +1,3 @@
-<!--<div class="ng-view" autoscroll="true">-->
-<div>
-    searching genes
+<div ng-repeat="gene in genes">
+    <md-button ng-click="create_gaf(gene)">{{gene.db_object_id}}</md-button>
 </div>
