@@ -46,24 +46,14 @@ export default function(cacaoApp) {
                 $scope.qualifiers = QUALIFIERS;
                 $scope.with_from_db = WITH_FROM_DB;
                 $scope.gafData.go_id = "GO:";
-                if ($routeParams.taxon) {
-                    $scope.gafData.taxon = $routeParams.taxon;
-                    $location.search('taxon', null);
-                }
-                else {
-                    $scope.gafData.taxon = '';
-                }
-                if ($routeParams.gene) {
-                    $scope.gaf_update($routeParams.gene);
-                    $scope.gafData.db_object_id = "" + $routeParams.gene;
-                    $scope.gafData.db_object_symbol = $routeParams.gene;
-                    $scope.disable_field = true;
-                    $location.search('gene', null);
-                }
-                else {
-                     $scope.gafData.db_object_id = '';
-                     $scope.gafData.db_object_symbol = '';
-                     $scope.disable_field = false;
+                if ($routeParams.gene_id) {
+                    CacaoBackend.one('genes', $routeParams.gene_id).get().then(function(gene) {
+                        $scope.gafData.taxon = gene.organism.taxon;
+                        $scope.gafData.db_object_id = gene.db_object_id;
+                        $scope.gaf_update(gene.db_object_id);
+                        $scope.gafData.db_object_symbol = gene.db_object_symbol;
+                        $location.search('gene_id', null);
+                    });
                 }
             }
 

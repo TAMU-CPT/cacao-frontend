@@ -6,8 +6,8 @@ export default function(cacaoApp) {
             });
 
             $scope.create_gaf = function(gene) {
-                console.log(gene);
-                $location.path('/gaf/create/').search({taxon: gene.organism.taxon, gene: gene.db_object_id});
+                //$location.path('/gaf/create/').search({taxon: gene.organism.taxon, gene: gene.db_object_id});
+                $location.path('/gaf/create/').search({gene_id: gene.id});
             };
     }]);
 }
