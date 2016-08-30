@@ -97,7 +97,7 @@ export default function(cacaoApp) {
                 $scope.query.ordering = $scope.ordering;
 
                 if (g) {
-                    $scope.promise = CacaoBackend.all('gafs').getList({db_object_id: g, ordering: $scope.query.ordering}).then(function(data) {
+                    $scope.promise = CacaoBackend.all('gafs').getList({gene__db_object_id: g, ordering: $scope.query.ordering}).then(function(data) {
                         $scope.prev_annotations = data;
                         $scope.prevAnnotData = g;
                         $scope.bad_db_object_id = null;

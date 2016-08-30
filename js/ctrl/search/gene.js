@@ -1,7 +1,7 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('SearchGeneCtrl', ['$scope', 'CacaoBackend', '$location',
-        function($scope, CacaoBackend, $location) {
-            CacaoBackend.all('genes').getList($scope.query).then(function(data) {
+    cacaoApp.controller('SearchGeneCtrl', ['$scope', 'CacaoBackend', '$location', '$routeParams',
+        function($scope, CacaoBackend, $location, $routeParams) {
+            CacaoBackend.all('genes').getList({org_id: $routeParams.orgID}).then(function(data) {
                 $scope.genes = data;
             });
 

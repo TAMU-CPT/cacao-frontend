@@ -98,7 +98,7 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 templateUrl: 'partials/help.html',
                 controller: 'HelpCtrl'
             }).
-            when('/search/gene', {
+            when('/search/gene/:orgID?', {
                 templateUrl: 'partials/search-gene.html',
                 controller: 'SearchGeneCtrl'
             }).
