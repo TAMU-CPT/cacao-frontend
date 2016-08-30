@@ -48,10 +48,9 @@ export default function(cacaoApp) {
                 $scope.gafData.go_id = "GO:";
                 if ($routeParams.gene_id) {
                     CacaoBackend.one('genes', $routeParams.gene_id).get().then(function(gene) {
-                        $scope.gafData.taxon = gene.organism.taxon;
+                        $scope.gene = gene;
                         $scope.gafData.db_object_id = gene.db_object_id;
                         $scope.gaf_update(gene.db_object_id);
-                        $scope.gafData.db_object_symbol = gene.db_object_symbol;
                         $location.search('gene_id', null);
                     });
                 }
@@ -134,17 +133,14 @@ export default function(cacaoApp) {
 
                 CacaoBackend.all('gafs').post({
                     db: $scope.gafData.db,
+                    gene: $scope.gene,
                     review_state: 1,
-                    db_object_id: $scope.gafData.db_object_id,
-                    db_object_symbol: $scope.gafData.db_object_symbol,
                     qualifier: $scope.gafData.qualifier,
                     go_id: $scope.gafData.go_id,
                     db_reference: 'PMID:' + $scope.gafData.db_reference,
                     evidence_code: $scope.gafData.evidence_code,
                     with_or_from: with_or_from(),
                     aspect: $scope.gafData.aspect,
-                    db_object_type: $scope.gafData.db_object_type,
-                    taxon: $scope.gafData.taxon,
                     assigned_by: $scope.gafData.assigned_by,
                     notes: $scope.gafData.notes,
                 })

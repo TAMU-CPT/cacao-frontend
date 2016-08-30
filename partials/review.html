@@ -86,7 +86,7 @@
                 <div layout="row">
                     <md-input-container flex>
                         <label>Gene ID</label>
-                        <input disabled name="db_object_id" ng-model="current_gaf[0].db_object_id"/>
+                        <input disabled name="db_object_id" ng-model="current_gaf[0].gene.db_object_id"/>
                     </md-input-container>
                     <md-checkbox ng-false-value="'Protein'" ng-true-value="null" ng-model="current_gaf[0].flagged.protein" aria-label="Gene ID Checkbox"></md-checkbox>
                 </div>
@@ -192,7 +192,7 @@
                     <md-card-header style="background-color:{{(current_gaf | challenge_flagged) == 0 ? 'rgba(105, 197, 82, 0.18)' : 'rgba(244, 67, 54, 0.38)'}};">
                     <!--<md-card-header>-->
                         <md-card-header-text>
-                            <span class="md-title">{{original_gaf.db_object_id}}: Original Annotation</span>
+                            <span class="md-title">{{original_gaf.gene.db_object_id}}: Original Annotation</span>
                             <span flex class="md-subhead">{{original_gaf.show_date}}</span>
                         </md-card-header-text>
                     </md-card-header>
@@ -258,7 +258,6 @@
                                 <md-card-header-text>
                                     <div layout="row" layout-align="center center">
                                         <div>
-                                            <!--<div flex class="md-title">{{original_gaf.db_object_id}}</div>-->
                                             <div flex class="md-title">Challenge {{$index + 1}} of {{current_gaf.length}}</div>
                                             <div flex class="md-subhead">{{c_gaf.show_date}}</div>
                                         </div>

@@ -81,7 +81,7 @@
                 <div layout="row" layout-sm="column">
                     <md-input-container flex>
                         <label>Gene ID</label>
-                        <input md-no-asterisk disabled required name="db_object_id" ng-model="gafData.db_object_id" ng-model-options="{ updateOn: blur }" ng-blur="gaf_update(gafData.db_object_id)"/>
+                        <input md-no-asterisk disabled required name="db_object_id" ng-model="gafData.gene.db_object_id" ng-model-options="{ updateOn: blur }"/>
                         <div ng-messages="GAFForm.db_object_id.$error">
                             <div ng-message="required">This is required.</div>
                         </div>
@@ -199,7 +199,7 @@
             <div layout="row">
                 <md-input-container flex>
                     <label>Gene ID</label>
-                    <input disabled name="db_object_id" ng-model="gaf.db_object_id"/>
+                    <input disabled name="db_object_id" ng-model="gaf.gene.db_object_id"/>
                 </md-input-container>
             </div>
             <div layout="row">

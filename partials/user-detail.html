@@ -39,8 +39,8 @@
                         <thead md-head md-order="ordering" md-on-reorder="updateData">
                             <tr md-row>
                                 <th md-column md-order-by="review_state"><span>Status</span></th>
-                                <th md-column md-order-by="db_object_id"><span>Gene ID</span></th>
-                                <th md-column md-order-by="db_object_name"><span>Name</span></th>
+                                <th md-column md-order-by="gene__db_object_id"><span>Gene ID</span></th>
+                                <th md-column md-order-by="gene__db_object_name"><span>Name</span></th>
                                 <th md-column md-order-by="db_reference"><span>Reference</span></th>
                                 <th md-column md-order-by="evidence_code"><span>Evidence Code</span></th>
                                 <th md-column md-order-by="date"><span>Date</span></th>
@@ -51,7 +51,7 @@
                                 <td md-cell>
                                     {{d.review_state | review_state_to_english}}
                                 </td>
-                                <td md-cell>{{d.db_object_id}}</td>
+                                <td md-cell>{{d.gene.db_object_id}}</td>
                                 <td md-cell>{{d.db_object_name}}</td>
                                 <td md-cell>{{d.db_reference}}</td>
                                 <td md-cell>
