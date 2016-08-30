@@ -1,6 +1,6 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('HomeCtrl', ['$scope','$mdDialog',
-        function($scope, $mdDialog) {
+    cacaoApp.controller('HomeCtrl', ['$scope','$mdDialog', '$location',
+        function($scope, $mdDialog, $location) {
             $scope.home = [
                 {
                     title: "CACAO",
@@ -60,6 +60,16 @@ export default function(cacaoApp) {
 
             $scope.cancel = function() {
                 $mdDialog.cancel();
+            };
+
+            $scope.search_by_gene = function() {
+                $scope.cancel();
+                $location.path('/search/gene');
+            };
+
+            $scope.search_by_organism = function() {
+                $scope.cancel();
+                $location.path('/search/organism');
             };
     }]);
 }

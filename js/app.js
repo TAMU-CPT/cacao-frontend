@@ -98,6 +98,14 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                 templateUrl: 'partials/help.html',
                 controller: 'HelpCtrl'
             }).
+            when('/search/gene', {
+                templateUrl: 'partials/search-gene.html',
+                controller: 'SearchGeneCtrl'
+            }).
+            when('/search/organism', {
+                templateUrl: 'partials/search-organism.html',
+                controller: 'SearchOrganismCtrl'
+            }).
             when('/logout', {
                 templateUrl: 'partials/login.html',
                 controller: 'LogOutCtrl'
@@ -186,3 +194,5 @@ require('./ctrl/gaf/create.js')(cacaoApp);
 require('./ctrl/gaf/list.js')(cacaoApp);
 require('./ctrl/gaf/detail.js')(cacaoApp);
 require('./ctrl/help.js')(cacaoApp);
+require('./ctrl/search/gene.js')(cacaoApp);
+require('./ctrl/search/organism.js')(cacaoApp);
