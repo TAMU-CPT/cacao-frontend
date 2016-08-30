@@ -34,20 +34,6 @@ export default function(cacaoApp) {
                     url: "#/gaf/list",
                     description: "See other annotations.",
                 },
-                {
-                    title: "PMID #1",
-                    url: "#/pmid/1",
-                },
-                {
-                    title: "GO:0000001",
-                    url: "#/goid/GO:0000001"
-                },
-                {
-                    title: "Testing",
-                    url: "#/test",
-                    description: "Here be dragons",
-                    button_title: "I have been warned",
-                },
             ];
 
             $scope.choice_popup = function(ev) {
