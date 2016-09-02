@@ -1,6 +1,16 @@
-<!--<div ng-repeat="gene in genes">-->
-    <!--<md-button ng-click="create_gaf(gene)">{{gene.db_object_id}}</md-button>-->
-<!--</div>-->
+<style>
+    tbody .md-row:hover {
+        background-color: #fafafa;
+    }
+    tbody .md-row:focus {
+        outline:none;
+    }
+    [ng-click],
+    [data-ng-click],
+    [x-ng-click] {
+        cursor: pointer;
+    }
+</style>
 <div class="container-fluid" layout="row" layout-align="center">
     <md-card flex="50">
         <md-card-title>
@@ -19,9 +29,9 @@
                         </tr>
                     </thead>
                     <tbody md-body>
-                        <tr md-row ng-repeat="gene in genes">
+                        <tr md-row ng-repeat="gene in genes" ng-click="create_gaf(gene)">
                             <td md-cell>{{gene.db_object_id}}</td>
-                            <td md-cell>{{gene.refseq.id}}</td>
+                            <td md-cell>{{gene.refseq.name}}</td>
                             <td md-cell>{{gene.refseq.organism.common_name}}</td>
                         </tr>
                     </tbody>
