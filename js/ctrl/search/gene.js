@@ -12,8 +12,9 @@ export default function(cacaoApp) {
                 if(!isNaN(parseInt(page))){
                     $scope.query.page = page;
                 }
+
                 $scope.query.ordering = $scope.ordering;
-                console.log(page);
+                $scope.query.db_object_id = $scope.search_input;
 
                 $scope.promise = CacaoBackend.all('genes').getList($scope.query).then(function(data) {
                     $scope.genes = data;
@@ -25,6 +26,7 @@ export default function(cacaoApp) {
             };
 
             $scope.query = {
+                db_object_id: $scope.search_input,
                 org_id: $routeParams.orgID,
                 limit: 5,
                 page: 1,
