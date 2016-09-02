@@ -1,3 +1,42 @@
-<div ng-repeat="organism in organisms">
-    <md-button ng-click="go_to_genes(organism)">{{organism.common_name}}</md-button>
+<style>
+    tbody .md-row:hover {
+        background-color: #d4d4d4;
+    }
+    tbody .md-row:focus {
+        outline:none;
+    }
+    [ng-click],
+    [data-ng-click],
+    [x-ng-click] {
+        cursor: pointer;
+    }
+</style>
+<div class="container-fluid" layout="row" layout-align="center" layout-padding>
+    <md-content class="md-whiteframe-2dp">
+        <md-input-container md-no-float>
+            <ng-md-icon icon="search"></ng-md-icon>
+            <input ng-model="search_input"  placeholder="Search Organisms" ng-blur="updateData(search_input)">
+        </md-input-container>
+        <md-table-container>
+            <table md-table md-progress="promise">
+                <thead md-head md-order="ordering" md-on-reorder="updateData">
+                    <tr md-row>
+                        <th md-column md-order-by="common_name"><span>Organism</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row ng-repeat="organism in organisms" ng-click="go_to_genes(organism)">
+                        <td md-cell>{{organism.common_name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination
+            md-limit="query.limit"
+            md-page="query.page"
+            md-total="{{organisms.meta.count}}"
+            md-page-select="options.pageSelect"
+            md-on-paginate="updateData">
+        </md-table-pagination>
+    <md-content>
 </div>
