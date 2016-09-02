@@ -42,6 +42,7 @@
     "sass-loader": "^2.0.1",
     "sinon": "ubervu/Sinon.JS",
     "style-loader": "^0.12.3",
+    "trianglify": "^1.0.1",
     "underscore": "^1.8.3",
     "webpack": "^1.12.0",
     "webpack-dev-server": "^1.14.1"
@@ -51,5 +52,7 @@
   },
   "author": "Eleni Mijalis",
   "license": "AGPL-3.0",
-  "dependencies": {}
+  "dependencies": {
+    "canvas": "^1.4.0"
+  }
 }
