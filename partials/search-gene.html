@@ -1,3 +1,39 @@
-<div ng-repeat="gene in genes">
-    <md-button ng-click="create_gaf(gene)">{{gene.db_object_id}}</md-button>
+<!--<div ng-repeat="gene in genes">-->
+    <!--<md-button ng-click="create_gaf(gene)">{{gene.db_object_id}}</md-button>-->
+<!--</div>-->
+<div class="container-fluid" layout="row" layout-align="center">
+    <md-card flex="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Genes<span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <md-table-container>
+                <table md-table md-progress="promise">
+                    <thead md-head md-order="ordering" md-on-reorder="updateData">
+                        <tr md-row>
+                            <th md-column md-order-by="start"><span>Gene name</span></th>
+                            <th md-column><span>Reference Sequence</span></th>
+                            <th md-column><span>Organism</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row ng-repeat="gene in genes">
+                            <td md-cell>{{gene.db_object_id}}</td>
+                            <td md-cell>{{gene.refseq.id}}</td>
+                            <td md-cell>{{gene.refseq.organism.common_name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination
+                md-limit="query.limit"
+                md-page="query.page"
+                md-total="{{genes.meta.count}}"
+                md-page-select="options.pageSelect"
+                md-on-paginate="updateData">
+            </md-table-pagination>
+        </md-card-content>
+    </md-card>
 </div>
