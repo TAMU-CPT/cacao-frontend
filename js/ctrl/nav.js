@@ -34,7 +34,7 @@ export default function(cacaoApp) {
 
             $scope.get_notifications_wrapper = function() {
                 $scope.get_notifications();
-                $interval($scope.get_notifications, 5000);
+                $interval($scope.get_notifications, 30000);
             };
     }]);
 }
