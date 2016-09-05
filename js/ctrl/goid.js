@@ -1,6 +1,6 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$mdDialog',
-        function($scope, $routeParams, CacaoBackend, $mdDialog) {
+    cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$mdDialog', '$location',
+        function($scope, $routeParams, CacaoBackend, $mdDialog, $location) {
             var go_id_url = 'https://cpt.tamu.edu/onto_api/' + $routeParams.GOID + '.json'
             CacaoBackend.oneUrl(' ', go_id_url).get().then(
                 function(success) {
@@ -24,6 +24,10 @@ export default function(cacaoApp) {
             };
 
             $scope.ordering = "db_reference";
+
+            $scope.go = function(id) {
+                $location.path('/gaf/' + id);;
+            };
 
             $scope.updateData = function(page) {
                 if(!isNaN(parseInt(page))){

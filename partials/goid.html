@@ -1,3 +1,16 @@
+<style>
+    tbody .md-row:hover {
+        background-color: #fafafa;
+    }
+    tbody .md-row:focus {
+        outline:none;
+    }
+    [ng-click],
+    [data-ng-click],
+    [x-ng-click] {
+        cursor: pointer;
+    }
+</style>
 <md-card>
     <md-card-title>
         <md-card-title-text>
@@ -39,7 +52,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row ng-repeat="d in prev_annotations">
+                    <tr md-row ng-repeat="d in prev_annotations" ng-click="go(d.id)">
                         <td md-cell>{{d.gene.db_object_id}}</td>
                         <td md-cell>{{d.db_object_name}}</td>
                         <td md-cell>{{d.db_reference}}</td>

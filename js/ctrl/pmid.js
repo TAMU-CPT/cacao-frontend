@@ -1,6 +1,6 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('PMIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend',
-        function($scope, $routeParams, CacaoBackend) {
+    cacaoApp.controller('PMIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$location',
+        function($scope, $routeParams, CacaoBackend, $location) {
             CacaoBackend.one('papers').one($routeParams.PMID).get().then(
                 function(success) {
                     $scope.pubmedData = success;
@@ -11,6 +11,10 @@ export default function(cacaoApp) {
             );
 
             $scope.ordering = "go_id";
+
+            $scope.go = function(id) {
+                $location.path('/gaf/' + id);;
+            };
 
             $scope.updateData = function(page) {
                 if(!isNaN(parseInt(page))){

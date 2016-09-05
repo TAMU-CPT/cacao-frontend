@@ -1,3 +1,16 @@
+<style>
+    tbody .md-row:hover {
+        background-color: #fafafa;
+    }
+    tbody .md-row:focus {
+        outline:none;
+    }
+    [ng-click],
+    [data-ng-click],
+    [x-ng-click] {
+        cursor: pointer;
+    }
+</style>
 <md-card>
     <md-card-title>
         <md-card-title-text>
@@ -23,8 +36,8 @@
 <md-card ng-show="pubmedData">
     <md-card-title>
         <md-card-title-text>
-            <span ng-show="prev_annotations.length" class="md-headline">GAFs submitted with PMID:{{pubmedData.pmid}}</span>
-            <span ng-show="!prev_annotations.length" class="md-headline">No GAFs have been submitted with PMID:{{pubmedData.pmid}}</span>
+            <span ng-show="prev_annotations.length" class="md-headline">Annotations submitted with PMID:{{pubmedData.pmid}}</span>
+            <span ng-show="!prev_annotations.length" class="md-headline">No annotations have been submitted with PMID:{{pubmedData.pmid}}</span>
         </md-card-title-text>
     </md-card-title>
     <md-card-content ng-show="prev_annotations.length">
@@ -39,7 +52,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row ng-repeat="d in prev_annotations">
+                    <tr md-row ng-repeat="d in prev_annotations" ng-click="go(d.id)">
                         <td md-cell>{{d.gene.db_object_id}}</td>
                         <td md-cell>{{d.db_object_name}}</td>
                         <td md-cell>{{d.go_id}}</td>

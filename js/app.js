@@ -14,14 +14,14 @@ require('jquery');
 require('ngstorage');
 require('angular-jwt');
 require('ns-popover');
-var Trianglify = require('trianglify');
-var pattern = Trianglify({
-    width: window.innerWidth,
-    height: window.innerHeight
-})
-//document.getElementById("parentID").appendChild(pattern.canvas());
-//document.body.appendChild(pattern.canvas());
-document.body.style.backgroundImage = 'url('+pattern.png()+')';
+//var Trianglify = require('trianglify');
+//var pattern = Trianglify({
+    //width: window.innerWidth,
+    //height: window.innerHeight
+//})
+//document.getElementById("parentID").style.backgroundImage = 'url('+pattern.png()+')';
+////document.body.appendChild(pattern.canvas());
+//document.body.style.backgroundImage = 'url('+pattern.png()+')';
 var moment = require('moment');
 /* App Module */
 
