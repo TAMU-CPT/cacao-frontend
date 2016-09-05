@@ -3,13 +3,17 @@
 @import "../node_modules/angular-material-icons/angular-material-icons.css";
 @import "../node_modules/ns-popover/sass/ns-popover.scss";
 
-body {
-    /*background-image: url("/media/gonuts.svg");*/
-    /*background-size: 500px 500px;*/
-    /*background-repeat: repeat repeat;*/
-    /*background-color: #777794;*/
-}
 
+body {
+    background-attachment: fixed;
+}
+/*html {*/
+    /*min-height:100%;*/
+    /*-webkit-background-size: cover;*/
+    /*-moz-background-size: cover;*/
+    /*-o-background-size: cover;*/
+    /*background-size: cover;*/
+/*}*/
 md-input-container .md-errors-spacer {
     min-height: 0;
 }
