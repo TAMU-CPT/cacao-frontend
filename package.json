@@ -38,6 +38,7 @@
     "ngstorage": "^0.3.11",
     "node-sass": "^3.3.2",
     "ns-popover": "^0.6.8",
+    "raven-js": "^3.8.1",
     "restangular": "^1.5.2",
     "sass-loader": "^2.0.1",
     "sinon": "ubervu/Sinon.JS",
