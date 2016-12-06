@@ -14,6 +14,14 @@ require('jquery');
 require('ngstorage');
 require('angular-jwt');
 require('ns-popover');
+
+var Raven = require('raven-js');
+Raven
+	.config('https://a448c5a5c5ee45c3a6bf4c7a3daecf6a@cptgnome.tamu.edu/8')
+	.addPlugin(require('raven-js/plugins/angular'), angular)
+	.install();
+
+
 //var Trianglify = require('trianglify');
 //var pattern = Trianglify({
     //width: window.innerWidth,
@@ -26,6 +34,7 @@ var moment = require('moment');
 /* App Module */
 
 var cacaoApp = angular.module('cacaoApp', [
+    'ngRaven',
     'ngRoute',
     'restangular',
     'ngMdIcons',
@@ -37,6 +46,7 @@ var cacaoApp = angular.module('cacaoApp', [
     'nsPopover',
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
+
 
 cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'gravatarServiceProvider',
     function($routeProvider, $httpProvider, $mdThemingProvider, gravatarServiceProvider) {
