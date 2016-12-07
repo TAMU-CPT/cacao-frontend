@@ -1,0 +1,26 @@
+<div layout="row" layout-align="center center" style="padding:2em">
+	<div flex="50" flex-xs="100" flex-sm="75">
+		<md-card>
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<span class="md-headline">Settings</span>
+				</div>
+			</md-toolbar>
+			<md-card-content>
+				<h2>CACAO API Access</h2>
+				<div layout="row">
+					<md-input-container flex>
+						<label>API Key</label>
+						<input name="api_key" ng-model="nav.userData.token" style="font-family: monospace"/>
+					</md-input-container>
+					<md-button ng-click="refresh()" class="md-raised md-accent">
+						<ng-md-icon icon="refresh"></ng-md-icon>
+					</md-button>
+				</div>
+				<div>
+					<p>Warning: Refreshing your API key to this service will remove all access from the previous token.</p>
+				</div>
+			</md-card-content>
+		</md-card>
+	</div>
+</div>

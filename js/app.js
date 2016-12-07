@@ -83,7 +83,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             when('/gaf/create/:taxon?/:gene?', {
                 templateUrl: 'partials/gaf.html',
                 controller: 'GAFCtrl',
-                reloadOnSearch: false
+                reloadOnSearch: false,
+                resolve: {
+                    loginRequired: loginRequired
+                }
             }).
             when('/gaf/list', {
                 templateUrl: 'partials/gaf-list.html',
@@ -104,6 +107,13 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             when('/review', {
                 templateUrl: 'partials/review.html',
                 controller: 'ReviewCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            }).
+            when('/settings', {
+                templateUrl: 'partials/settings.html',
+                controller: 'SettingsCtrl',
                 resolve: {
                     loginRequired: loginRequired
                 }
@@ -214,3 +224,4 @@ require('./ctrl/gaf/detail.js')(cacaoApp);
 require('./ctrl/help.js')(cacaoApp);
 require('./ctrl/search/gene.js')(cacaoApp);
 require('./ctrl/search/organism.js')(cacaoApp);
+require('./ctrl/settings.js')(cacaoApp);
