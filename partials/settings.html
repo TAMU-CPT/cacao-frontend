@@ -20,6 +20,15 @@
 				<div>
 					<p>Warning: Refreshing your API key to this service will remove all access from the previous token.</p>
 				</div>
+				<div>
+					<p>API access is available at <a href="{{ DRF_URL }}" target="_blank">{{ DRF_URL }}</a></p>
+					<p>
+						You can connect to the API e.g. using curl:
+						<pre style="white-space: pre-wrap">
+curl -X GET {{ DRF_URL }}api-token-auth-whoami/ -H 'Authorization: Token {{ nav.userData.token }}'
+						</pre>
+					</p>
+				</div>
 			</md-card-content>
 		</md-card>
 	</div>

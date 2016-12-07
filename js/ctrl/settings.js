@@ -1,6 +1,8 @@
 export default function(cacaoApp) {
-	cacaoApp.controller('SettingsCtrl', ['$scope', 'CacaoBackend',
-		function ($scope, CacaoBackend) {
+	cacaoApp.controller('SettingsCtrl', ['$scope', 'CacaoBackend', 'DRF_URL',
+		function ($scope, CacaoBackend, DRF_URL) {
+			$scope.DRF_URL = DRF_URL;
+
 			$scope.refresh = function(){
 				CacaoBackend.oneUrl('api-token-auth-api/').post().then(
 					function(success) {
