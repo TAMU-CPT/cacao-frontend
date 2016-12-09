@@ -14,6 +14,14 @@ require('jquery');
 require('ngstorage');
 require('angular-jwt');
 require('ns-popover');
+
+var Raven = require('raven-js');
+Raven
+	.config('https://a448c5a5c5ee45c3a6bf4c7a3daecf6a@cptgnome.tamu.edu/8')
+	.addPlugin(require('raven-js/plugins/angular'), angular)
+	.install();
+
+
 //var Trianglify = require('trianglify');
 //var pattern = Trianglify({
     //width: window.innerWidth,
@@ -26,6 +34,7 @@ var moment = require('moment');
 /* App Module */
 
 var cacaoApp = angular.module('cacaoApp', [
+    'ngRaven',
     'ngRoute',
     'restangular',
     'ngMdIcons',
@@ -37,6 +46,7 @@ var cacaoApp = angular.module('cacaoApp', [
     'nsPopover',
     'ngStorage' // https://github.com/gsklee/ngStorage
 ]);
+
 
 cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'gravatarServiceProvider',
     function($routeProvider, $httpProvider, $mdThemingProvider, gravatarServiceProvider) {
@@ -73,7 +83,10 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             when('/gaf/create/:taxon?/:gene?', {
                 templateUrl: 'partials/gaf.html',
                 controller: 'GAFCtrl',
-                reloadOnSearch: false
+                reloadOnSearch: false,
+                resolve: {
+                    loginRequired: loginRequired
+                }
             }).
             when('/gaf/list', {
                 templateUrl: 'partials/gaf-list.html',
@@ -94,6 +107,13 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
             when('/review', {
                 templateUrl: 'partials/review.html',
                 controller: 'ReviewCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            }).
+            when('/settings', {
+                templateUrl: 'partials/settings.html',
+                controller: 'SettingsCtrl',
                 resolve: {
                     loginRequired: loginRequired
                 }
@@ -204,3 +224,4 @@ require('./ctrl/gaf/detail.js')(cacaoApp);
 require('./ctrl/help.js')(cacaoApp);
 require('./ctrl/search/gene.js')(cacaoApp);
 require('./ctrl/search/organism.js')(cacaoApp);
+require('./ctrl/settings.js')(cacaoApp);

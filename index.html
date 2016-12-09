@@ -23,7 +23,7 @@
                     <ng-md-icon icon="{{nav.notifications ? 'notifications_active':'notifications'}}"></ng-md-icon>
                 </md-button>
                 <script type="text/ng-template" id="popover">
-                    <div class="triangle"></div>
+                    <!--<div class="triangle"></div>-->
                     <div class="ns-popover-tooltip">
                         <md-list>
                             <md-list-item ng-href="" ng-click="go('/users/');">
@@ -46,6 +46,14 @@
                                 <div layout="row" layout-align="center center">
                                     <div class="md-list-item-text">
                                         <p>Help</p>
+                                    </div>
+                                </div>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item ng-href="" ng-click="go('/settings');">
+                                <div layout="row" layout-align="center center">
+                                    <div class="md-list-item-text">
+                                        <p>Settings</p>
                                     </div>
                                 </div>
                                 <md-divider></md-divider>
