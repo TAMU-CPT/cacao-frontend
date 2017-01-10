@@ -80,7 +80,7 @@ export default function(cacaoApp) {
     cacaoApp.filter('goChartUrl', function() {
         return function(input) {
             if (input) {
-                return 'http://www.ebi.ac.uk/QuickGO-Beta/services/chart?ids=' + input;
+                return 'https://www.ebi.ac.uk/QuickGO-Beta/services/chart?ids=' + input;
             } else {
                 return '';
             }

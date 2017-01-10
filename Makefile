@@ -16,10 +16,10 @@ run: node_modules  ## Run the server
 	@echo "********************************"
 	@echo "* open http://localhost:10000/ *"
 	@echo "********************************"
-	./node_modules/.bin/webpack-dev-server --progress --colors --devtool cheap-module-inline-source-map --hot --debug --inline --host 0.0.0.0 --port 10000
+	./node_modules/.bin/webpack-dev-server --progress --colors --devtool cheap-module-inline-source-map --hot --debug --inline --host 127.0.0.1 --port 10000
 
 build: node_modules  ## Compile a project for deployment
-	./node_modules/.bin/webpack  --progress --colors --devtool source-map
+	./node_modules/.bin/webpack  --progress --colors --devtool source-map --optimize-minimize --optimize-dedupe
 
 node_modules: package.json
 	$(installer) install
