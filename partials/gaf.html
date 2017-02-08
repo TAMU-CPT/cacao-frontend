@@ -36,6 +36,9 @@
     .pop_up_card.ng-hide {
         opacity:0;
     }
+    .md-autocomplete-suggestions li {
+        height: inherit;
+    }
 </style>
 
 <div layout="row" layout-align="center start">
@@ -82,13 +85,38 @@
                                 <!--<div ng-message="customRequired">Invalid GO ID</div>-->
                             <!--</div>-->
                         <!--</md-input-container>-->
-                        <md-input-container class="md-block" flex>
-                            <label>GO ID</label>
-                            <input md-no-asterisk required name="go_id" ng-model="gafData.go_id"/>
-                            <div ng-messages="GAFForm.go_id.$error">
-                                <div ng-message="required">This is required.</div>
+                        <!--<md-input-container class="md-block" flex>-->
+                            <!--<label>GO ID</label>-->
+                            <!--<input md-no-asterisk required name="go_id" ng-model="gafData.go_id"/>-->
+                            <!--<div ng-messages="GAFForm.go_id.$error">-->
+                                <!--<div ng-message="required">This is required.</div>-->
+                            <!--</div>-->
+                        <!--</md-input-container>-->
+                        <md-autocomplete md-no-asterisk flex required
+                                ng-model="go_terms"
+                                md-input-name="goterm"
+                                md-selected-item="go_term.selectedItem"
+                                md-search-text="go_term.searchText"
+                                md-items="item in go_term.querySearch(go_term.searchText)"
+                                md-no-cache="true"
+                                md-item-text="item.name"
+                                md-min-length="0"
+                                md-floating-label="GO Term"
+                                md-selected-item-change="go_term.selectedItemChange(item)">
+                            <md-item-template>
+                                <!--<span md-highlight-text="go_term.searchText">{{item.name}}</span>-->
+                                <div>
+                                    <span><strong>{{item.name}}</strong></span>
+                                </div>
+                                <div style="line-height: 1; margin-bottom: 1em;">
+                                    <span style="white-space: pre-line;">{{item.def}}</span>
+                                </div>
+                                <!--<span class="item-meta" style="word-wrap:break-word">{{item.def}}</span>-->
+                            </md-item-template>
+                            <div ng-messages="GAFForm.goterm.$error">
+                                <div ng-message="required">This field is required</div>
                             </div>
-                        </md-input-container>
+                        </md-autocomplete>
                         <!--<md-input-container class="md-block" flex>-->
                             <!--<label>PMID (DB Reference)</label>-->
                             <!--<input md-no-asterisk required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>-->

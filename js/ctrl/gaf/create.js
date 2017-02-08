@@ -2,6 +2,40 @@ export default function(cacaoApp) {
     cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout', '$routeParams', 'ECO_CODES', 'PHAGE_EVIDENCE', 'QUALIFIERS', 'WITH_FROM_DB', 'BLAST_DB', '$mdDialog',
         function($scope, CacaoBackend, $location, $timeout, $routeParams, ECO_CODES, PHAGE_EVIDENCE, QUALIFIERS, WITH_FROM_DB, BLAST_DB, $mdDialog) {
 
+            // for phi go terms
+            CacaoBackend.oneUrl(' ', 'https://cpt.tamu.edu/onto_api/phi.json').get().then(
+                function(success) {
+                    $scope.go_terms = success;
+                    return $scope.go_terms.map(function (term) {
+                        term.value = term.name.toLowerCase();
+                        return term;
+                    })
+                },
+                function(fail) {
+                    console.log("there was an error obtaining GO terms");
+                }
+            );
+
+            // create filter function for query string
+            function createFilterFor(query) {
+                var lowercaseQuery = angular.lowercase(query);
+
+                return function filterFn(item) {
+                    return (item.value.indexOf(lowercaseQuery) != -1);
+                }
+            }
+
+            $scope.go_term = {
+                selectedItem: null,
+                searchText: null,
+                querySearch: function(query) {
+                    var results = query ? $scope.go_terms.filter(createFilterFor(query)) : $scope.go_terms, deferred;
+                    return results;
+                },
+                selectedItemChange: function(item) {
+                },
+            };
+
             // collapses other cards if new gene id entered
             $scope.$watch('prevAnnotData', function(newValue, oldValue) {
                 if (newValue != oldValue && !$scope.bad_db_object_id) {
