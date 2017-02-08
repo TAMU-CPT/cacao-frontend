@@ -1,6 +1,6 @@
 export default function(cacaoApp) {
-    cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout', '$routeParams', 'ECO_CODES', 'QUALIFIERS', 'WITH_FROM_DB', '$mdDialog',
-        function($scope, CacaoBackend, $location, $timeout, $routeParams, ECO_CODES, QUALIFIERS, WITH_FROM_DB, $mdDialog) {
+    cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout', '$routeParams', 'ECO_CODES', 'PHAGE_EVIDENCE', 'QUALIFIERS', 'WITH_FROM_DB', 'BLAST_DB', '$mdDialog',
+        function($scope, CacaoBackend, $location, $timeout, $routeParams, ECO_CODES, PHAGE_EVIDENCE, QUALIFIERS, WITH_FROM_DB, BLAST_DB, $mdDialog) {
 
             // collapses other cards if new gene id entered
             $scope.$watch('prevAnnotData', function(newValue, oldValue) {
@@ -42,10 +42,11 @@ export default function(cacaoApp) {
             });
 
             function init() {
-                $scope.eco_codes = ECO_CODES;
+                //$scope.eco_codes = ECO_CODES;
+                $scope.evidence = PHAGE_EVIDENCE;
                 $scope.qualifiers = QUALIFIERS;
-                $scope.with_from_db = WITH_FROM_DB;
-                $scope.gafData.go_id = "GO:";
+                //$scope.with_from_db = WITH_FROM_DB;
+                $scope.blast_db = BLAST_DB;
                 if ($routeParams.gene_id) {
                     CacaoBackend.one('genes', $routeParams.gene_id).get().then(function(gene) {
                         $scope.gene = gene;
@@ -122,25 +123,53 @@ export default function(cacaoApp) {
             init();
 
             $scope.saveData = function() {
+                function evidence_code() {
+                    if ($scope.gafData.evidence == 'BLAST') {
+                        return 'ISA';
+                    }
+                    else if ($scope.gafData.evidence == 'Genomic Context') {
+                        return 'IGC';
+                    }
+                    else { return 'ISM'; }
+                };
+
                 function with_or_from() {
-                    if ($scope.gafData.with_from_db && $scope.gafData.with_from_id) {
-                        return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
+                    if ($scope.gafData.evidence == 'BLAST' && $scope.gafData.blast_db && $scope.gafData.blast_id) {
+                        return $scope.gafData.blast_db + ':' +  $scope.gafData.blast_id;
+                    }
+                    else if ($scope.gafData.evidence == 'Genomic Context' && $scope.gafData.context_ids) {
+                        var ids = '';
+                        var id_list = $scope.gafData.context_ids.split(',');
+                        for (var i in id_list) {
+                            id_list[i] = id_list[i].trim();
+                        }
+                        return id_list.join('|');
                     }
                     else {
                         return '';
                     }
                 };
+                //function with_or_from() {
+                    //if ($scope.gafData.with_from_db && $scope.gafData.with_from_id) {
+                        //return $scope.gafData.with_from_db + ':' +  $scope.gafData.with_from_id;
+                    //}
+                    //else {
+                        //return '';
+                    //}
+                //};
 
                 CacaoBackend.all('gafs').post({
                     db: $scope.gafData.db,
                     gene: $scope.gene,
                     review_state: 1,
-                    qualifier: $scope.gafData.qualifier,
+                    //qualifier: $scope.gafData.qualifier,
                     go_id: $scope.gafData.go_id,
-                    db_reference: 'PMID:' + $scope.gafData.db_reference,
-                    evidence_code: $scope.gafData.evidence_code,
+                    db_reference: 'GO_REF:0000100',
+                    //db_reference: 'PMID:' + $scope.gafData.db_reference,
+                    //evidence_code: $scope.gafData.evidence_code,
+                    evidence_code: evidence_code(),
                     with_or_from: with_or_from(),
-                    aspect: $scope.gafData.aspect,
+                    //aspect: $scope.gafData.aspect,
                     assigned_by: $scope.gafData.assigned_by,
                     notes: $scope.gafData.notes,
                 })
