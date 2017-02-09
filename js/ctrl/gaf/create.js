@@ -33,7 +33,6 @@ export default function(cacaoApp) {
                     return results;
                 },
                 selectedItemChange: function(item) {
-                    console.log($scope.go_term.selectedItem.id);
                 },
             };
 
@@ -193,12 +192,21 @@ export default function(cacaoApp) {
                     //}
                 //};
 
+                function get_go_term_id() {
+                    if ($scope.go_term.selectedItem) {
+                        return $scope.go_term.selectedItem.id;
+                    }
+                    else {
+                        return $scope.go_term.searchText;
+                    }
+                }
+
                 CacaoBackend.all('gafs').post({
                     db: $scope.gafData.db,
                     gene: $scope.gene,
                     review_state: 1,
                     //qualifier: $scope.gafData.qualifier,
-                    go_id: $scope.go_term.selectedItem.id,
+                    go_id: get_go_term_id(),
                     db_reference: 'GO_REF:0000100',
                     //db_reference: 'PMID:' + $scope.gafData.db_reference,
                     //evidence_code: $scope.gafData.evidence_code,

@@ -84,6 +84,9 @@ export default function(cacaoApp) {
                                 }
                                 //gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
                                 gaf.show_date = moment(gaf.date).fromNow();
+                                if (!gaf.go_id.startsWith('phi')) {
+                                    gaf.go_id = gaf.go_id + ' (custom)';
+                                }
 
                                 var unique_gaf = true;
                                 $scope.gaf_set_list.map(function(gaf_set) {

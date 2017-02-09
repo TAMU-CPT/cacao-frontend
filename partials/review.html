@@ -102,7 +102,7 @@
                         <label>GO ID</label>
                         <input disabled ng-model="current_gaf[0].go_id"/>
                     </md-input-container>
-                    <md-button class="md-icon-button" ng-click="showGOIDPopup($event, current_gaf[0].go_id)">
+                    <md-button ng-disabled="current_gaf[0].go_id.endsWith('(custom)')" class="md-icon-button" ng-click="showGOIDPopup($event, current_gaf[0].go_id)">
                         <ng-md-icon icon="open_in_new"></ng-md-icon>
                     </md-button>
                     <md-checkbox style="margin:0" ng-false-value="'GO Term'" ng-true-value="null" ng-model="current_gaf[0].flagged.go_id" aria-label="GO ID Checkbox"></md-checkbox>
