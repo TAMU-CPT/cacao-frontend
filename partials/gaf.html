@@ -113,6 +113,11 @@
                                 </div>
                                 <!--<span class="item-meta" style="word-wrap:break-word">{{item.def}}</span>-->
                             </md-item-template>
+                            <md-not-found>
+                                <div style="line-height: 1; margin-bottom: 1em; margin-top: 1em">
+                                    <span style="white-space:pre-line">No terms matching "{{go_term.searchText}}" were found. Enter your desired text, and leave a comment in the notes!</span>
+                                </div>
+                            </md-not-found>
                             <div ng-messages="GAFForm.goterm.$error">
                                 <div ng-message="required">This field is required</div>
                             </div>

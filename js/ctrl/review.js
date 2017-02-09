@@ -78,11 +78,11 @@ export default function(cacaoApp) {
                                     protein: null,
                                     qualifier: null,
                                     go_id: null,
-                                    publication: null,
+                                    //publication: null,
                                     evidence: null,
                                     notes: null,
                                 }
-                                gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
+                                //gaf.show_db_reference = parseInt(gaf.db_reference.replace('PMID:', ''));
                                 gaf.show_date = moment(gaf.date).fromNow();
 
                                 var unique_gaf = true;
@@ -187,7 +187,7 @@ export default function(cacaoApp) {
                     if ($scope.temp_gaf[0].challenge_gaf) {
                         CacaoBackend.oneUrl('gafs', $scope.temp_gaf[0].challenge_gaf.original_gaf).get().then(function(original) {
                             $scope.original_gaf = original;
-                            $scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
+                            //$scope.original_gaf.show_db_reference = parseInt($scope.original_gaf.db_reference.replace('PMID:', ''));
                             $scope.original_gaf.show_date = moment(original.date).fromNow();
                             $scope.original_gaf_show = true;
                             $scope.current_gaf = $scope.temp_gaf;
