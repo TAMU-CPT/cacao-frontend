@@ -33,6 +33,7 @@ export default function(cacaoApp) {
                     return results;
                 },
                 selectedItemChange: function(item) {
+                    console.log($scope.go_term.selectedItem.id);
                 },
             };
 
@@ -197,7 +198,7 @@ export default function(cacaoApp) {
                     gene: $scope.gene,
                     review_state: 1,
                     //qualifier: $scope.gafData.qualifier,
-                    go_id: $scope.gafData.go_id,
+                    go_id: $scope.go_term.selectedItem.id,
                     db_reference: 'GO_REF:0000100',
                     //db_reference: 'PMID:' + $scope.gafData.db_reference,
                     //evidence_code: $scope.gafData.evidence_code,
