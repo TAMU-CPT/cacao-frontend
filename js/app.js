@@ -169,7 +169,7 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
                     }
 
                     config.headers = config.headers || {};
-                    if ($localStorage.jwtToken) {
+                    if ($localStorage.jwtToken && $localStorage.jwtToken != 'REMOTE_USER') {
                         config.headers.Authorization = 'JWT ' + $localStorage.jwtToken;
                     }
                    return config;
