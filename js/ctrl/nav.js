@@ -23,7 +23,8 @@ export default function(cacaoApp) {
             };
 
             // If remote user mode is turned on and there is no JWT token
-            if(REMOTE_USER && $localStorage.jwtToken !== undefined){
+            console.log(REMOTE_USER, $localStorage.jwtToken, $localStorage.jwtToken === undefined);
+            if(REMOTE_USER && ($localStorage.jwtToken === undefined ||  $localStorage.jwtToken === null)){
                 // Then we make a quick request to check who we are
                 $http.get(DRF_URL + 'api-token-auth-whoami/')
                     .success(function(data){

@@ -152,7 +152,8 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
 
             function loginRequired($q, $location, $localStorage) {
                 var deferred = $q.defer();
-                if ($localStorage.jwtToken) {
+                // If remote_user, disable
+                if ($localStorage.jwtToken || 'REMOTE_USER' == 'REMOTE_USER') {
                     deferred.resolve();
                 } else {
                     $location.path('/login');
