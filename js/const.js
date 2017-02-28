@@ -10,6 +10,12 @@ export default function(cacaoApp){
         'IGC',
     ]);
 
+    cacaoApp.constant('PHAGE_EVIDENCE', [
+        'BLAST',
+        'TMHMM',
+        'Genomic Context',
+    ]);
+
     cacaoApp.constant('QUALIFIERS', [
         'NOT',
         'contributes_to',
@@ -28,6 +34,15 @@ export default function(cacaoApp){
          'TAIR',
          'WB',
          'Zfin',
+    ]);
+
+    cacaoApp.constant('BLAST_DB', [
+         'UNIREF50',
+         'UNIREF90',
+         'UNIREF100',
+         'NR',
+         'NT',
+         'Canonical',
     ]);
 
     cacaoApp.constant('DRF_URL', 'http://localhost:8000/');

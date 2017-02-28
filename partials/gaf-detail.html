@@ -110,19 +110,19 @@
                             <ng-md-icon icon="open_in_new"></ng-md-icon>
                         </md-button>
                     </div>
-                    <div layout="row" layout-align="center center">
-                        <md-input-container class="md-block" flex>
-                            <label>PMID (DB Reference)</label>
-                            <input md-no-asterisk required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>
-                            <div ng-messages="GAFForm.db_reference.$error" md-auto-hide="false" ng-show="GAFForm.db_reference.$touched">
-                                <div ng-message="required">This is required.</div>
-                                <div ng-message="pmidValid">Invalid PMID</div>
-                            </div>
-                        </md-input-container>
-                        <md-button ng-disabled="GAFForm.db_reference.$invalid" class="md-icon-button" ng-click="showPMIDPopup($event, gafData.db_reference)">
-                            <ng-md-icon icon="open_in_new"></ng-md-icon>
-                        </md-button>
-                    </div>
+                    <!--<div layout="row" layout-align="center center">-->
+                        <!--<md-input-container class="md-block" flex>-->
+                            <!--<label>PMID (DB Reference)</label>-->
+                            <!--<input md-no-asterisk required name="db_reference" pmid-customdir type="number" ng-model="gafData.db_reference" ng-model-options="{ updateOn: 'blur' }"/>-->
+                            <!--<div ng-messages="GAFForm.db_reference.$error" md-auto-hide="false" ng-show="GAFForm.db_reference.$touched">-->
+                                <!--<div ng-message="required">This is required.</div>-->
+                                <!--<div ng-message="pmidValid">Invalid PMID</div>-->
+                            <!--</div>-->
+                        <!--</md-input-container>-->
+                        <!--<md-button ng-disabled="GAFForm.db_reference.$invalid" class="md-icon-button" ng-click="showPMIDPopup($event, gafData.db_reference)">-->
+                            <!--<ng-md-icon icon="open_in_new"></ng-md-icon>-->
+                        <!--</md-button>-->
+                    <!--</div>-->
                 </div>
                 <div layout="row" layout-sm="column">
                     <md-input-container flex>
@@ -201,12 +201,12 @@
                     <input disabled name="db_object_id" ng-model="gaf.gene.db_object_id"/>
                 </md-input-container>
             </div>
-            <div layout="row">
-                <md-input-container flex>
-                    <label>Qualifier</label>
-                    <input disabled name="qualifier" ng-model="gaf.show_qualifier"/>
-                </md-input-container>
-            </div>
+            <!--<div layout="row">-->
+                <!--<md-input-container flex>-->
+                    <!--<label>Qualifier</label>-->
+                    <!--<input disabled name="qualifier" ng-model="gaf.show_qualifier"/>-->
+                <!--</md-input-container>-->
+            <!--</div>-->
             <div layout="row" layout-align="center center">
                 <md-input-container class="md-block" flex>
                     <label>GO ID</label>
@@ -216,15 +216,15 @@
                     <ng-md-icon icon="open_in_new"></ng-md-icon>
                 </md-button>
             </div>
-            <div layout="row" layout-align="center center">
-                <md-input-container class="md-block" flex>
-                    <label>PMID (DB Reference)</label>
-                    <input disabled name="db_reference" ng-model="gaf.db_reference"/>
-                </md-input-container>
-                <md-button class="md-icon-button" ng-click="showPMIDPopup($event, gaf.db_reference)">
-                    <ng-md-icon icon="open_in_new"></ng-md-icon>
-                </md-button>
-            </div>
+            <!--<div layout="row" layout-align="center center">-->
+                <!--<md-input-container class="md-block" flex>-->
+                    <!--<label>PMID (DB Reference)</label>-->
+                    <!--<input disabled name="db_reference" ng-model="gaf.db_reference"/>-->
+                <!--</md-input-container>-->
+                <!--<md-button class="md-icon-button" ng-click="showPMIDPopup($event, gaf.db_reference)">-->
+                    <!--<ng-md-icon icon="open_in_new"></ng-md-icon>-->
+                <!--</md-button>-->
+            <!--</div>-->
             <div layout="row">
                 <md-input-container flex>
                     <label>Evidence Code</label>
@@ -233,6 +233,7 @@
                 <md-input-container ng-if="
                         gaf.evidence_code != 'ND'
                         && gaf.evidence_code != 'IDA'
+                        && gaf.evidence_code != 'ISM'
                         && gaf.evidence_code != 'IMP'" flex>
                     <label>With/From</label>
                     <input disabled name="with_from_db" ng-model="gaf.with_or_from"/>
@@ -244,16 +245,16 @@
                     <textarea disabled name="notes" ng-model="gaf.notes"></textarea>
                 </md-input-container>
             </div>
-            <div layout="row" layout-align="center center">
-                <!--can't challenge own gaf-->
-                <md-button ng-click="reveal_gaf_form()" ng-hide="
-                    gaf.owner.username == current_user.username ||
-                    gaf.review_state != 2 ||
-                    challenge"
-                    class="md-primary md-raised">
-                    Challenge this Annotation
-                </md-button>
-            </div>
+            <!--<div layout="row" layout-align="center center">-->
+                <!--[>can't challenge own gaf<]-->
+                <!--<md-button ng-click="reveal_gaf_form()" ng-hide="-->
+                    <!--gaf.owner.username == current_user.username ||-->
+                    <!--gaf.review_state != 2 ||-->
+                    <!--challenge"-->
+                    <!--class="md-primary md-raised">-->
+                    <!--Challenge this Annotation-->
+                <!--</md-button>-->
+            <!--</div>-->
         </md-card-content>
     </md-card>
     <md-card flex-gt-xs="75" ng-hide="challenge" class="cssSlideLeft">
