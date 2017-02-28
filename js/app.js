@@ -163,15 +163,15 @@ cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'grava
         $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
             return {
                'request': function (config) {
-                   // ignore if request is to GO backend
-                   if (config.url.startsWith('https://cpt.tamu.edu/onto_api/')) {
-                       return config;
-                   }
+                    // ignore if request is to GO backend
+                    if (config.url.startsWith('https://cpt.tamu.edu/onto_api/')) {
+                        return config;
+                    }
 
-                   config.headers = config.headers || {};
-                   if ($localStorage.jwtToken) {
-                       config.headers.Authorization = 'JWT ' + $localStorage.jwtToken;
-                   }
+                    config.headers = config.headers || {};
+                    if ($localStorage.jwtToken) {
+                        config.headers.Authorization = 'JWT ' + $localStorage.jwtToken;
+                    }
                    return config;
                },
                'responseError': function (response) {
