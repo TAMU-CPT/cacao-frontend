@@ -31,4 +31,5 @@ export default function(cacaoApp){
     ]);
 
     cacaoApp.constant('DRF_URL', 'http://localhost:8000/');
+    cacaoApp.constant('REMOTE_USER', true);
 }
