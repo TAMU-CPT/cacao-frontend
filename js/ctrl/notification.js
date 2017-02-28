@@ -18,8 +18,6 @@ export default function(cacaoApp){
                     if ($scope.notifications.length == 0) {
                         $scope.nav.notifications = null;
                     }
-                }, function() {
-                    console.log("there was an error");
                 });
             };
 
