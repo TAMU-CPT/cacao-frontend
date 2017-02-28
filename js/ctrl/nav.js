@@ -54,5 +54,11 @@ export default function(cacaoApp) {
                 $scope.get_notifications();
                 $interval($scope.get_notifications, 30000);
             };
+
+            $scope.showNav = true;
+            if($location.search().hideNav){
+                $scope.showNav = false;
+            }
+
     }]);
 }
