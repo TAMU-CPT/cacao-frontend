@@ -1,7 +1,7 @@
 export default function(cacaoApp) {
     cacaoApp.controller('GOIDDetailCtrl', ['$scope', '$routeParams', 'CacaoBackend', '$mdDialog', '$location',
         function($scope, $routeParams, CacaoBackend, $mdDialog, $location) {
-            $scope.go_terms = require('json-loader!./phi.json');
+            $scope.go_terms = require('json-loader!./gaf/phi.json');
 
             var go_id_url = 'https://cpt.tamu.edu/onto_api/' + $routeParams.GOID + '.json'
             CacaoBackend.oneUrl(' ', go_id_url).get().then(
