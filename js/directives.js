@@ -1,5 +1,5 @@
 export default function(cacaoApp) {
-    cacaoApp.directive('textarea', function($timeout){
+    cacaoApp.directive('textarea', ['$timeout', function($timeout){
      return {
        restrict: 'E',
        link: function(scope, element){
@@ -8,9 +8,9 @@ export default function(cacaoApp) {
          }, 0, false);
        }
      }
-    });
+    }]);
 
-    cacaoApp.directive('goidCustomdir', function(CacaoBackend) {
+    cacaoApp.directive('goidCustomdir', ['CacaoBackend', function(CacaoBackend) {
         return {
             require: 'ngModel',
             link: function($scope, element, attribute, ctrl) {
@@ -61,9 +61,9 @@ export default function(cacaoApp) {
                 ctrl.$parsers.push(customValidator);
             }
         };
-    });
+    }]);
 
-    cacaoApp.directive('pmidCustomdir', function(CacaoBackend) {
+    cacaoApp.directive('pmidCustomdir', ['CacaoBackend', function(CacaoBackend) {
         return {
             require: 'ngModel',
             link: function($scope, element, attribute, ctrl) {
@@ -110,7 +110,7 @@ export default function(cacaoApp) {
                 ctrl.$parsers.push(customValidator);
             }
         };
-    });
+    }]);
 
     cacaoApp.directive("userIcon", function() {
         return {

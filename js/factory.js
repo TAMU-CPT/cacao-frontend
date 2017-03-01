@@ -1,12 +1,12 @@
 export default function(cacaoApp) {
-    cacaoApp.factory('NotificationBackend', function(Restangular, DRF_URL) {
+    cacaoApp.factory('NotificationBackend', ['Restangular', 'DRF_URL', function(Restangular, DRF_URL) {
         return Restangular.withConfig(function(RestangularConfigurer) {
             RestangularConfigurer.setBaseUrl(DRF_URL + 'api');
             RestangularConfigurer.setRequestSuffix('/');
         });
-    });
+    }]);
 
-    cacaoApp.factory('CacaoBackend', function(Restangular, DRF_URL) {
+    cacaoApp.factory('CacaoBackend', ['Restangular', 'DRF_URL', function(Restangular, DRF_URL) {
         return Restangular.withConfig(function(RestangularConfigurer) {
             RestangularConfigurer.setBaseUrl(DRF_URL);
             RestangularConfigurer.setRequestSuffix('/');
@@ -27,5 +27,5 @@ export default function(cacaoApp) {
                 return extractedData;
             });
         });
-    });
+    }]);
 }
