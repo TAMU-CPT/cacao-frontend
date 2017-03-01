@@ -4,18 +4,11 @@ export default function(cacaoApp) {
             $scope.showNav = true;
 
             // for phi go terms
-            CacaoBackend.oneUrl(' ', 'https://cpt.tamu.edu/onto_api/phi.json').get().then(
-                function(success) {
-                    $scope.go_terms = success;
-                    return $scope.go_terms.map(function (term) {
-                        term.value = term.name.toLowerCase();
-                        return term;
-                    })
-                },
-                function(fail) {
-                    console.log("there was an error obtaining GO terms");
-                }
-            );
+            $scope.go_terms = require('json-loader!./phi.json');
+            $scope.go_terms.map(function (term) {
+                term.value = term.name.toLowerCase();
+                return term;
+            })
 
             // create filter function for query string
             function createFilterFor(query) {
