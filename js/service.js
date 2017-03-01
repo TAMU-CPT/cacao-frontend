@@ -1,5 +1,5 @@
 export default function(cacaoApp) {
-    cacaoApp.service('$mdLoginToast', function($mdToast) {
+    cacaoApp.service('$mdLoginToast', ['$mdToast', function($mdToast) {
         return {
             show: function(content) {
             return $mdToast.show(
@@ -9,5 +9,5 @@ export default function(cacaoApp) {
                 .hideDelay(2000)
             )}
         };
-    });
+    }]);
 }
