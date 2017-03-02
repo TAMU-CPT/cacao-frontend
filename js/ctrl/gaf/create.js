@@ -3,7 +3,7 @@ export default function(cacaoApp) {
         function($scope, CacaoBackend, $location, $timeout, $routeParams, ECO_CODES, PHAGE_EVIDENCE, QUALIFIERS, WITH_FROM_DB, BLAST_DB, $mdDialog) {
 
             // for phi go terms
-            CacaoBackend.oneUrl(' ', 'https://cpt.tamu.edu/onto_api/phi.json').get().then(
+            CacaoBackend.oneUrl(' ', 'https://cpt.tamu.edu/onto_api/GO.json').get().then(
                 function(success) {
                     $scope.go_terms = success;
                     return $scope.go_terms.map(function (term) {
