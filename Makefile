@@ -19,7 +19,7 @@ run: node_modules  ## Run the server
 	./node_modules/.bin/webpack-dev-server --progress --colors --devtool cheap-module-inline-source-map --hot --debug --inline --host 127.0.0.1 --port 10000
 
 build: node_modules  ## Compile a project for deployment
-	./node_modules/.bin/webpack  --progress --colors --devtool source-map --optimize-minimize --optimize-dedupe
+	./node_modules/.bin/webpack  --progress --colors --devtool source-map --optimize-dedupe
 
 node_modules: package.json
 	$(installer) install

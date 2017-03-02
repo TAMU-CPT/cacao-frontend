@@ -100,7 +100,7 @@ export default function(cacaoApp) {
             if (input) {
                 var num = 0;
                 for (var i in input) {
-                    if (flagged_card(input[i]) == false) {
+                    if (flagged_card(input[i]) === false) {
                         ++num;
                     }
                 }
