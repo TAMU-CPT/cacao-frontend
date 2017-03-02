@@ -48,8 +48,8 @@ var cacaoApp = angular.module('cacaoApp', [
 ]);
 
 
-cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'gravatarServiceProvider',
-    function($routeProvider, $httpProvider, $mdThemingProvider, gravatarServiceProvider) {
+cacaoApp.config(['$routeProvider', '$httpProvider', '$mdThemingProvider', 'gravatarServiceProvider', '$q', '$location', '$localStorage',
+    function($routeProvider, $httpProvider, $mdThemingProvider, gravatarServiceProvider, $q, $location, $localStorage) {
         gravatarServiceProvider.defaults = {
           size     : 100,
           "default": 'mm'  // Mystery man as default for missing avatars
