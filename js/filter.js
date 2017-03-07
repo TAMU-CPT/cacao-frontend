@@ -38,6 +38,16 @@ export default function(cacaoApp) {
         };
     });
 
+    cacaoApp.filter('eco_to_cpt_go', function() {
+        return function(input) {
+            switch(input){
+                case 'ISA': return 'BLAST';
+                case 'ISM': return 'TMHMM';
+                case 'IGC': return 'Genomic Context';
+            }
+        };
+    });
+
     cacaoApp.filter('qualifier_to_text', function() {
         return function(input) {
             switch(input){
