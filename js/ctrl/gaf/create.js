@@ -1,3 +1,4 @@
+var moment = require('moment');
 export default function(cacaoApp) {
     cacaoApp.controller('GAFCtrl', ['$scope', 'CacaoBackend', '$location', '$timeout', '$routeParams', 'ECO_CODES', 'PHAGE_EVIDENCE', 'QUALIFIERS', 'WITH_FROM_DB', 'BLAST_DB', '$mdDialog',
         function($scope, CacaoBackend, $location, $timeout, $routeParams, ECO_CODES, PHAGE_EVIDENCE, QUALIFIERS, WITH_FROM_DB, BLAST_DB, $mdDialog) {
@@ -6,15 +7,25 @@ export default function(cacaoApp) {
             CacaoBackend.oneUrl(' ', 'https://cpt.tamu.edu/onto_api/GO.json').get().then(
                 function(success) {
                     $scope.go_terms = success;
+                    $scope.go_terms_dict = {};
+                    for (var s in success.plain()) {
+                        $scope.go_terms_dict[success[s]['id']] = success[s];
+                    }
+                    init();
                     return $scope.go_terms.map(function (term) {
                         term.value = term.name.toLowerCase();
                         return term;
                     })
                 },
                 function(fail) {
+                    init();
                     console.log("there was an error obtaining GO terms");
                 }
             );
+
+            $scope.date_process = function(date) {
+                return moment(date).fromNow();
+            };
 
             // create filter function for query string
             function createFilterFor(query) {
@@ -118,6 +129,9 @@ export default function(cacaoApp) {
                 $scope.query.ordering = $scope.ordering;
                 $scope.promise = CacaoBackend.all('gafs').getList({db_object_id: $scope.prevAnnotData, page: $scope.query.page, ordering: $scope.query.ordering}).then(function(data) {
                     $scope.prev_annotations = data;
+                    $scope.prev_annotations.map(function(annotation) {
+                        annotation.go_term = $scope.go_terms_dict[annotation.go_id];
+                    });
                 });
             };
 
@@ -134,6 +148,9 @@ export default function(cacaoApp) {
                 if (g) {
                     $scope.promise = CacaoBackend.all('gafs').getList({gene__db_object_id: g, ordering: $scope.query.ordering}).then(function(data) {
                         $scope.prev_annotations = data;
+                        $scope.prev_annotations.map(function(annotation) {
+                            annotation.go_term = $scope.go_terms_dict[annotation.go_id];
+                        });
                         $scope.prevAnnotData = g;
                         $scope.bad_db_object_id = null;
                         if ($scope.prev_annotations.length < 1){
@@ -154,7 +171,6 @@ export default function(cacaoApp) {
                 db_object_type: 'protein',
                 assigned_by: 'CPT',
             };
-            init();
 
             $scope.saveData = function() {
                 function evidence_code() {
