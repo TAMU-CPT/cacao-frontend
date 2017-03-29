@@ -110,6 +110,27 @@ export default function(cacaoApp) {
                 ordering: $scope.ordering
             };
 
+            $scope.deletion_popup = function(annotation) {
+                var confirm = $mdDialog.confirm()
+                      .title('Are you sure you want to delete this annotation?')
+                      .clickOutsideToClose(true)
+                      .ariaLabel('Delete annotation?')
+                      .targetEvent(null)
+                      .ok('Yes')
+                      .cancel('No');
+
+                $mdDialog.show(confirm).then(function() {
+                    delete_annotation(annotation.id);
+                });
+            };
+
+            function delete_annotation(d) {
+                $scope.promise = CacaoBackend.one('gafs', d).get().then(function(annotation) {
+                    annotation.remove();
+                    $scope.gaf_update(d);
+                });
+            }
+
             $scope.picture_popup = function(ev) {
                 $mdDialog.show({
                     contentElement: '#go_term_pic',

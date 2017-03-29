@@ -300,6 +300,7 @@
                                     <th md-column><span>Evidence</span></th>
                                     <th md-column><span>Notes</span></th>
                                     <th md-column><span>Date</span></th>
+                                    <th md-column><span></span></th>
 
                                     <!--<th md-column md-order-by="gene__db_object_id"><span>Gene ID</span></th>-->
                                     <!--<th md-column md-order-by="gene__db_object_symbol"><span>Name</span></th>-->
@@ -315,6 +316,11 @@
                                     <td md-cell><span>{{d.evidence_code | eco_to_cpt_go}}</span><span ng-if="d.with_or_from">  ({{d.with_or_from}})</span></td>
                                     <td md-cell>{{d.notes}}</td>
                                     <td md-cell>{{date_process(d.date)}}</td>
+                                    <td md-cell>
+                                        <md-button ng-click="deletion_popup(d)" aria-label="delete annotation" class="md-icon-button">
+                                            <ng-md-icon icon="close" "fill: white" ></ng-md-icon>
+                                        </md-button>
+                                    </td>
                                 </tr>
                                 <!--<tr md-row ng-repeat="d in prev_annotations">-->
                                     <!--<td md-cell>{{d.gene.db_object_id}}</td>-->
@@ -344,6 +350,32 @@
         </md-card>
     </div>
 </div>
+
+<!--<div style="visibility: hidden">-->
+  <!--<div class="md-dialog-container" id="delete_popup">-->
+    <!--<md-dialog>-->
+        <!--<md-card style="margin:0">-->
+            <!--<md-toolbar>-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<span class="md-headline">Are you sure you want to delete?</span>-->
+                    <!--<span flex></span>-->
+                    <!--<md-button ng-click="cancel()" aria-label="close" class="md-icon-button">-->
+                        <!--<ng-md-icon icon="close" "fill: white" ></ng-md-icon>-->
+                    <!--</md-button>-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
+            <!--<md-card-content>-->
+                <!--<md-button ng-click="delete()" aria-label="yes" class="md-icon-button">-->
+                    <!--<ng-md-icon icon="close" "fill: white" ></ng-md-icon>-->
+                <!--</md-button>-->
+                <!--<md-button ng-click="cancel()" aria-label="no" class="md-icon-button">-->
+                    <!--<ng-md-icon icon="close" "fill: white" ></ng-md-icon>-->
+                <!--</md-button>-->
+            <!--</md-card-content>-->
+        <!--</md-card>-->
+    <!--</md-dialog>-->
+  <!--</div>-->
+<!--</div>-->
 
 <div style="visibility: hidden">
   <div class="md-dialog-container" id="go_term_pic">
