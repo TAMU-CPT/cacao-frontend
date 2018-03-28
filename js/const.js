@@ -37,14 +37,15 @@ export default function(cacaoApp){
     ]);
 
     cacaoApp.constant('BLAST_DB', [
-         'UNIREF50',
-         'UNIREF90',
-         'UNIREF100',
-         'NR',
-         'NT',
-         'Canonical',
+             'SwissProt',
+             'TrEMBL',
+             'Canonical',
+             'NR',
+             'NT',
+             'UNIREF50',
+             'UNIREF90',
+             'UNIREF100',
     ]);
-
     cacaoApp.constant('DRF_URL', 'http://localhost:8000/');
     cacaoApp.constant('REMOTE_USER', true);
 }
