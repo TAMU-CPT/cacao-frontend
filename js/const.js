@@ -37,12 +37,14 @@ export default function(cacaoApp){
     ]);
 
     cacaoApp.constant('BLAST_DB', [
+         'SwissProt',
+         'TrEMBL',
+         'Canonical',
+         'NR',
+         'NT',
          'UNIREF50',
          'UNIREF90',
          'UNIREF100',
-         'NR',
-         'NT',
-         'Canonical',
     ]);
 
     cacaoApp.constant('DRF_URL', 'http://localhost:8000/');
