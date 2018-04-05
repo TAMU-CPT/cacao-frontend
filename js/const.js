@@ -14,7 +14,6 @@ export default function(cacaoApp){
         'BLAST',
         'TMHMM',
         'Genomic Context',
-        'InterPro',
     ]);
 
     cacaoApp.constant('QUALIFIERS', [
